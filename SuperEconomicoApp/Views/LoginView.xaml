@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:helpers="clr-namespace:DemoApp.Helpers"
+             xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
+             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
+             xmlns:converter="clr-namespace:SuperEconomicoApp.Converters"
+             xmlns:behaviors="clr-namespace:SuperEconomicoApp.Behavior"
+             x:Class="SuperEconomicoApp.Views.LoginView"
+             Visual="Material"
+             BackgroundImageSource="rojo_negro"
+             >
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:TextToBoolCOnverter x:Key="dataConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.BindingContext>
+        <vm:LoginViewModel/>
+    </ContentPage.BindingContext>
+    
+    <Grid>
+      
+
+        <Grid Padding="20" VerticalOptions="Center" Opacity="0.6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+
+
+            </Grid.RowDefinitions>
+
+            <StackLayout Grid.Row="0" VerticalOptions="Center" Spacing="10">
+                <Label Grid.Row="0"
+                   Text="El Economico" FontFamily="{StaticResource CabinSketch-Bold}"
+                   TextColor="White" FontAttributes="Bold"
+                   FontSize="55" HorizontalOptions="Center" >
+
+
+                </Label>
+                <Label 
+                   Text="Login Form" FontFamily="{StaticResource CabinSketch-Bold}"
+                   TextColor="White" FontAttributes="Bold"
+                   FontSize="40" HorizontalOptions="Center" 
+                    >
+
+                </Label>
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Spacing="10">
+                <Frame CornerRadius="20"  >
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="usuario" 
+                               HorizontalOptions="Start" 
+                               VerticalOptions="Center"
+                               Aspect="AspectFit"></Image>
+                        <controls:StandardEntry
+                    
+                            Placeholder="Username" 
+                            Text="{Binding UserName}" 
+                            BackgroundColor="Transparent" 
+                            HorizontalOptions="FillAndExpand"
+                            x:Name="EntryUsuario"
+                            
+                            >
+
+                            <controls:StandardEntry.Behaviors>
+                                <behaviors:NotNullBehaviorcs x:Name="UserNN"/>
+                            </controls:StandardEntry.Behaviors>
+
+                        </controls:StandardEntry>
+                    </StackLayout>
+                </Frame>
+                <Frame CornerRadius="20">
+                    <StackLayout Orientation="Horizontal" >
+                        <Image Source="password" 
+                               HorizontalOptions="Start" 
+                               VerticalOptions="Center"
+                               Aspect="AspectFit"></Image>
+                        <controls:StandardEntry
+                            Placeholder="Password" 
+                            Text="{Binding Password}" 
+                            IsPassword="True"  
+                            BackgroundColor="Transparent" 
+                            HorizontalOptions="FillAndExpand"
+                            x:Name="EntryPassword"
+                            >
+                            
+                            
+                            
+                            <controls:StandardEntry.Behaviors>
+                                <behaviors:NotNullBehaviorcs x:Name="PasswordNN"/>
+                            </controls:StandardEntry.Behaviors>
+                        </controls:StandardEntry>
+                    </StackLayout>
+                </Frame>
+
+
+
+
+
+                <Button 
+                    Text="Login" 
+                    BackgroundColor="Purple" 
+                    TextColor="White" 
+                    WidthRequest="400" 
+                    HeightRequest="60"
+                    Command="{Binding LoginCommand}"
+                    IsEnabled="{Binding Disable}"
+                    x:Name="login"
+                    
+                    Clicked="login_Clicked"
+                    CornerRadius="8">
+                    <Button.Triggers>
+                        <MultiTrigger TargetType="Button">
+                            <MultiTrigger.Conditions>
+                                <BindingCondition Binding="{Binding Source={x:Reference EntryUsuario},
+                                    Path=Text, Converter={StaticResource dataConverter}}" Value="True"/>
+                                <BindingCondition Binding="{Binding Source={x:Reference EntryPassword},
+                                    Path=Text, Converter={StaticResource dataConverter}}" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </MultiTrigger>
+                    </Button.Triggers>
+                </Button>
+
+
+                <Button 
+            Text="REGISTRAR" 
+            BackgroundColor="Purple" 
+            TextColor="White" 
+            WidthRequest="400" 
+                    HeightRequest="60"
+            Command="{Binding RegisterCommand}"
+                    CornerRadius="8"/>
+
+              
+            
+
+
+
+
+
+
+                    </StackLayout>
+
+        </Grid>
+    </Grid>
+</ContentPage>

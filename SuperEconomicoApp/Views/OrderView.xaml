@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:helpers="clr-namespace:DemoApp.Helpers"
+             x:Class="SuperEconomicoApp.Views.OrderView"
+             BackgroundColor="#394BA7"
+             Visual="Material">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <ImageButton 
+                Source="atras"
+                BackgroundColor="Transparent"
+                Grid.Row="0" 
+                HorizontalOptions="Start" 
+                Aspect="AspectFit" 
+                VerticalOptions="Start" 
+                Margin="10,30" 
+                Clicked="ImageButton_Clicked"/>
+            
+            <Label 
+                Text="El Economico" 
+                FontSize="40" 
+                TextColor="WhiteSmoke"
+                FontFamily="CabinSketch"
+                HorizontalOptions="Center" 
+                VerticalOptions="Start"/>
+
+            <Label 
+                x:Name="LabelName" 
+                FontSize="Subtitle" 
+                Margin="20,0" 
+                TextColor="WhiteSmoke"
+                HorizontalOptions="Center" 
+                VerticalOptions="End"/>
+
+            <pancake:PancakeView 
+                BackgroundColor="WhiteSmoke" 
+                CornerRadius="60,60,0,0"
+                Grid.Row="1">
+                <StackLayout 
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <Label  Text="Gracias por hacer su pedido con nosotros"></Label>
+                    <Label Text="Anote su ID de pedido para un seguimiento mas detallado"></Label>
+                    <Label x:Name="LabelOrderID" TextColor="Purple"
+                           FontSize="Subtitle"/>
+                    <Button Text="Ver todos los productos"
+                            WidthRequest="200"
+                            BackgroundColor="LimeGreen"
+                            HorizontalOptions="Center"
+                            CornerRadius="20"
+                            Clicked="Button_Clicked">
+                        
+                    </Button>
+                </StackLayout>
+            </pancake:PancakeView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:helpers="clr-namespace:DemoApp.Helpers"
+             xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
+             x:Class="SuperEconomicoApp.Views.LogoutView"
+             BackgroundColor="#394BA7"
+             Visual="Material">
+
+    <ContentPage.BindingContext>
+        <vm:LogoutViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ImageButton 
+                Source="{FontImage FontFamily=FontAwesome,
+                Glyph={x:Static helpers:IconFont.ArrowLeft}, 
+                Size=30,Color=White}"
+                Grid.Row="0" 
+                HorizontalOptions="Start" 
+                Aspect="AspectFit" 
+                VerticalOptions="Start" 
+                Margin="10,30" 
+                Clicked="ImageButton_Clicked"/>
+
+            <Label 
+                Text="El Economico" 
+                FontSize="40" 
+                TextColor="WhiteSmoke"
+                FontFamily="CabinSketch"
+                HorizontalOptions="Center" 
+                VerticalOptions="Start"/>
+
+            <Label 
+                x:Name="LabelName" 
+                FontSize="Subtitle" 
+                Margin="20,0" 
+                TextColor="WhiteSmoke"
+                HorizontalOptions="Center" 
+                VerticalOptions="End"/>
+
+            <pancake:PancakeView BackgroundColor="WhiteSmoke" CornerRadius="60,60,0,0"
+                                 Grid.Row="1">
+                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                    <StackLayout IsVisible="{Binding IsCartExists}">
+                        <Label Text="El carrito contiene productos" TextColor="Black"></Label>
+                        <Label Text="{Binding UserCartItemsCount, StringFormat='Su carrito contiene {0} productos'}" TextColor="Black"/>
+                    </StackLayout>
+                    <StackLayout>
+                        <Label Text="¿Desea cerrar sesión?"/>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Button Text="Sí, cerrar sesión" HorizontalOptions="Center"
+                                    BackgroundColor="Red" CornerRadius="20"
+                                    Command="{Binding LogoutCommand}"/>
+                            <Button Text="No, ir al carrito" HorizontalOptions="Center"
+                                    BackgroundColor="LightGreen" CornerRadius="20"
+                                    Command="{Binding GotoCartCommand}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </pancake:PancakeView>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
