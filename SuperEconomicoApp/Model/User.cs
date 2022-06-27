@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace SuperEconomicoApp.Model
+using Xamarin.Forms;
+
+namespace SuperEconomicoApp
 {
-    public class User
+    public class User: INotifyPropertyChanged
     {
-        public int id { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string nombre = "")
+        {
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nombre));
+        }
+
+        public int id { get; set;  }
 
         public string name { get; set; }
 
         public string lastname { get; set; }
 
-        public string birthdate { get; set; }
+        public DateTime birthdate { get; set; }
 
         public string email { get; set; }
 
@@ -22,7 +35,10 @@ namespace SuperEconomicoApp.Model
 
         public string state { get; set; }
 
-        public string cod_temp { get; set; }
+        public int cod_temp { get; set; }
+        public string phone { get; set; }
+        public string typeuser { get; set; }
+
 
     }
 }

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.AddUser">
+    <ContentPage.Content>
+        <StackLayout>
+            <Image x:Name="img"  HeightRequest="200" WidthRequest="200" BackgroundColor="Azure" 
+               Margin="20,0,20,0" HorizontalOptions="Center" >
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
+                </Image.GestureRecognizers>
+            </Image>
+            <Label Text="Nombres" FontSize="12" Padding="30,10,30,0"/>
+            <Entry x:Name="txtname"  Margin="30,0,30,0" FontSize="12" />
+            <Label Text="Apellidos" FontSize="12" Padding="30,0,30,0"/>
+            <Entry x:Name="txtlastname"  Margin="30,0,30,0" FontSize="12" />
+            <Label Text="Telefono" FontSize="12" Padding="30,0,30,0" />
+            <Entry x:Name="txtphone"  Margin="30,0,30,0" FontSize="12" Keyboard="Telephone" />
+            <Label Text="Correo" FontSize="12"  Padding="30,0,30,0"/>
+            <Entry x:Name="txtemail"  Margin="30,0,30,0" FontSize="12" Keyboard="Email" />
+            <Label Text="Fecha de Nacimiento" FontSize="12" Padding="30,0,30,0"/>
+
+            <DatePicker MinimumDate="01/01/1900" Margin="30,0,30,0" FontSize="12" x:Name="txtbirthdate" />
+            
+            <Label Text="Contraseña" FontSize="12" Padding="30,0,30,0"/>
+            <Entry x:Name="txtpassword"  Margin="30,0,30,0" FontSize="12" Keyboard="Text" IsPassword="True" />
+            <Label Text="Repetir Contraseña" FontSize="12" Padding="30,0,30,0"/>
+            <Entry x:Name="txtpassword2"  Margin="30,0,30,0" FontSize="12" Keyboard="Text" IsPassword="True" />
+
+            <RelativeLayout HorizontalOptions="CenterAndExpand" Margin="20">
+                <Grid>
+                    <Button Text="Guardar" x:Name="btnSave"  WidthRequest="150" Grid.Column="0" Clicked="btnSave_Clicked" />
+                </Grid>
+
+            </RelativeLayout>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

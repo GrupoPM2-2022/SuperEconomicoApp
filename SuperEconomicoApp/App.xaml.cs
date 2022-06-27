@@ -2,6 +2,7 @@
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SuperEconomicoApp.Views;
 
 namespace SuperEconomicoApp
 {
@@ -16,21 +17,21 @@ namespace SuperEconomicoApp
 
             InitializeComponent();
 
-            //MainPage = new Views.LoginView();
+            MainPage = new NavigationPage(new AddUser());
             //MainPage = new NavigationPage(new Views.LoginView());
             //MainPage = new NavigationPage(new Views.SettingsPage());
-        
 
-            string uname = Preferences.Get("Username", String.Empty);
-           if (String.IsNullOrEmpty(uname))
-          {
-           MainPage = new Views.LoginView();
-               //MainPage = new Views.ProductsView();
-           }
-           else
-          {
-                MainPage = new Views.ProductsView();
-         }
+
+         //   string uname = Preferences.Get("Username", String.Empty);
+         //  if (String.IsNullOrEmpty(uname))
+         // {
+         //  MainPage = new Views.LoginView();
+         //      //MainPage = new Views.ProductsView();
+         //  }
+         //  else
+         // {
+         //       MainPage = new Views.ProductsView();
+         //}
 
         }
 

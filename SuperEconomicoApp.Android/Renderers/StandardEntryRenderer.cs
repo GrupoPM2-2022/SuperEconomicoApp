@@ -64,9 +64,9 @@ namespace SuperEconomicoApp.Droid.Renderers
 
             control.SetPadding(padLeft, padTop, padRight, padBottom);
         }
-        protected void UpdateBackground()
-        {
-            UpdateBackground(Control);
-        }
+        //protected void UpdateBackground()
+        //{
+        //    UpdateBackground(Control);
+        //}
     }
 }
