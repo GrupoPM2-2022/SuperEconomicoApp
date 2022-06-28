@@ -12,12 +12,14 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp;
+using System.Diagnostics;
 
 namespace SuperEconomicoApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddUser : ContentPage
     {
+        int code;
         public AddUser()
         {
             InitializeComponent();
@@ -63,10 +65,14 @@ namespace SuperEconomicoApp.Views
 
         private void btnSave_Clicked(object sender, EventArgs e)
         {
-            if(validateData() == true)
-            {
-                saveUser();
-            }
+            //if (validateData() == true)
+            //{
+            //    saveUser();
+            //    sendEmail();
+             
+            //}
+            Navigation.PushAsync(new ValidateCode(this.code, txtemail.Text));
+
         }
 
         private int numberRandom()
@@ -89,7 +95,9 @@ namespace SuperEconomicoApp.Views
                 user.image = imageToSave;
                 user.state = "activo";
                 user.typeuser = "cliente";
-                user.cod_temp = numberRandom();
+                user.cod_temp = code = numberRandom();
+
+
                 var request = new HttpRequestMessage();
                 request.RequestUri = new Uri(RestApiMethods.EndPointAddUser);//mando a llamar la url del RestApi
                 request.Method = HttpMethod.Put;
@@ -158,6 +166,41 @@ namespace SuperEconomicoApp.Views
             }
             return false;   
 
+        }
+
+        private async void sendEmail()
+        {
+            try
+            {
+                var jsonData = new SuperEconomicoApp.Model.SendEmail();
+                jsonData.asunto = "Codigo de verificación - SuperEconomicoApp";
+                jsonData.contenido = String.Concat(this.code) ;
+                jsonData.destinatarioNombre = String.Concat(txtname.Text, " ", txtlastname.Text);
+                jsonData.destinatario = txtemail.Text;
+
+                var request = new HttpRequestMessage();
+                request.RequestUri = new Uri(RestApiMethods.EndPointSendEmail);//mando a llamar la url del RestApi
+                request.Method = HttpMethod.Post;
+                request.Headers.Add("Accept", "application/json");
+                var payload = JsonConvert.SerializeObject(jsonData);//convierto a json
+                HttpContent c = new StringContent(payload, Encoding.UTF8, "application/json");
+                request.Content = c;
+                var client = new HttpClient();
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    await DisplayAlert("Notificación", "Correo enviado con exito "+response, "OK");
+                }
+                else
+                {
+                    await DisplayAlert("Notificación", "Error al enviar correo", "OK");
+                }
+            }
+            catch
+            {
+                await DisplayAlert("Notificación", "Error al conectar", "OK");
+            }
+                
         }
     }
 }

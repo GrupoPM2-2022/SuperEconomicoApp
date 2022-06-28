@@ -16,8 +16,8 @@ namespace SuperEconomicoApp
                 });
 
             InitializeComponent();
-
-            MainPage = new NavigationPage(new AddUser());
+            //MainPage = new AddUser();
+            MainPage = new  NavigationPage(new AddUser());
             //MainPage = new NavigationPage(new Views.LoginView());
             //MainPage = new NavigationPage(new Views.SettingsPage());
 
