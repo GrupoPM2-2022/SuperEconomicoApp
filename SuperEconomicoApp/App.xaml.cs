@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperEconomicoApp.Helpers;
+using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,23 +15,23 @@ namespace SuperEconomicoApp
                 "MediaElement_Experimental"
                 });
 
-            InitializeComponent();
+             InitializeComponent();
 
             //MainPage = new Views.LoginView();
             //MainPage = new NavigationPage(new Views.LoginView());
             //MainPage = new NavigationPage(new Views.SettingsPage());
-        
 
-            string uname = Preferences.Get("Username", String.Empty);
-           if (String.IsNullOrEmpty(uname))
-          {
-           MainPage = new Views.LoginView();
-               //MainPage = new Views.ProductsView();
-           }
-           else
-          {
+
+            //string uname = Preferences.Get("Username", String.Empty);
+            if (!Preferences.ContainsKey("Username"))
+            {
+                //MainPage = new Views.LoginView();
                 MainPage = new Views.ProductsView();
-         }
+            }
+            else
+            {
+                MainPage = new Views.ProductsView();
+            }
 
         }
 

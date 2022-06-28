@@ -25,8 +25,8 @@ namespace SuperEconomicoApp.Views
 
         async private void ButtonProducts_Clicked(object sender, EventArgs e)
         {
-            var apd = new AddProductoItemData();
-            await apd.AddProductoItemAsync();
+            //var apd = new AddProductoItemData();
+            //await apd.AddProductoItemAsync();
         }
 
         private void ButtonCart_Clicked(object sender, EventArgs e)

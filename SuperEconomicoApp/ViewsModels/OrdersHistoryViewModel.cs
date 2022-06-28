@@ -30,30 +30,30 @@ namespace SuperEconomicoApp.ViewsModels
         public OrdersHistoryViewModel()
         {
             OrderDetails = new ObservableCollection<OrdersHistory>();
-            LoadUserOrders();
+            //LoadUserOrders();
         }
 
-        private async void LoadUserOrders()
-        {
-            try
-            {
-                IsBusy = true;
-                OrderDetails.Clear();
-                var service = new OrderHistoryService();
-                var details = await service.GetOrderDetailsAsync();
-                foreach (var order in details)
-                {
-                    OrderDetails.Add(order);
-                }
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
+        //private async void LoadUserOrders()
+        //{
+        //    try
+        //    {
+        //        IsBusy = true;
+        //        OrderDetails.Clear();
+        //        var service = new OrderHistoryService();
+        //        var details = await service.GetOrderDetailsAsync();
+        //        foreach (var order in details)
+        //        {
+        //            OrderDetails.Add(order);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+        //    }
+        //    finally
+        //    {
+        //        IsBusy = false;
+        //    }
+        //}
     }
 }

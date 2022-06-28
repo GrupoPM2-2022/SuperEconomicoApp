@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -57,25 +60,33 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<ProductoItem> LatestItems { get; set; }
+        private ObservableCollection<ProductoItem> _ListItemsProducts;
 
         public Command ViewCartCommand { get; set; }
         public Command LogoutCommand { get; set; }
         public Command OrdersHistoryCommand { get; set; }
         public Command SearchViewCommand { get; set; }
 
+        public ObservableCollection<ProductoItem> ListItemsProducts {
+            get { return _ListItemsProducts; }
+            set
+            {
+                _ListItemsProducts = value;
+                OnPropertyChanged("ListItemsProducts");
+            }
+        }
+
         public ProductsViewModel()
         {
-            var uname = Preferences.Get("Username", String.Empty);
-            if (String.IsNullOrEmpty(uname))
+            var uname = Preferences.Get("Username", string.Empty);
+            if (string.IsNullOrEmpty(uname))
                 UserName = "Guest";
             else
                 UserName = uname;
 
             UserCartItemsCount = new CartItemService().GetUserCartCount();
-
+            ListItemsProducts = new ObservableCollection<ProductoItem>();
             Categories = new ObservableCollection<Category>();
-            LatestItems = new ObservableCollection<ProductoItem>();
 
             ViewCartCommand = new Command(async () => await ViewCartAsync());
             LogoutCommand = new Command(async () => await LogoutAsync());
@@ -83,7 +94,7 @@ namespace SuperEconomicoApp.ViewsModels
             SearchViewCommand = new Command(async () => await SearchViewAsync());
 
             GetCategories();
-            GetLatestItems();
+            GetAllProducts();
         }
 
         private async Task SearchViewAsync()
@@ -94,7 +105,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async Task OrderHistoryAsync()
         {
-           await Application.Current.MainPage.Navigation.PushModalAsync(new OrdersHistoryView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new OrdersHistoryView());
         }
 
         private async Task ViewCartAsync()
@@ -117,15 +128,23 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private async void GetLatestItems()
+        private async void GetAllProducts()
         {
-            var data = await new ProductoItemService().GetLatestProductoItemsAsync();
-            LatestItems.Clear();
-            foreach (var item in data)
+            //ListItemsProducts.Clear();
+            var request = new HttpRequestMessage();
+            request.RequestUri = new Uri(ApiMethods.URL_PRODUCTS);
+            request.Method = HttpMethod.Get;
+            request.Headers.Add("Accept", "application/json");
+            var client = new HttpClient();
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
             {
-                LatestItems.Add(item);
+                string content = await response.Content.ReadAsStringAsync();
+                ListItemsProducts = JsonConvert.DeserializeObject<ObservableCollection<ProductoItem>>(content);
             }
+
         }
+
     }
 }
 

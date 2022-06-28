@@ -5,15 +5,16 @@ using System.Text;
 namespace SuperEconomicoApp.Model
 {
     public class ProductoItem
-    { 
-     public int ProductID { get; set; }
-    public string ImageUrl { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Rating { get; set; }
-    public string RatingDetail { get; set; }
-    public string HomeSelected { get; set; }
-    public decimal Price { get; set; }
-    public int CategoryID { get; set; }
-}
+    {
+        public int Product_Id { get; set; }
+        public int Category_Id { get; set; }
+        public string Image { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Code { get; set; }
+        public int Stock { get; set; }
+        public double Discount { get; set; }
+        public double Price { get; set; }
+        public string Status { get; set; }
+    }
 }

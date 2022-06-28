@@ -21,5 +21,22 @@ namespace SuperEconomicoApp.Services
             cn.Commit();
             cn.Close();
         }
+
+        public void RemoveProductById(UserCartItem item) {
+            var connection = DependencyService.Get<ISQLite>().GetConnection();
+
+            CartItem cartItem = new CartItem()
+            {
+                CartItemId = item.CartItemId,
+                ProductId = item.ProductId,
+                ProductName = item.ProductName,
+                Price = item.Price,
+                Quantity = item.Quantity,
+                ImageProduct = item.ImageProduct,
+            };
+            connection.Delete(cartItem);
+            connection.Commit();
+            connection.Close();
+        }
     }
 }

@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             xmlns:helpers="clr-namespace:DemoApp.Helpers"
+             xmlns:Converter="clr-namespace:SuperEconomicoApp.Converters"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.CartView"
              xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
              Visual="Material"
-             BackgroundColor="#394BA7">
+             BackgroundColor="#394BA7"
+             x:Name="this">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:Base64ToImageSource x:Key="Base64ToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.BindingContext>
         <vm:CartViewModel/>
@@ -35,13 +42,13 @@
 
             <pancake:PancakeView Grid.Row="1" BackgroundColor="WhiteSmoke"
                                  CornerRadius="60,60,0,0">
-                 <ListView x:Name="ListViewCartItems" Margin="20"
+                <ListView x:Name="ListViewCartItems" Margin="20"
                            SeparatorVisibility="None" BackgroundColor="WhiteSmoke"
                            ItemsSource="{Binding CartItems}"
                            Header="" HasUnevenRows="True">
-                
-                      <ListView.HeaderTemplate>
-                          <DataTemplate>
+
+                    <ListView.HeaderTemplate>
+                        <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="30"/>
@@ -52,32 +59,41 @@
                                 </Grid.ColumnDefinitions>
                                 <Label Text="Id" Grid.Column="0" FontSize="Subtitle"
                                        TextColor="Green"/>
-                            <Label Text="Nombre" Grid.Column="1" FontSize="Subtitle"
+                                <Label Text="Nombre" Grid.Column="1" FontSize="Subtitle"
                                        TextColor="Green"/>
-                            <Label Text="Precio" Grid.Column="2" FontSize="Subtitle"
+                                <Label Text="Precio" Grid.Column="2" FontSize="Subtitle"
                                        TextColor="Green"/>
                                 <Label Text="Cant" Grid.Column="3" FontSize="Subtitle"
                                        TextColor="Green"/>
                                 <Label Text="Total" Grid.Column="4" FontSize="Subtitle"
                                        TextColor="Green"/>
                             </Grid>
-                          </DataTemplate>
-                      </ListView.HeaderTemplate>
+                        </DataTemplate>
+                    </ListView.HeaderTemplate>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                        <Label Text="{Binding ProductId}" Grid.Column="0" FontSize="Body"
-                                           TextColor="Green"/>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="Eliminar" 
+                                              Command="{Binding Source={x:Reference this}, Path=BindingContext.DeleteCommand}" 
+                                              CommandParameter="{Binding .}"
+                                              IsDestructive="True"/>
+                                </ViewCell.ContextActions>
+                                <ViewCell.View>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}" 
+                                               Grid.Column="0" 
+                                               HeightRequest="80"/>
+                                        <!--<Label Text="{Binding ProductId}" Grid.Column="0" FontSize="Body"
+                                           TextColor="Green"/> -->
                                         <Label Text="{Binding ProductName}" Grid.Column="1" FontSize="Body"
                                            TextColor="Green"/>
                                         <Label Text="{Binding Price}" Grid.Column="2" FontSize="Body"
@@ -88,11 +104,11 @@
                                            TextColor="Green"/>
 
                                     </Grid>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                     
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
                 </ListView>
             </pancake:PancakeView>
 
@@ -104,6 +120,6 @@
                     Command="{Binding PlaceOrdersCommand}"
                     HorizontalOptions="Center" CornerRadius="20"/>
         </Grid>
-        
+
     </ContentPage.Content>
 </ContentPage>

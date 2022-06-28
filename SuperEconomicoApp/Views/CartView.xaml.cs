@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperEconomicoApp.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,11 @@ namespace SuperEconomicoApp.Views
         async void ImageButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
+        }
+
+        private void MenuItem_Clicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

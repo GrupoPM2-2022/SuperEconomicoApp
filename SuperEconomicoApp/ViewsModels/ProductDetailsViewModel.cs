@@ -30,11 +30,14 @@ namespace SuperEconomicoApp.ViewsModels
         {
             set
             {
-                this._TotalQuantity = value;
-                if (this._TotalQuantity < 0)
-                    this._TotalQuantity = 0;
-                if (this._TotalQuantity > 10)
-                    this._TotalQuantity -= 1;
+                _TotalQuantity = value;
+                if (_TotalQuantity <= 0)
+                    _TotalQuantity = 1;
+                if (_TotalQuantity > SelectedProductoItem.Stock)
+                {
+                    Application.Current.MainPage.DisplayAlert("Advertencia", "Este producto alcanzo su limite en stock", "Ok");
+                    _TotalQuantity -= 1;
+                }
                 OnPropertyChanged();
             }
 
@@ -64,12 +67,12 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async Task GotoHomeAsync()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new Views.ProductsView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
         }
 
         private async Task ViewCartAsync()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new Views.CartView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new CartView());
         }
 
         private void AddToCart()
@@ -79,13 +82,14 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 CartItem ci = new CartItem()
                 {
-                    ProductId = SelectedProductoItem.ProductID,
+                    ProductId = SelectedProductoItem.Product_Id,
                     ProductName = SelectedProductoItem.Name,
                     Price = SelectedProductoItem.Price,
-                    Quantity = TotalQuantity
+                    Quantity = TotalQuantity,
+                    ImageProduct = SelectedProductoItem.Image
                 };
                 var item = cn.Table<CartItem>().ToList()
-                    .FirstOrDefault(c => c.ProductId == SelectedProductoItem.ProductID);
+                    .FirstOrDefault(c => c.ProductId == SelectedProductoItem.Product_Id);
                 if (item == null)
                     cn.Insert(ci);
                 else
@@ -95,8 +99,7 @@ namespace SuperEconomicoApp.ViewsModels
                 }
                 cn.Commit();
                 cn.Close();
-                Application.Current.MainPage.DisplayAlert("Cart", "Producto agregado al carrito",
-                    "OK");
+                Application.Current.MainPage.DisplayAlert("Cart", "Producto agregado al carrito", "OK");
             }
             catch (Exception ex)
             {

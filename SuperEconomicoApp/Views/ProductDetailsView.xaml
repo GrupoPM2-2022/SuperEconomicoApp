@@ -1,12 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:helpers="clr-namespace:DemoApp.Helpers"
+             xmlns:Converter="clr-namespace:SuperEconomicoApp.Converters"
              xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="SuperEconomicoApp.Views.ProductDetailsView"
              Visual="Material"
               BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:Base64ToImageSource x:Key="Base64ToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     
     <ContentPage.Content>
         <Grid>
@@ -22,11 +27,11 @@
             </Grid.RowDefinitions>
 
             <Image Grid.Row="0" 
-                   Source="{Binding SelectedProductoItem.ImageUrl}"
+                   Source="{Binding SelectedProductoItem.Image,  Converter={StaticResource Base64ToImage}}"
                    Aspect="AspectFit"
                    VerticalOptions="Start"
                    BackgroundColor="Gold"/>
-            
+
             <Label Grid.Row="1" 
                    Text="{Binding SelectedProductoItem.Name}"
                    TextColor="White"
@@ -36,39 +41,34 @@
 
             <Label Text="&#xf060;" FontFamily="{StaticResource FontAwesome6Free-Solid-900}" FontSize="30" Grid.Row="0" HorizontalOptions="Start"
                    VerticalOptions="Start" Margin="10,30" BackgroundColor="Transparent" x:Name="lblIcono"/>
-            
-        
-
 
             <StackLayout Grid.Row="2" 
                          Spacing="10" 
                          Padding="10"
                          VerticalOptions="Start">
-                
+
                 <StackLayout Orientation="Horizontal" 
                              Spacing="10">
-                    
-                    
-                    
+
                 </StackLayout>
-                
+
                 <StackLayout Orientation="Horizontal" 
                              Spacing="10">
-                    
+
                     <Label Text="Producto Nombre: " 
                            FontSize="Subtitle"
                             TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
                                Dark={StaticResource DarkPrimaryTextColor}}"/>
-                    
+
                     <Label Text="{Binding SelectedProductoItem.Name}"
                            FontSize="Subtitle" 
                            TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
                                Dark={StaticResource DarkSecondaryTextColor}}"/>
                 </StackLayout>
-                
+
                 <StackLayout Orientation="Horizontal" 
                              Spacing="10">
-                    
+
                     <Label Text="Descripcion: "
                            FontSize="Subtitle"
                             TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
@@ -78,15 +78,15 @@
                            TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
                                Dark={StaticResource DarkSecondaryTextColor}}"/>
                 </StackLayout>
-                
+
                 <StackLayout Orientation="Horizontal" 
                              Spacing="10">
-                    
+
                     <Label Text="Puntuacion: " 
                            FontSize="Subtitle"
                             TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
                                Dark={StaticResource DarkPrimaryTextColor}}"/>
-                    
+
                     <Label Text="{Binding SelectedProductoItem.Rating}"
                            FontSize="Subtitle" 
                            TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
@@ -121,14 +121,14 @@
                         HorizontalOptions="End"
                         Command="{Binding DecrementOrderCommand}"
                         />
-                
+
                 <Entry Text="{Binding TotalQuantity}"
                        HorizontalTextAlignment="Center" 
                        FontSize="20"
                        Grid.Column="1"
                        BackgroundColor="{AppThemeBinding Light={StaticResource LightCounterBackgroundColor},
                                Dark={StaticResource DarkCounterBackgroundColor}}" />
-                
+
                 <Button Text="+" FontSize="25" 
                          BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor},
                                Dark={StaticResource DarkUpDownButtonColor}}" 
@@ -136,10 +136,10 @@
                         HorizontalOptions="End"
                         Command="{Binding IncrementOrderCommand}"/>
             </Grid>
-            
+
             <StackLayout Orientation="Horizontal"
                          Grid.Row="4">
-                
+
                 <pancake:PancakeView CornerRadius="0,20,60,0"
                                      HorizontalOptions="Center">
                     <Button Text="Agregar al Carrito" 
@@ -150,10 +150,10 @@
                             Command="{Binding AddToCartCommand}"
                             HeightRequest="50"/>
                 </pancake:PancakeView>
-                
+
                 <pancake:PancakeView CornerRadius="0,20,60,0"
                                      HorizontalOptions="Center">
-                    
+
                     <Button Text="Ver Carrito" 
                             BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
                                Dark={StaticResource DarkDefaultButtonColor}}"
@@ -162,18 +162,18 @@
                             Command="{Binding ViewCartCommand}"
                             HeightRequest="50"/>
                 </pancake:PancakeView>
-                
+
             </StackLayout>
 
             <pancake:PancakeView Grid.Row="6" 
                                  CornerRadius="60,60,0,0">
-                
+
                 <Button Text="Inicio" 
                         BackgroundColor="{AppThemeBinding Light={StaticResource LightInfoButtonColor},
                                Dark={StaticResource DarkInfoButtonColor}}"
                         HeightRequest="50"
                         Command="{Binding HomeCommand}"/>
-            </pancake:PancakeView>           
+            </pancake:PancakeView>
 
         </Grid>
     </ContentPage.Content>

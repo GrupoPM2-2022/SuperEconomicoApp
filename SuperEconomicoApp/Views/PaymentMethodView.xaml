@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.PaymentMethodView"
+             Visual="Material">
+
+    <Grid>
+
+        <CollectionView ItemsSource="{Binding listMethodPayment}"
+                        VerticalOptions="CenterAndExpand"
+                        Margin="20,30,20,0"
+                        x:Name="listMethodPaymentCollection"
+                        Header="{Binding .}">
+
+            <CollectionView.HeaderTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Margin="10,0,0,0"
+                               Text="METODOS DE PAGO"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.HeaderTemplate>
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="#DEDEDE"
+                           CornerRadius="15">
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="{Binding Image}" 
+                               HeightRequest="60"/>
+                            <Label Text="{Binding Name}"
+                               VerticalOptions="Center"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        </StackLayout>
+
+                        <!--CAPTURANDO EVENTO CLICK-->
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectedPaymentCommand, Source={x:Reference listMethodPaymentCollection}}"
+                                                  CommandParameter="{Binding .}"/>
+                        </Frame.GestureRecognizers>
+
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="{Binding TextButton}" 
+                VerticalOptions="End" 
+                Margin="20"
+                CornerRadius="10"
+                Command="{Binding ConfirmOrderCommand}"/>
+
+    </Grid>
+</ContentPage>

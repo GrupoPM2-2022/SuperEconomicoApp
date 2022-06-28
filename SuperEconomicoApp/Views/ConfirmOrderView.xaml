@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.ConfirmOrderView"
+             xmlns:Converter="clr-namespace:SuperEconomicoApp.Converters"
+             Visual="Material"
+             x:Name="CurrentPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:Base64ToImageSource x:Key="Base64ToImage" />
+        </ResourceDictionary>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="LightSkyBlue" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout>
+            <StackLayout Orientation="Horizontal"
+                         Padding="10">
+                <Image Source="compras.png" 
+                       HeightRequest="50" 
+                       VerticalOptions="Center"/>
+                <Label Text="El Economico"
+                       FontAttributes="Bold"
+                       FontSize="18"
+                       TextColor="Black"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="Center"/>
+                <Button Text="CANCELAR ORDEN" 
+                        FontSize="7"
+                        CornerRadius="10"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Command="{Binding DeleteOrderCommand}"/>
+            </StackLayout>
+            <Grid ColumnDefinitions="auto">
+                <CollectionView ItemsSource="{Binding ListProductsOrdered}"
+                        VerticalOptions="CenterAndExpand"
+                        Margin="12,25,12,0"
+                        x:Name="ListProductsOrderedCollection"
+                        Header="{Binding .}">
+
+                    <CollectionView.HeaderTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Margin="10,0,0,0"
+                               Text="RESUMEN DE TU ORDEN"
+                               FontSize="20"
+                               FontAttributes="Bold" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.HeaderTemplate>
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="5"/>
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#DEDEDE"
+                           CornerRadius="15">
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}"
+                                           WidthRequest="70"/>
+                                    <StackLayout VerticalOptions="Center">
+                                        <Label Text="{Binding ProductName}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"/>  
+                                        <Label Text="{Binding Price, StringFormat='L. {0:F0}'}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+
+                                    <StackLayout VerticalOptions="Center"
+                                                 Orientation="Horizontal"
+                                                 HorizontalOptions="EndAndExpand">
+                                        <Label Text="{Binding Quantity}"
+                                           VerticalOptions="Center"
+                                           FontSize="18"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="End"/>
+                                        <Image Source="eliminar_producto_carrito.png"
+                                           HeightRequest="40"
+                                           VerticalOptions="Center">
+
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteProductCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                            </Image.GestureRecognizers>
+
+                                        </Image>
+                                    </StackLayout>
+
+                                </StackLayout>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+
+            <StackLayout Orientation="Horizontal"
+                     VerticalOptions="StartAndExpand"
+                     Margin="10,0">
+                <Label Text="Total"
+               FontSize="18"
+               FontAttributes="Bold"
+               VerticalOptions="Center"/>
+                <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+               FontSize="19"
+               FontAttributes="Bold"
+               VerticalOptions="Center"
+               HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+
+            <StackLayout>
+                <CollectionView ItemsSource="{Binding ListDirection}"
+                                HeightRequest="100"
+                                SelectionMode="Single">
+                    <CollectionView.HeaderTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Label Margin="10,0,0,0"
+                               Text="DIRECCIÓN"
+                               FontSize="17"
+                               FontAttributes="Bold" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.HeaderTemplate>
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout HorizontalItemSpacing="5"
+                                         Orientation="Horizontal"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid BackgroundColor="#DEDEDE" 
+                                  ColumnDefinitions="40,*" 
+                                  Padding="10,0">
+                                <StackLayout Grid.Column="0" VerticalOptions="Center">
+                                    <Image Source="casa.png" HeightRequest="30" WidthRequest="30"/>
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="Casa" 
+                                       FontAttributes="Bold" 
+                                       TextColor="Black" 
+                                       FontSize="Medium"/>
+                                    <Label Text="{Binding Description}"
+                                       FontSize="Small"/>
+                                </StackLayout>
+
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.SelectLocationCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </StackLayout>
+
+            <Editor VerticalOptions="FillAndExpand" 
+                    Placeholder="Alguna instrucción en la orden (opcional)"
+                    Margin="10"
+                    Text="{Binding Comment}"/>
+
+            <Button Text="PROCESAR ORDEN"
+                    Command="{Binding SaveOrderCommand}"/>
+        </StackLayout>
+    </ScrollView>
+
+
+</ContentPage>

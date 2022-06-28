@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace SuperEconomicoApp.ViewsModels
@@ -12,9 +13,10 @@ namespace SuperEconomicoApp.ViewsModels
     public class CartViewModel : BaseViewModel
     {
         public ObservableCollection<UserCartItem> CartItems { get; set; }
+        CartItemService cartItemService;
 
-        private decimal _TotalCost;
-        public decimal TotalCost
+        private double _TotalCost;
+        public double TotalCost
         {
             set
             {
@@ -29,21 +31,41 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         public Command PlaceOrdersCommand { get; set; }
+        public Command DeleteCommand { get; set; }
 
         public CartViewModel()
         {
             CartItems = new ObservableCollection<UserCartItem>();
+            cartItemService = new CartItemService();
             LoadItems();
             PlaceOrdersCommand = new Command(async () => await PlaceOrdersAsync());
+            DeleteCommand = new Command<UserCartItem>((UserCartItem) => DeleteProductCartView(UserCartItem));
         }
 
-         private async Task PlaceOrdersAsync()
+        private void DeleteProductCartView(UserCartItem item)
         {
-            //var orderService = new OrderService();
-            //await orderService.PlaceOrderAsync();
-            var id = await new OrderService().PlaceOrderAsync() as string;
-            RemoveItemsFromCart();
-            await Application.Current.MainPage.Navigation.PushModalAsync(new Views.OrderView(id));
+            CartItems.Remove(item);
+            cartItemService.RemoveProductById(item);
+        }
+
+        private async Task PlaceOrdersAsync()
+        {
+            Order order = new Order()
+            {
+                client_user_id = 55,
+                delivery_user_id = 56,
+                order_date = DateTime.Now.ToString("dd-MM-yyyy"),
+                deliver_date = DateTime.Now.ToString("dd-MM-yyyy"),
+                score = "5",
+                comment = "",
+                total = Convert.ToDouble(TotalCost),
+                full_discount = 0.0,
+                client_location = "",
+                payment_type = "",
+                status = "GESTIONANDO"
+            };
+
+            await Application.Current.MainPage.Navigation.PushModalAsync(new Views.PaymentMethodView(CartItems, order));
         }
 
         private void RemoveItemsFromCart()
@@ -62,6 +84,7 @@ namespace SuperEconomicoApp.ViewsModels
                 CartItems.Add(new UserCartItem()
                 {
                     CartItemId = item.CartItemId,
+                    ImageProduct = item.ImageProduct,
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Price = item.Price,

@@ -24,39 +24,29 @@ namespace SuperEconomicoApp.Services
              .OnceAsync<ProductoItem>())
              .Select(f => new ProductoItem
              {
-                 CategoryID = f.Object.CategoryID,
+                 Status = f.Object.Status,
                  Description = f.Object.Description,
-                 HomeSelected = f.Object.HomeSelected,
-                 ImageUrl = f.Object.ImageUrl,
+                 Discount = f.Object.Discount,
+                 Image = f.Object.Image,
                  Name = f.Object.Name,
                  Price = f.Object.Price,
-                 ProductID = f.Object.ProductID,
-                 Rating = f.Object.Rating,
-                 RatingDetail = f.Object.RatingDetail
+                 Product_Id = f.Object.Product_Id,
+                 Code = f.Object.Code,
+                 Stock = f.Object.Stock
              }).ToList();
         return products;
     }
 
     public async Task<ObservableCollection<ProductoItem>> GetProductoItemsByCategoryAsync(int categoryID)
     {
-        var productoItemsByCategory = new ObservableCollection<ProductoItem>();
-        var items = (await GetProductoItemsAsync()).Where(p => p.CategoryID == categoryID).ToList();
-        foreach (var item in items)
-        {
-                productoItemsByCategory.Add(item);
-        }
-        return productoItemsByCategory;
-    }
-
-    public async Task<ObservableCollection<ProductoItem>> GetLatestProductoItemsAsync()
-    {
-        var latestProductoItems = new ObservableCollection<ProductoItem>();
-        var items = (await GetProductoItemsAsync()).OrderByDescending(f => f.ProductID).Take(8);
-        foreach (var item in items)
-        {
-                latestProductoItems.Add(item);
-        }
-        return latestProductoItems;
+            //var productoItemsByCategory = new ObservableCollection<ProductoItem>();
+            //var items = (await GetProductoItemsAsync()).Where(p => p.Status == categoryID).ToList();
+            //foreach (var item in items)
+            //{
+            //        productoItemsByCategory.Add(item);
+            //}
+            //return productoItemsByCategory;
+            return null;
     }
 
     public async Task<ObservableCollection<ProductoItem>> GetProductoItemsByQueryAsync(string searchText)

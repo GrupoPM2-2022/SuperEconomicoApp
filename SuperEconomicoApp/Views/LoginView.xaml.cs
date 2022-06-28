@@ -21,13 +21,11 @@ namespace SuperEconomicoApp.Views
         private void login_Clicked(object sender, EventArgs e)
         {
             var cct = new CreateCartTable();
-            if (cct.CreateTable())
+            if (!cct.CreateTable())
             {
-
-            }
-               
-            else
                 DisplayAlert("Error", "Error al crear la tabla", "Ok");
+            }
+
         }
     }
 }
