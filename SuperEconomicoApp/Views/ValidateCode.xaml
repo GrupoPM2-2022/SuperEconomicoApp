@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.ValidateCode">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Margin="30,0,30,0">
+            <Label Text="Te hemos enviado un codigo al correo" x:Name="lblmensaje"/>
+            <StackLayout VerticalOptions="Start">
+                <Grid>
+                    <Entry Keyboard="Numeric" Grid.Column="0" MaxLength="1" x:Name="number1" 
+                           TextChanged="number1_TextChanged" HorizontalTextAlignment="Center"/>
+                    <Entry Keyboard="Numeric" Grid.Column="1" MaxLength="1" x:Name="number2"
+                           TextChanged="number2_TextChanged" HorizontalTextAlignment="Center"/>
+                    <Entry Keyboard="Numeric" Grid.Column="2" MaxLength="1" x:Name="number3"
+                           TextChanged="number3_TextChanged" HorizontalTextAlignment="Center"/>
+                    <Entry Keyboard="Numeric" Grid.Column="3" MaxLength="1" x:Name="number4"
+                           TextChanged="number4_TextChanged" HorizontalTextAlignment="Center"/>
+                </Grid>
+            </StackLayout>
+            <Button Text="Verificar" x:Name="btnVerifyCode" Clicked="btnVerifyCode_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

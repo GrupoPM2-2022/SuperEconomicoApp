@@ -3,6 +3,7 @@ using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using SuperEconomicoApp.Views;
 
 namespace SuperEconomicoApp
 {
