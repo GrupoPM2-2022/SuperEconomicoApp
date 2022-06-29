@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SuperEconomicoApp.Model;
 using Xamarin.Forms;
 
@@ -22,7 +23,8 @@ namespace SuperEconomicoApp.Services
             cn.Close();
         }
 
-        public void RemoveProductById(UserCartItem item) {
+        public void RemoveProductById(UserCartItem item)
+        {
             var connection = DependencyService.Get<ISQLite>().GetConnection();
 
             CartItem cartItem = new CartItem()
@@ -37,6 +39,43 @@ namespace SuperEconomicoApp.Services
             connection.Delete(cartItem);
             connection.Commit();
             connection.Close();
+        }
+
+        public void AddProductTocart(UserCartItem productoItem, int totalQuantity)
+        {
+            var cn = DependencyService.Get<ISQLite>().GetConnection();
+            try
+            {
+                CartItem ci = new CartItem()
+                {
+                    ProductId = productoItem.ProductId,
+                    ProductName = productoItem.ProductName,
+                    Price = productoItem.Price,
+                    Quantity = totalQuantity,
+                    ImageProduct = productoItem.ImageProduct,
+                    Stock = productoItem.Stock
+                };
+                var item = cn.Table<CartItem>().ToList().FirstOrDefault(c => c.ProductId == productoItem.ProductId);
+
+                if (item == null)
+                {
+                    cn.Insert(ci);
+                }
+                else
+                {
+                    item.Quantity = totalQuantity;
+                    cn.Update(item);
+                }
+
+                cn.Commit();
+            }
+            catch (Exception)
+            {
+                throw;
+            } finally
+            {
+                cn.Close();
+            }
         }
     }
 }

@@ -28,9 +28,8 @@
     </ContentPage.Resources>
 
     <ScrollView>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Padding="10">
+        <StackLayout Padding="10">
+            <StackLayout Orientation="Horizontal">
                 <Image Source="compras.png" 
                        HeightRequest="50" 
                        VerticalOptions="Center"/>
@@ -50,8 +49,8 @@
             <Grid ColumnDefinitions="auto">
                 <CollectionView ItemsSource="{Binding ListProductsOrdered}"
                         VerticalOptions="CenterAndExpand"
-                        Margin="12,25,12,0"
                         x:Name="ListProductsOrderedCollection"
+                        HeightRequest="550"
                         Header="{Binding .}">
 
                     <CollectionView.HeaderTemplate>
@@ -76,6 +75,7 @@
                            CornerRadius="15">
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}"
+                                           HeightRequest="70"
                                            WidthRequest="70"/>
                                     <StackLayout VerticalOptions="Center">
                                         <Label Text="{Binding ProductName}"
@@ -108,6 +108,11 @@
 
                                 </StackLayout>
 
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.IncreaseQuantityCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -115,8 +120,7 @@
             </Grid>
 
             <StackLayout Orientation="Horizontal"
-                     VerticalOptions="StartAndExpand"
-                     Margin="10,0">
+                     VerticalOptions="StartAndExpand">
                 <Label Text="Total"
                FontSize="18"
                FontAttributes="Bold"
@@ -174,6 +178,9 @@
                     </CollectionView.ItemTemplate>
 
                 </CollectionView>
+                <Button Text="Agregar Dirección"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"/>
             </StackLayout>
 
             <Editor VerticalOptions="FillAndExpand" 
