@@ -27,7 +27,7 @@ namespace SuperEconomicoApp
             if (!Preferences.ContainsKey("Username"))
             {
                 //MainPage = new Views.LoginView();
-                MainPage = new Views.ProductsView();
+                MainPage = new Views.LoginView();
             }
             else
             {

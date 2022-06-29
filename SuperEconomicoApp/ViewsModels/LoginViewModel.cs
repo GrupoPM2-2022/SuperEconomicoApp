@@ -97,29 +97,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async Task RegisterCommandAsync()
         {
-            if (IsBusy)
-                return;
-            try
-            {
-                IsBusy = true;
-                var userService = new UserService();
-                //var userService = DependencyService.Get<IUserService>();
-                //Result = await userService.RegisterUser(Username, Password);
-                //if (Result)
-                //    await Application.Current.MainPage.DisplayAlert("Success", "Usuario Registrado", "OK");
-                //else
-                //    await Application.Current.MainPage.DisplayAlert("Error",
-                //        "El usuario ya existe con estas credenciales", "OK");
-
-            }
-            catch (Exception ex)
-            {
-                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+            await Application.Current.MainPage.Navigation.PushModalAsync(new Views.AddUser());
         }
 
         private async Task LoginCommandAsync()
