@@ -24,6 +24,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private double _Total;
         private string _Comment;
+        private string _UbicationPreview;
         private int _TotalQuantity;
 
         public Command DeleteOrderCommand { get; set; }
@@ -55,6 +56,15 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
+        public string UbicationPreview
+        {
+            get { return _UbicationPreview; }
+            set
+            {
+                _UbicationPreview = value;
+                OnPropertyChanged();
+            }
+        }
 
         public UserCartItem SelectedProductoItem
         {
@@ -73,8 +83,8 @@ namespace SuperEconomicoApp.ViewsModels
                 _ListProductsOrdered = value;
                 OnPropertyChanged();
             }
-        } 
-        
+        }
+
         public ObservableCollection<Direction> ListDirection
         {
             get { return _ListDirection; }
@@ -152,35 +162,40 @@ namespace SuperEconomicoApp.ViewsModels
         private void SelectLocation(Direction direction)
         {
             SelectedOrder.client_location = direction.Latitude.ToString() + "," + direction.Longitude.ToString();
+            UbicationPreview = direction.Description;
         }
 
         private async void SaveOrder()
         {
             try
             {
-                if (ListProductsOrdered.Count != 0)
+                if (ListProductsOrdered.Count == 0)
                 {
-                    if (string.IsNullOrEmpty(SelectedOrder.client_location))
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Title", "Debes seleccionar la ubicación.", "Ok");
-                        return;
-                    }
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No hay productos para procesar su orden.", "Ok");
+                    return;
+                }
+                if (ListDirection.Count == 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No tienes ubicaciones registradas, agrega una ubicación.", "Ok");
+                    return;
+                }
 
-                    FillOrderList();
-                    var response = await new OrderService().CreateOrder(SelectedOrder);
-                    if (response)
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
-                        await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
-                    }
-                    else
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
-                    }
+                if (string.IsNullOrEmpty(SelectedOrder.client_location))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes seleccionar la ubicación.", "Ok");
+                    return;
+                }
+
+                FillOrderList();
+                var response = await new OrderService().CreateOrder(SelectedOrder);
+                if (response)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
+                    await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No hay productos para procesar su orden.", "Ok");
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
                 }
             }
             catch (Exception ex)

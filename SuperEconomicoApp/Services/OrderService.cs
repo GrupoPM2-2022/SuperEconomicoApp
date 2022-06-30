@@ -2,6 +2,7 @@
 using Firebase.Database.Query;
 using Newtonsoft.Json;
 using SuperEconomicoApp.Api;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using System;
 using System.Collections.Generic;
@@ -21,15 +22,19 @@ namespace SuperEconomicoApp.Services
         }
 
         private void RemoveItemsFromCart()
-         {
-             var cis = new CartItemService();
-             cis.RemoveItemsFromCart();
-         }
+        {
+            var cis = new CartItemService();
+            cis.RemoveItemsFromCart();
+        }
 
-        public async Task<bool> CreateOrder(Order order) {
+        public async Task<bool> CreateOrder(Order order)
+        {
             try
             {
-                Uri requestUri = new Uri(ApiMethods.URL_ORDERS);
+                var coordinates = Settings.Coordinates.Split(',');
+                //string parametersGet = "?latitude=" + coordinates[0] + "&longitude=" + coordinates[1];
+                //Uri requestUri = new Uri(ApiMethods.URL_ORDERS + parametersGet);
+                Uri requestUri = new Uri(ApiMethods.URL_ORDERS+"/");
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(order);
                 var contentJson = new StringContent(json, Encoding.UTF8, "application/json");

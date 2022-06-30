@@ -25,6 +25,15 @@
                 </VisualStateGroupList>
             </Setter>
         </Style>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="2" />
+            <Setter Property="BackgroundColor"
+                    Value="#979797" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
     </ContentPage.Resources>
 
     <ScrollView>
@@ -119,6 +128,7 @@
                 </CollectionView>
             </Grid>
 
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
             <StackLayout Orientation="Horizontal"
                      VerticalOptions="StartAndExpand">
                 <Label Text="Total"
@@ -131,8 +141,30 @@
                VerticalOptions="Center"
                HorizontalOptions="EndAndExpand"/>
             </StackLayout>
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
 
             <StackLayout>
+                <Label Text="Selecionado"
+                   FontSize="16"
+                   Margin="0,0,0,5"
+                   FontAttributes="Bold"/>
+                <Frame CornerRadius="10"
+                   HasShadow="False"
+                       Padding="12">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding UbicationPreview}"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    </StackLayout>
+                    <Frame.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#1cb5e0"
+                                      Offset="0.5" />
+                            <GradientStop Color="#36D1DC"
+                                      Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                </Frame>
                 <CollectionView ItemsSource="{Binding ListDirection}"
                                 HeightRequest="100"
                                 SelectionMode="Single">
@@ -153,7 +185,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid BackgroundColor="#DEDEDE" 
-                                  ColumnDefinitions="40,*" 
+                                  ColumnDefinitions="40,200" 
                                   Padding="10,0">
                                 <StackLayout Grid.Column="0" VerticalOptions="Center">
                                     <Image Source="casa.png" HeightRequest="30" WidthRequest="30"/>
@@ -181,6 +213,7 @@
                 <Button Text="Agregar Dirección"
                         VerticalOptions="Center"
                         HorizontalOptions="Start"/>
+                <BoxView Style="{StaticResource SeparadorBoxview}" />
             </StackLayout>
 
             <Editor VerticalOptions="FillAndExpand" 

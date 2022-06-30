@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Rg.Plugins.Popup.Services;
 using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Reusable;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -16,6 +19,8 @@ namespace SuperEconomicoApp.ViewsModels
     public class ProductsViewModel : BaseViewModel
     {
         private string _UserName;
+        private string _DepartamentPreview;
+        private string _Coordinates;
         public string UserName
         {
             set
@@ -27,6 +32,32 @@ namespace SuperEconomicoApp.ViewsModels
             get
             {
                 return _UserName;
+            }
+        }
+        public string DepartamentPreview
+        {
+            set
+            {
+                _DepartamentPreview = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _DepartamentPreview;
+            }
+        }
+        public string Coordinates
+        {
+            set
+            {
+                _Coordinates = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _Coordinates;
             }
         }
 
@@ -62,13 +93,10 @@ namespace SuperEconomicoApp.ViewsModels
 
         public ObservableCollection<Category> Categories { get; set; }
         private ObservableCollection<ProductoItem> _ListItemsProducts;
+        private List<Department> _ListDepartment;
 
-        public Command ViewCartCommand { get; set; }
-        public Command LogoutCommand { get; set; }
-        public Command OrdersHistoryCommand { get; set; }
-        public Command SearchViewCommand { get; set; }
-
-        public ObservableCollection<ProductoItem> ListItemsProducts {
+        public ObservableCollection<ProductoItem> ListItemsProducts
+        {
             get { return _ListItemsProducts; }
             set
             {
@@ -76,6 +104,22 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged("ListItemsProducts");
             }
         }
+        public List<Department> ListDepartment
+        {
+            get { return _ListDepartment; }
+            set
+            {
+                _ListDepartment = value;
+                OnPropertyChanged("ListDepartment");
+            }
+        }
+
+        public Command ViewCartCommand { get; set; }
+        public Command LogoutCommand { get; set; }
+        public Command OrdersHistoryCommand { get; set; }
+        public Command SearchViewCommand { get; set; }
+        public Command SelectDeparmentCommand { get; set; }
+        public Command ConfirmDepartmentCommand { get; set; }
 
         public ProductsViewModel()
         {
@@ -96,9 +140,57 @@ namespace SuperEconomicoApp.ViewsModels
             LogoutCommand = new Command(async () => await LogoutAsync());
             OrdersHistoryCommand = new Command(async () => await OrderHistoryAsync());
             SearchViewCommand = new Command(async () => await SearchViewAsync());
+            SelectDeparmentCommand = new Command<Department>( (param) => SelectDeparment(param));
+            ConfirmDepartmentCommand = new Command(ConfirmDepartment);
 
-            GetCategories();
+            //GetCategories();
+            ConfigurationDepartment();
             GetAllProducts();
+        }
+
+        private void ConfirmDepartment()
+        {
+            Settings.Department = DepartamentPreview;
+            Settings.Coordinates = Coordinates;
+            PopupNavigation.Instance.PopAsync();
+        }
+
+        private void SelectDeparment(Department department)
+        {
+            Coordinates = department.Latitude.ToString() + "," + department.Longitude.ToString();
+            DepartamentPreview = department.Name;
+        }
+
+        private void ConfigurationDepartment()
+        {
+            if (!Settings.ExistDepartment)
+            {
+                var popup = new SelectDepartment();
+                popup.BindingContext = this;
+                LoadListDepartment();
+                PopupNavigation.Instance.PushAsync(popup);
+            }
+        }
+
+        private void LoadListDepartment()
+        {
+            ListDepartment = new List<Department>()
+            {
+                new Department()
+                {
+                    Id = 1,
+                    Name = "San Pedro Sula",
+                    Latitude = 15.533129694846346,
+                    Longitude = -88.03389851150737
+                },
+                new Department()
+                {
+                    Id = 2,
+                    Name = "Tegucigalpa",
+                    Latitude = 14.078002052781091,
+                    Longitude = -87.19175533457481
+                }
+            };
         }
 
         private async Task SearchViewAsync()

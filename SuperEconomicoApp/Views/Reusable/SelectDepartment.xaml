@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pop:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Reusable.SelectDepartment"
+             xmlns:pop="http://rotorgames.com">
+
+    <pop:PopupPage.Animation>
+        <pop:MoveAnimation PositionIn="Bottom"
+                           PositionOut="Bottom"
+                           DurationIn="400"
+                           DurationOut="300"
+                           HasBackgroundAnimation="True"/>
+    </pop:PopupPage.Animation>
+    <pop:PopupPage.Resources>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="2" />
+            <Setter Property="BackgroundColor"
+                    Value="#979797" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
+    </pop:PopupPage.Resources>
+
+    <Grid Margin="0,200,0,0">
+        <BoxView BackgroundColor="White"
+                 CornerRadius="15,15,0,0" />
+        <StackLayout Padding="16">
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Selecciona Tu Departamento"
+                       FontSize="17"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="StartAndExpand" />
+                <Button Text="Confirmar"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        CornerRadius="10"
+                        Command="{Binding ConfirmDepartmentCommand}"/>
+            </StackLayout>
+            <Label Text="Elige uno de los departamentos disponibles para mostrarte el supermercado"/>
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
+            <Label Text="Selecionado"
+                   FontSize="14"
+                   Margin="0,0,0,10"
+                   FontAttributes="Bold"/>
+            <Frame CornerRadius="10"
+                   HasShadow="False">
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding DepartamentPreview}"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                </StackLayout>
+                <Frame.Background>
+                    <LinearGradientBrush>
+                        <GradientStop Color="#1cb5e0"
+                                      Offset="0.5" />
+                        <GradientStop Color="#36D1DC"
+                                      Offset="1.0" />
+                    </LinearGradientBrush>
+                </Frame.Background>
+            </Frame>
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
+            <Label Text="Departamentos"
+                   FontSize="14" 
+                   FontAttributes="Bold"/>
+            <CollectionView ItemsSource="{Binding ListDepartment}"
+                            x:Name="listDepartmentCollection">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="20"
+                                       Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Name}"
+                                       FontSize="18"
+                                       VerticalOptions="Center" />
+                                <Image Source="icon_department.png"
+                                       HeightRequest="35"
+                                       WidthRequest="35"
+                                       HorizontalOptions="EndAndExpand"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource SeparadorBoxview}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectDeparmentCommand, Source={x:Reference listDepartmentCollection}}"
+                                                      CommandParameter="{Binding .}"/>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+
+    </Grid>
+
+</pop:PopupPage>

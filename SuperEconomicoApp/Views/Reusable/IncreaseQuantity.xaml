@@ -10,9 +10,9 @@
 
     <pop:PopupPage.Animation>
         <pop:MoveAnimation PositionIn="Bottom"
-                           PositionOut="Left"
+                           PositionOut="Bottom"
                            DurationIn="400"
-                           DurationOut="400"
+                           DurationOut="300"
                            HasBackgroundAnimation="True"/>
     </pop:PopupPage.Animation>
     <pop:PopupPage.Resources>
@@ -131,7 +131,7 @@
 
             <pancake:PancakeView CornerRadius="0,20,60,0"
                                      HorizontalOptions="Center">
-                <Button Text="Agregar al Carrito" 
+                <Button Text="Confirmar" 
                             BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
                                Dark={StaticResource DarkDefaultButtonColor}}"
                             WidthRequest="200" 

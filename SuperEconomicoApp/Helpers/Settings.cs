@@ -17,6 +17,7 @@ namespace SuperEconomicoApp.Helpers
         }
 
         public static bool ExistUser => AppSettings.Contains(nameof(UserName));
+        public static bool ExistDepartment => AppSettings.Contains(nameof(Department));
 
         public static string UserName
         {
@@ -28,6 +29,16 @@ namespace SuperEconomicoApp.Helpers
         {
             get => AppSettings.GetValueOrDefault(nameof(IdUser), string.Empty);
             set => AppSettings.AddOrUpdateValue(nameof(IdUser), value);
+        }
+        public static string Department
+        {
+            get => AppSettings.GetValueOrDefault(nameof(Department), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(Department), value);
+        }
+        public static string Coordinates
+        {
+            get => AppSettings.GetValueOrDefault(nameof(Coordinates), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(Coordinates), value);
         }
 
         public static void ClearAllData()

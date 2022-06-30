@@ -17,6 +17,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Order OrderObject { get; set; }
 
         private string _TextButton = "Continuar";
+        private string _PaymentPreview;
         #endregion
 
         public string TextButton
@@ -24,6 +25,14 @@ namespace SuperEconomicoApp.ViewsModels
             get { return _TextButton; }
             set { 
                 _TextButton = value;
+                OnPropertyChanged();
+            }
+        }
+        public string PaymentPreview
+        {
+            get { return _PaymentPreview; }
+            set { 
+                _PaymentPreview = value;
                 OnPropertyChanged();
             }
         }
@@ -58,6 +67,7 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         private void SelectedPayment(MethodPayment param) {
+            PaymentPreview = param.Name;
             if (!param.Name.Equals("Efectivo"))
             {
                 TextButton = "Continuar Con Tarjeta";

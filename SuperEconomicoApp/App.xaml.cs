@@ -4,6 +4,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Reusable;
 
 namespace SuperEconomicoApp
 {
@@ -17,10 +18,6 @@ namespace SuperEconomicoApp
                 });
 
             InitializeComponent();
-
-            //MainPage = new Views.LoginView();
-            //MainPage = new NavigationPage(new Views.LoginView());
-            //MainPage = new NavigationPage(new Views.SettingsPage());
 
             if (Settings.ExistUser)
             {
