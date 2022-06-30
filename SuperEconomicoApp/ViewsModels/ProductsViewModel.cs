@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SuperEconomicoApp.Api;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -78,11 +79,14 @@ namespace SuperEconomicoApp.ViewsModels
 
         public ProductsViewModel()
         {
-            var uname = Preferences.Get("Username", string.Empty);
-            if (string.IsNullOrEmpty(uname))
-                UserName = "Guest";
+            if (Settings.ExistUser)
+            {
+                UserName = Settings.UserName;
+            }
             else
-                UserName = uname;
+            {
+                UserName = "Usuario";
+            }
 
             UserCartItemsCount = new CartItemService().GetUserCartCount();
             ListItemsProducts = new ObservableCollection<ProductoItem>();

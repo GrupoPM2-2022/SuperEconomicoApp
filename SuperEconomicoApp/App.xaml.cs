@@ -16,22 +16,19 @@ namespace SuperEconomicoApp
                 "MediaElement_Experimental"
                 });
 
-             InitializeComponent();
+            InitializeComponent();
 
             //MainPage = new Views.LoginView();
             //MainPage = new NavigationPage(new Views.LoginView());
             //MainPage = new NavigationPage(new Views.SettingsPage());
 
-
-            //string uname = Preferences.Get("Username", String.Empty);
-            if (!Preferences.ContainsKey("Username"))
+            if (Settings.ExistUser)
             {
-                //MainPage = new Views.LoginView();
-                MainPage = new Views.LoginView();
+                MainPage = new ProductsView();
             }
             else
             {
-                MainPage = new Views.ProductsView();
+                MainPage = new LoginView();
             }
 
         }

@@ -16,10 +16,11 @@ namespace SuperEconomicoApp.ViewsModels
     {
         public ObservableCollection<UserCartItem> _ListProductsOrdered;
         public Order SelectedOrder { get; set; }
-        public List<Direction> ListDirection { get; set; }
+        public ObservableCollection<Direction> _ListDirection;
         public List<OrderDetails> ListOrders { get; set; }
-        public CartItemService cartItemService { get; set; }
+        public CartItemService CartItemService { get; set; }
         private UserCartItem _SelectedProductoItem;
+        public DirectionService DirectionServiceObject { get; set; }
 
         private double _Total;
         private string _Comment;
@@ -72,6 +73,16 @@ namespace SuperEconomicoApp.ViewsModels
                 _ListProductsOrdered = value;
                 OnPropertyChanged();
             }
+        } 
+        
+        public ObservableCollection<Direction> ListDirection
+        {
+            get { return _ListDirection; }
+            set
+            {
+                _ListDirection = value;
+                OnPropertyChanged();
+            }
         }
 
         public int TotalQuantity
@@ -102,7 +113,9 @@ namespace SuperEconomicoApp.ViewsModels
         {
             ListProductsOrdered = listOrderDetails;
             SelectedOrder = order;
-            cartItemService = new CartItemService();
+            CartItemService = new CartItemService();
+            DirectionServiceObject = new DirectionService();
+            ListDirection = new ObservableCollection<Direction>();
             LoadConfiguration();
 
             // COMANDOS
@@ -132,7 +145,7 @@ namespace SuperEconomicoApp.ViewsModels
             if (response)
             {
                 ListProductsOrdered.Remove(userCartItem);
-                cartItemService.RemoveProductById(userCartItem);
+                CartItemService.RemoveProductById(userCartItem);
             }
         }
 
@@ -154,10 +167,11 @@ namespace SuperEconomicoApp.ViewsModels
                     }
 
                     FillOrderList();
-                    var response = new OrderService().CreateOrder(SelectedOrder);
-                    if (!response.IsCompleted)
+                    var response = await new OrderService().CreateOrder(SelectedOrder);
+                    if (response)
                     {
                         await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
+                        await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
                     }
                     else
                     {
@@ -194,36 +208,10 @@ namespace SuperEconomicoApp.ViewsModels
             SelectedOrder.comment = Comment;
         }
 
-        private void LoadConfiguration()
+        private async void LoadConfiguration()
         {
             Total = SelectedOrder.total;
-            ListDirection = new List<Direction>()
-            {
-               new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. Matamoros",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-                new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. La Aleman",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-                new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. La Aleman",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-            };
+            ListDirection = await DirectionServiceObject.GetDirectionByUser();
         }
 
         private async Task DeleteOrder()
@@ -231,7 +219,7 @@ namespace SuperEconomicoApp.ViewsModels
             var response = await Application.Current.MainPage.DisplayAlert("Aviso", "¿Está seguro de cancelar su orden?", "Si", "No");
             if (response)
             {
-                cartItemService.RemoveItemsFromCart();
+                CartItemService.RemoveItemsFromCart();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
             }
 
@@ -241,7 +229,7 @@ namespace SuperEconomicoApp.ViewsModels
         {
             try
             {
-                cartItemService.AddProductTocart(SelectedProductoItem, TotalQuantity);
+                CartItemService.AddProductTocart(SelectedProductoItem, TotalQuantity);
                 UpdateProductcart();
                 TotalQuantity = 1;
                 PopupNavigation.Instance.PopAsync();

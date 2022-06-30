@@ -1,4 +1,5 @@
 ﻿using Rg.Plugins.Popup.Services;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -146,17 +147,17 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 Order order = new Order()
                 {
-                    client_user_id = 55,
-                    delivery_user_id = 56,
+                    client_user_id = Convert.ToInt32(Settings.IdUser),
+                    delivery_user_id = Convert.ToInt32(Settings.IdUser),
                     order_date = DateTime.Now.ToString("dd-MM-yyyy"),
                     deliver_date = DateTime.Now.ToString("dd-MM-yyyy"),
-                    score = "5",
+                    score = "0",
                     comment = "",
                     total = Convert.ToDouble(TotalCost),
                     full_discount = 0.0,
                     client_location = "",
                     payment_type = "",
-                    status = "GESTIONANDO"
+                    status = "ACTIVO"
                 };
                 await Application.Current.MainPage.Navigation.PushModalAsync(new PaymentMethodView(CartItems, order));
             } else

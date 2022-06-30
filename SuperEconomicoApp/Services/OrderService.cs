@@ -33,8 +33,8 @@ namespace SuperEconomicoApp.Services
                 var client = new HttpClient();
                 var json = JsonConvert.SerializeObject(order);
                 var contentJson = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(requestUri, contentJson);
-                if (response.IsSuccessStatusCode)
+                var result = await client.PostAsync(requestUri, contentJson);
+                if (result.StatusCode == HttpStatusCode.OK)
                 {
                     RemoveItemsFromCart();
                     return true;
