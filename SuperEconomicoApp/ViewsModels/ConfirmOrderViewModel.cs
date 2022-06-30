@@ -1,6 +1,8 @@
-﻿using SuperEconomicoApp.Model;
+﻿using Rg.Plugins.Popup.Services;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Reusable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,24 +14,35 @@ namespace SuperEconomicoApp.ViewsModels
 {
     public class ConfirmOrderViewModel : BaseViewModel
     {
-        public ObservableCollection<UserCartItem> ListProductsOrdered { get; set; }
+        public ObservableCollection<UserCartItem> _ListProductsOrdered;
         public Order SelectedOrder { get; set; }
         public List<Direction> ListDirection { get; set; }
         public List<OrderDetails> ListOrders { get; set; }
+        public CartItemService cartItemService { get; set; }
+        private UserCartItem _SelectedProductoItem;
+
+        private double _Total;
+        private string _Comment;
+        private int _TotalQuantity;
 
         public Command DeleteOrderCommand { get; set; }
         public Command SaveOrderCommand { get; set; }
         public Command SelectLocationCommand { get; set; }
         public Command DeleteProductCommand { get; set; }
+        public Command IncreaseQuantityCommand { get; set; }
+        public Command IncrementOrderCommand { get; set; }
+        public Command DecrementOrderCommand { get; set; }
+        public Command AddToCartCommand { get; set; }
 
-        CartItemService cartItemService;
-        private double _Total;
-        private string _Comment;
 
         public double Total
         {
             get { return _Total; }
-            set { _Total = value; }
+            set
+            {
+                _Total = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Comment
@@ -39,6 +52,48 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 _Comment = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public UserCartItem SelectedProductoItem
+        {
+            get { return _SelectedProductoItem; }
+            set
+            {
+                _SelectedProductoItem = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<UserCartItem> ListProductsOrdered
+        {
+            get { return _ListProductsOrdered; }
+            set
+            {
+                _ListProductsOrdered = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int TotalQuantity
+        {
+            set
+            {
+                _TotalQuantity = value;
+                if (_TotalQuantity <= 0)
+                    _TotalQuantity = 1;
+                if (SelectedProductoItem != null)
+                {
+                    if (_TotalQuantity > SelectedProductoItem.Stock)
+                    {
+                        Application.Current.MainPage.DisplayAlert("Advertencia", "Este producto alcanzo su limite en stock", "Ok");
+                        _TotalQuantity -= 1;
+                    }
+                }
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _TotalQuantity;
             }
         }
 
@@ -55,6 +110,20 @@ namespace SuperEconomicoApp.ViewsModels
             SaveOrderCommand = new Command(SaveOrder);
             SelectLocationCommand = new Command<Direction>((Direction) => SelectLocation(Direction));
             DeleteProductCommand = new Command<UserCartItem>(async (UserCartItem) => await DeleteProduct(UserCartItem));
+            IncreaseQuantityCommand = new Command<UserCartItem>((UserCartItem) => IncreaseQuantity(UserCartItem));
+
+            IncrementOrderCommand = new Command(() => IncrementOrder());
+            DecrementOrderCommand = new Command(() => DecrementOrder());
+            AddToCartCommand = new Command(() => AddToCart());
+        }
+
+        private void IncreaseQuantity(UserCartItem userCartItem)
+        {
+            var popup = new IncreaseQuantity();
+            popup.BindingContext = this;
+            SelectedProductoItem = userCartItem;
+            TotalQuantity = SelectedProductoItem.Quantity;
+            PopupNavigation.Instance.PushAsync(popup);
         }
 
         private async Task DeleteProduct(UserCartItem userCartItem)
@@ -76,27 +145,32 @@ namespace SuperEconomicoApp.ViewsModels
         {
             try
             {
-                if (string.IsNullOrEmpty(SelectedOrder.client_location))
+                if (ListProductsOrdered.Count != 0)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Title", "Debes seleccionar la ubicación.", "Ok");
-                    return;
-                }
+                    if (string.IsNullOrEmpty(SelectedOrder.client_location))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Title", "Debes seleccionar la ubicación.", "Ok");
+                        return;
+                    }
 
-                FillOrderList();
-                var response = new OrderService().CreateOrder(SelectedOrder);
-                if (!response.IsCompleted)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
+                    FillOrderList();
+                    var response = new OrderService().CreateOrder(SelectedOrder);
+                    if (!response.IsCompleted)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
+                    }
+                    else
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
+                    }
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No hay productos para procesar su orden.", "Ok");
                 }
-
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR_INSERT_BD ->: " + ex.Message);
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
             }
         }
@@ -163,5 +237,54 @@ namespace SuperEconomicoApp.ViewsModels
 
         }
 
+        private void AddToCart()
+        {
+            try
+            {
+                cartItemService.AddProductTocart(SelectedProductoItem, TotalQuantity);
+                UpdateProductcart();
+                TotalQuantity = 1;
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        private void UpdateProductcart()
+        {
+            var cn = DependencyService.Get<ISQLite>().GetConnection();
+            var items = cn.Table<CartItem>().ToList();
+            ListProductsOrdered.Clear();
+            Total = 0;
+            foreach (var item in items)
+            {
+                ListProductsOrdered.Add(new UserCartItem()
+                {
+                    CartItemId = item.CartItemId,
+                    ImageProduct = item.ImageProduct,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    Cost = item.Price * item.Quantity,
+                    Stock = item.Stock
+                });
+                Total += (item.Price * item.Quantity);
+            }
+        }
+
+
+        private void DecrementOrder()
+        {
+            TotalQuantity--;
+        }
+
+        private void IncrementOrder()
+        {
+            TotalQuantity++;
+        }
     }
 }

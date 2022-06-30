@@ -16,7 +16,6 @@ namespace SuperEconomicoApp.ViewsModels
         public ObservableCollection<UserCartItem> ListOrderDetails { get; set; }
         public Order OrderObject { get; set; }
 
-
         private string _TextButton = "Continuar";
         #endregion
 
@@ -28,7 +27,6 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
-
 
         #region CONSTRUCTOR
         public PaymentMethodViewModel(ObservableCollection<UserCartItem> listOrderDetails, Order order)
@@ -84,7 +82,6 @@ namespace SuperEconomicoApp.ViewsModels
         #region COMANDOS
         public Command SelectedPaymentCommand => new Command<MethodPayment> ((item) => SelectedPayment(item));
         public Command ConfirmOrderCommand => new Command(async () => await ConfirmOrder());
-
         
         #endregion
     }

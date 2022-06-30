@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
              Visual="Material"
              BackgroundColor="#394BA7"
-             x:Name="this">
+             x:Name="CurrentPage">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -18,108 +18,124 @@
     <ContentPage.BindingContext>
         <vm:CartViewModel/>
     </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <Grid BackgroundColor="#394BA7">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+    <Grid BackgroundColor="#394BA7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <BoxView Grid.Row="0"/>
-            <Label Text="El Economico" FontSize="40" TextColor="WhiteSmoke"
+        <BoxView Grid.Row="0"/>
+        <Label Text="El Economico" FontSize="40" TextColor="WhiteSmoke"
                    FontFamily="CabinSketch"
                    HorizontalOptions="Center" 
                    VerticalOptions="Center"/>
 
-            <Label x:Name="LabelName" FontSize="Subtitle" TextColor="WhiteSmoke" 
+        <Label x:Name="LabelName" FontSize="Subtitle" TextColor="WhiteSmoke" 
                    HorizontalOptions="Center" VerticalOptions="End"/>
 
-            <ImageButton Source="atras"
+        <ImageButton Source="atras"
                          BackgroundColor="Transparent"
                          HorizontalOptions="Start" Margin="10,30" Clicked="ImageButton_Clicked"/>
 
-            <pancake:PancakeView Grid.Row="1" BackgroundColor="WhiteSmoke"
+        <pancake:PancakeView Grid.Row="1" BackgroundColor="WhiteSmoke"
                                  CornerRadius="60,60,0,0">
-                <ListView x:Name="ListViewCartItems" Margin="20"
+            <ListView x:Name="ListViewCartItems" Margin="20"
                            SeparatorVisibility="None" BackgroundColor="WhiteSmoke"
                            ItemsSource="{Binding CartItems}"
                            Header="" HasUnevenRows="True">
 
-                    <ListView.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="150"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="Id" Grid.Column="0" FontSize="Subtitle"
+                <ListView.HeaderTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Id" Grid.Column="0" FontSize="Subtitle"
                                        TextColor="Green"/>
-                                <Label Text="Nombre" Grid.Column="1" FontSize="Subtitle"
+                            <Label Text="Nombre" Grid.Column="1" FontSize="Subtitle"
                                        TextColor="Green"/>
-                                <Label Text="Precio" Grid.Column="2" FontSize="Subtitle"
+                            <Label Text="Precio" Grid.Column="2" FontSize="Subtitle"
                                        TextColor="Green"/>
-                                <Label Text="Cant" Grid.Column="3" FontSize="Subtitle"
+                            <Label Text="Cant" Grid.Column="3" FontSize="Subtitle"
                                        TextColor="Green"/>
-                                <Label Text="Total" Grid.Column="4" FontSize="Subtitle"
+                            <Label Text="Total" Grid.Column="4" FontSize="Subtitle"
                                        TextColor="Green"/>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.HeaderTemplate>
+                            <Label Text="Accion" Grid.Column="5" FontSize="Subtitle"
+                                       TextColor="Green"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.HeaderTemplate>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.ContextActions>
-                                    <MenuItem Text="Eliminar" 
-                                              Command="{Binding Source={x:Reference this}, Path=BindingContext.DeleteCommand}" 
-                                              CommandParameter="{Binding .}"
-                                              IsDestructive="True"/>
-                                </ViewCell.ContextActions>
-                                <ViewCell.View>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30"/>
-                                            <ColumnDefinition Width="150"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}" 
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}" 
                                                Grid.Column="0" 
                                                HeightRequest="80"/>
-                                        <!--<Label Text="{Binding ProductId}" Grid.Column="0" FontSize="Body"
-                                           TextColor="Green"/> -->
-                                        <Label Text="{Binding ProductName}" Grid.Column="1" FontSize="Body"
+                                    <Label Text="{Binding ProductName}" Grid.Column="1" FontSize="Body"
                                            TextColor="Green"/>
-                                        <Label Text="{Binding Price}" Grid.Column="2" FontSize="Body"
+                                    <Label Text="{Binding Price}" Grid.Column="2" FontSize="Body"
                                            TextColor="Green"/>
-                                        <Label Text="{Binding Quantity}" Grid.Column="3" FontSize="Body"
+                                    <Label Text="{Binding Quantity}" Grid.Column="3" FontSize="Body"
                                            TextColor="Green"/>
-                                        <Label Text="{Binding Cost}" Grid.Column="4" FontSize="Body"
+                                    <Label Text="{Binding Cost}" Grid.Column="4" FontSize="Body"
                                            TextColor="Green"/>
 
-                                    </Grid>
-                                </ViewCell.View>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                                    <Image Source="eliminar_producto_carrito.png" 
+                                               HeightRequest="20"
+                                               Grid.Column="5">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteProductCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
 
-                </ListView>
-            </pancake:PancakeView>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.IncreaseQuantityCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                    </Grid.GestureRecognizers>
+                                </Grid>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
 
-            <Label Text="{Binding TotalCost, StringFormat='Total : L{0}'}"
+            </ListView>
+        </pancake:PancakeView>
+
+        <Label Text="{Binding TotalCost, StringFormat='Total : L{0}'}"
                    Grid.Row="2" HorizontalTextAlignment="End" FontSize="Title"
                    TextColor="WhiteSmoke"/>
 
-            <Button Text="Realizar Pedido" Grid.Row="3" TextColor="White"
+        <StackLayout Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,10">
+            <Button Text="Realizar Pedido"  
+                    TextColor="White"
                     Command="{Binding PlaceOrdersCommand}"
-                    HorizontalOptions="Center" CornerRadius="20"/>
-        </Grid>
+                    HorizontalOptions="Center" 
+                    CornerRadius="20"/>
+            <Button Text="Cancelar Pedido" 
+                    TextColor="White"
+                    Command="{Binding DeleteAllProductCommand}"
+                    HorizontalOptions="Center" 
+                    CornerRadius="20"/>
+        </StackLayout>
+    </Grid>
 
-    </ContentPage.Content>
 </ContentPage>
