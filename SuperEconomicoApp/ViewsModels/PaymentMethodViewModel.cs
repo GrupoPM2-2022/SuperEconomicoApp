@@ -82,7 +82,6 @@ namespace SuperEconomicoApp.ViewsModels
         #region COMANDOS
         public Command SelectedPaymentCommand => new Command<MethodPayment> ((item) => SelectedPayment(item));
         public Command ConfirmOrderCommand => new Command(async () => await ConfirmOrder());
-
         
         #endregion
     }
