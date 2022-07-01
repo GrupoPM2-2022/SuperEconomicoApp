@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Ubication.ListDirectionView"
+             x:Name="CurrentPage">
+
+    <ContentPage.Resources>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="2" />
+            <Setter Property="BackgroundColor"
+                    Value="#979797" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
+    </ContentPage.Resources>
+    
+    <StackLayout Padding="15">
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Mis Direcciones"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalTextAlignment="Center"
+                       HorizontalOptions="StartAndExpand" />
+            <Button Text="+"
+                    FontSize="30"
+                    FontAttributes="Bold"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="Transparent"
+                    Command="{Binding AddDirectionCommand}"/>
+        </StackLayout>
+        <BoxView Style="{StaticResource SeparadorBoxview}" />
+        <CollectionView ItemsSource="{Binding ListDirection}"
+                            x:Name="ListDirectionsCollection">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="10"
+                                       Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal" Padding="10">
+                            <Label Text="{Binding Description}"
+                                       FontSize="16"
+                                       HorizontalOptions="StartAndExpand" 
+                                       VerticalOptions="Center"/>
+                            <Image Source="editar.png"
+                                       HeightRequest="35"
+                                       WidthRequest="35"
+                                       VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.EditDirectionCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                            <Image Source="eliminar_producto_carrito.png"
+                                       HeightRequest="35"
+                                       WidthRequest="35"
+                                       VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteDirectionCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource SeparadorBoxview}" />
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+
+</ContentPage>

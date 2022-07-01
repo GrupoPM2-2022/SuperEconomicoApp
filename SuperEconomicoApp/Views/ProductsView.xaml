@@ -196,12 +196,21 @@
             </Grid>
 
             <StackLayout Orientation="Horizontal"
-                     Grid.Row="3"
+                     Grid.Row="4"
                      HeightRequest="25"
                      Margin="20,20,20,10">
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}">
                     <Image Source="t1.png" />
+                </sombras:Shadows>
+                <sombras:Shadows CornerRadius="10"
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}"
+                             HorizontalOptions="CenterAndExpand">
+                    <Image Source="direction_menu.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ViewDirectionCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
                 </sombras:Shadows>
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}"

@@ -10,6 +10,7 @@ using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Ubication;
 using SuperEconomicoApp.Views.Reusable;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -120,6 +121,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Command SearchViewCommand { get; set; }
         public Command SelectDeparmentCommand { get; set; }
         public Command ConfirmDepartmentCommand { get; set; }
+        public Command ViewDirectionCommand { get; set; }
 
         public ProductsViewModel()
         {
@@ -142,10 +144,16 @@ namespace SuperEconomicoApp.ViewsModels
             SearchViewCommand = new Command(async () => await SearchViewAsync());
             SelectDeparmentCommand = new Command<Department>( (param) => SelectDeparment(param));
             ConfirmDepartmentCommand = new Command(ConfirmDepartment);
+            ViewDirectionCommand = new Command(async () => await ViewDirection());
 
             //GetCategories();
             ConfigurationDepartment();
             GetAllProducts();
+        }
+
+        private async Task ViewDirection()
+        {
+            await Application.Current.MainPage.Navigation.PushModalAsync(new ListDirectionView());
         }
 
         private void ConfirmDepartment()

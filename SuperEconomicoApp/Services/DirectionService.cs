@@ -14,7 +14,7 @@ namespace SuperEconomicoApp.Services
 {
     public class DirectionService
     {
-
+        private static HttpClient client = new HttpClient();
         public DirectionService()
         {
         }
@@ -24,9 +24,8 @@ namespace SuperEconomicoApp.Services
             ObservableCollection<Direction> directions = new ObservableCollection<Direction>();
 
             var uri = new Uri(ApiMethods.GET_DIRECTION_BY_USER + Settings.IdUser + "&method=getDirectionForIdUser");
-            HttpClient myClient = new HttpClient();
 
-            var response = await myClient.GetAsync(uri);
+            var response = await client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -51,5 +50,15 @@ namespace SuperEconomicoApp.Services
             return directions;
         }
 
+
+        public async Task<bool> DeleteDirection(string id) {
+            var uri = new Uri(ApiMethods.URL_DIRECTION+"?id="+id);
+            var result = await client.DeleteAsync(uri);
+            if (result.IsSuccessStatusCode)
+            {
+                return true;
+            }   
+            return false;
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Firebase.Database;
-using Firebase.Database.Query;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;

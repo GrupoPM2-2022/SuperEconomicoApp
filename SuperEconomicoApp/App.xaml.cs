@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using SuperEconomicoApp.Views;
 using SuperEconomicoApp.Views.Reusable;
+using SuperEconomicoApp.Views.Ubication;
 
 namespace SuperEconomicoApp
 {
@@ -18,6 +19,11 @@ namespace SuperEconomicoApp
                 });
 
             InitializeComponent();
+            var cct = new CreateCartTable();
+            if (!cct.CreateTable())
+            {
+                //DisplayAlert("Error", "Error al crear la tabla", "Ok");
+            }
 
             if (Settings.ExistUser)
             {
