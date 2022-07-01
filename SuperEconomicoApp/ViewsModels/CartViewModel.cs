@@ -148,7 +148,7 @@ namespace SuperEconomicoApp.ViewsModels
                 Order order = new Order()
                 {
                     client_user_id = Convert.ToInt32(Settings.IdUser),
-                    delivery_user_id = Convert.ToInt32(Settings.IdUser),
+                    delivery_user_id = 0,
                     order_date = DateTime.Now.ToString("dd-MM-yyyy"),
                     deliver_date = DateTime.Now.ToString("dd-MM-yyyy"),
                     score = "0",

@@ -16,7 +16,7 @@ namespace SuperEconomicoApp.Views.Ubication
         public AddDirectionView()
         {
             InitializeComponent();
-            BindingContext = new AddDirectionViewModel();
+            BindingContext = new AddDirectionViewModel(map);
         }
     }
 }

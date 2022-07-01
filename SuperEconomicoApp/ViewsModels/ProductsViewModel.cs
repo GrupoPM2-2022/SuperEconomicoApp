@@ -188,15 +188,15 @@ namespace SuperEconomicoApp.ViewsModels
                 {
                     Id = 1,
                     Name = "San Pedro Sula",
-                    Latitude = 15.533129694846346,
-                    Longitude = -88.03389851150737
+                    Latitude = 15.494080,
+                    Longitude = -88.033686
                 },
                 new Department()
                 {
                     Id = 2,
                     Name = "Tegucigalpa",
-                    Latitude = 14.078002052781091,
-                    Longitude = -87.19175533457481
+                    Latitude = 14.088415,
+                    Longitude = -87.184149
                 }
             };
         }

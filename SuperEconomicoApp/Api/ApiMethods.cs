@@ -16,6 +16,5 @@ namespace SuperEconomicoApp.Api
         
         public static readonly string URL_DIRECTION = URL + "direction/";
 
-
     }
 }
