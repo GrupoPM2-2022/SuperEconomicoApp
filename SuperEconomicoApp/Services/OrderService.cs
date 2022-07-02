@@ -31,23 +31,9 @@ namespace SuperEconomicoApp.Services
             try
             {
                 var coordinates = Settings.Coordinates.Split(',');
-                ////string parametersGet = "?latitude=" + coordinates[0] + "&longitude=" + coordinates[1];
-                ////Uri requestUri = new Uri(ApiMethods.URL_ORDERS + parametersGet);
-                //Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "/");
-                //var client = new HttpClient();
-                //var json = JsonConvert.SerializeObject(order);
-                //var contentJson = new StringContent(json, Encoding.UTF8, "application/json");
-                //var result = await client.PostAsync(requestUri, contentJson);
-                //if (result.StatusCode == HttpStatusCode.OK)
-                //{
-                //    RemoveItemsFromCart();
-                //    return true;
-                //}
 
                 var client = new HttpClient();
-                Uri requestUri = new Uri(ApiMethods.URL_ORDERS);
-                client.DefaultRequestHeaders.Add("latitude", coordinates[0]);
-                client.DefaultRequestHeaders.Add("longitude", coordinates[1]);
+                Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?latitude=" + coordinates[0] + "&longitude=" + coordinates[1]);
 
                 var json = JsonConvert.SerializeObject(order);
                 HttpContent content = new StringContent(json);

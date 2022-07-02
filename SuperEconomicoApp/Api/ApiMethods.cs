@@ -8,7 +8,7 @@ namespace SuperEconomicoApp.Api
     {
         public static readonly string URL = "https://dennisdomain.com/microservices/api_php/api/";
 
-        public static readonly string URL_ORDERS = URL + "orders";
+        public static readonly string URL_ORDERS = URL + "orders/";
 
         public static readonly string URL_PRODUCTS = URL + "product/";
 

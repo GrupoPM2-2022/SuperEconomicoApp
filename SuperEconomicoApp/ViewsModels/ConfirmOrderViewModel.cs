@@ -214,7 +214,8 @@ namespace SuperEconomicoApp.ViewsModels
                     product_id = item.ProductId,
                     quantity = item.Quantity,
                     price = item.Price,
-                    discount = 0
+                    discount = 0,
+                    name_product = item.ProductName
                 };
 
                 ListOrders.Add(orderDetail);

@@ -195,7 +195,7 @@
                                        FontAttributes="Bold" 
                                        TextColor="Black" 
                                        FontSize="Medium"/>
-                                    <Label Text="{Binding Description}"
+                                    <Label Text="{Binding description}"
                                        FontSize="Small"/>
                                 </StackLayout>
 
