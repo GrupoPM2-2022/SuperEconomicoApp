@@ -19,13 +19,6 @@ namespace SuperEconomicoApp
                 });
 
             InitializeComponent();
-            var cct = new CreateCartTable();
-            if (!cct.CreateTable())
-            {
-                //DisplayAlert("Error", "Error al crear la tabla", "Ok");
-            }
-            Settings.UserName = "bAlvarez01";
-            Settings.IdUser = "56";
 
             if (Settings.ExistUser)
             {

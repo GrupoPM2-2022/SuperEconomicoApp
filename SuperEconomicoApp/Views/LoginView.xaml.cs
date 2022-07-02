@@ -16,8 +16,6 @@ namespace SuperEconomicoApp.Views
         public LoginView()
         {
             InitializeComponent();
-            Settings.UserName = "bAlvarez01";
-            Settings.IdUser = "56";
         }
 
         private void login_Clicked(object sender, EventArgs e)

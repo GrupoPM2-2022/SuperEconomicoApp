@@ -15,13 +15,13 @@
             <converter:TextToBoolCOnverter x:Key="dataConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ContentPage.BindingContext>
         <vm:LoginViewModel/>
     </ContentPage.BindingContext>
-    
+
     <Grid>
-      
+
 
         <Grid Padding="20" VerticalOptions="Center" Opacity="0.6">
             <Grid.RowDefinitions>
@@ -57,12 +57,12 @@
                                Aspect="AspectFit"></Image>
                         <controls:StandardEntry
                     
-                            Placeholder="Username" 
-                            Text="{Binding UserName}" 
+                            Placeholder="Email" 
+                            Text="{Binding Email}" 
                             BackgroundColor="Transparent" 
                             HorizontalOptions="FillAndExpand"
                             x:Name="EntryUsuario"
-                            
+                            Keyboard="Email"
                             >
 
                             <controls:StandardEntry.Behaviors>
@@ -86,9 +86,9 @@
                             HorizontalOptions="FillAndExpand"
                             x:Name="EntryPassword"
                             >
-                            
-                            
-                            
+
+
+
                             <controls:StandardEntry.Behaviors>
                                 <behaviors:NotNullBehaviorcs x:Name="PasswordNN"/>
                             </controls:StandardEntry.Behaviors>
@@ -135,15 +135,15 @@
             Command="{Binding RegisterCommand}"
                     CornerRadius="8"/>
 
-              
-            
 
 
 
 
 
 
-                    </StackLayout>
+
+
+            </StackLayout>
 
         </Grid>
     </Grid>

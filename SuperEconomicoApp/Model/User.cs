@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace SuperEconomicoApp
 {
-    public class User: INotifyPropertyChanged
+    public class User : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -19,7 +19,7 @@ namespace SuperEconomicoApp
             PropertyChanged.Invoke(this, new PropertyChangedEventArgs(nombre));
         }
 
-        public int id { get; set;  }
+        public int id { get; set; }
 
         public string name { get; set; }
 
@@ -36,8 +36,12 @@ namespace SuperEconomicoApp
         public string state { get; set; }
 
         public int cod_temp { get; set; }
+
         public string phone { get; set; }
+
         public string typeuser { get; set; }
+
+        public string conf_phone { get; set; }
 
 
     }
