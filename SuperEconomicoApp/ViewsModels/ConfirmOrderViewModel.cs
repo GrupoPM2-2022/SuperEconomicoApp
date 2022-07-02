@@ -161,8 +161,8 @@ namespace SuperEconomicoApp.ViewsModels
 
         private void SelectLocation(Direction direction)
         {
-            SelectedOrder.client_location = direction.Latitude.ToString() + "," + direction.Longitude.ToString();
-            UbicationPreview = direction.Description;
+            SelectedOrder.client_location = direction.latitude.ToString() + "," + direction.longitude.ToString();
+            UbicationPreview = direction.description;
         }
 
         private async void SaveOrder()

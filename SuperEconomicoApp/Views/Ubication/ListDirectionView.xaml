@@ -42,7 +42,7 @@
                 <DataTemplate>
                     <StackLayout>
                         <StackLayout Orientation="Horizontal" Padding="10">
-                            <Label Text="{Binding Description}"
+                            <Label Text="{Binding description}"
                                        FontSize="16"
                                        HorizontalOptions="StartAndExpand" 
                                        VerticalOptions="Center"/>

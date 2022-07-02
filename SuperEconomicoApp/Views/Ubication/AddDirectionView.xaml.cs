@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.ViewsModels.Ubication;
+﻿using SuperEconomicoApp.Model;
+using SuperEconomicoApp.ViewsModels.Ubication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace SuperEconomicoApp.Views.Ubication
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddDirectionView : ContentPage
     {
-        public AddDirectionView()
+        public AddDirectionView(string action, Direction direction)
         {
             InitializeComponent();
-            BindingContext = new AddDirectionViewModel(map);
+            BindingContext = new AddDirectionViewModel(map, action, direction);
         }
     }
 }

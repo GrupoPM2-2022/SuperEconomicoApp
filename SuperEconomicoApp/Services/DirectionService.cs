@@ -37,11 +37,11 @@ namespace SuperEconomicoApp.Services
                 {
                     Direction direction = new Direction()
                     {
-                        Id = Convert.ToInt32(item["id"].ToString()),
-                        Description = item["description"].ToString(),
-                        Latitude = item["latitude"].ToString(),
-                        Longitude = item["longitude"].ToString(),
-                        IdUser = Convert.ToInt32(item["id_user"].ToString())
+                        id = Convert.ToInt32(item["id"].ToString()),
+                        description = item["description"].ToString(),
+                        latitude = item["latitude"].ToString(),
+                        longitude = item["longitude"].ToString(),
+                        id_user = Convert.ToInt32(item["id_user"].ToString())
                     };
                     directions.Add(direction);
                 }
@@ -51,16 +51,45 @@ namespace SuperEconomicoApp.Services
         }
 
 
-        public async Task<bool> DeleteDirection(string id) {
-            var uri = new Uri(ApiMethods.URL_DIRECTION+"?id="+id);
+        public async Task<bool> DeleteDirection(string id)
+        {
+            var uri = new Uri(ApiMethods.URL_DIRECTION + "?id=" + id);
             var result = await client.DeleteAsync(uri);
             if (result.IsSuccessStatusCode)
             {
                 return true;
-            }   
+            }
             return false;
         }
 
+        public async Task<bool> CreateDirection(Direction direction)
+        {
+            Uri requestUri = new Uri(ApiMethods.URL_DIRECTION);
+            var jsonObject = JsonConvert.SerializeObject(direction);
+            var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync(requestUri, content);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
         
+        public async Task<bool> UpdateDirection(Direction direction)
+        {
+            Uri requestUri = new Uri(ApiMethods.URL_DIRECTION+"?id="+direction.id);
+            var jsonObject = JsonConvert.SerializeObject(direction);
+            var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(requestUri, content);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+
     }
 }

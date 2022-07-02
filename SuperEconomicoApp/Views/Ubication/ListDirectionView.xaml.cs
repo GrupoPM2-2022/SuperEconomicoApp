@@ -13,10 +13,19 @@ namespace SuperEconomicoApp.Views.Ubication
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ListDirectionView : ContentPage
     {
+
+        ListDirectionViewModel listDirectionViewModel;
         public ListDirectionView()
         {
             InitializeComponent();
-            BindingContext = new ListDirectionViewModel();
+            listDirectionViewModel = new ListDirectionViewModel();
+            BindingContext = listDirectionViewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            listDirectionViewModel.GetAllDirections();
         }
     }
 }

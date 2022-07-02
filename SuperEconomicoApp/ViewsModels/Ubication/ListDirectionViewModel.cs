@@ -40,7 +40,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             set
             {
                 _ListDirection = value;
-                OnPropertyChanged("ListDirection");
+                OnPropertyChanged();
             }
         }
 
@@ -55,17 +55,17 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
 
         public async Task AddDirectionView()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView("Guardar", null));
         }
 
         private async Task DeleteDirection(Direction direction)
         {
-            bool confirmation = await Application.Current.MainPage.DisplayAlert("Advertencia", "¿Está seguro de eliminar " + direction.Description + "?", "Si", "No");
+            bool confirmation = await Application.Current.MainPage.DisplayAlert("Advertencia", "¿Está seguro de eliminar " + direction.description + "?", "Si", "No");
             if (confirmation)
             {
                 try
                 {
-                    bool response = await DirectionServiceObject.DeleteDirection(direction.Id.ToString()); ;
+                    bool response = await DirectionServiceObject.DeleteDirection(direction.id.ToString()); ;
                     if (response)
                     {
                         await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección Eliminada Correctamente", "Ok");
@@ -86,7 +86,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
 
         private async Task EditDirection(Direction direction)
         {
-            await Application.Current.MainPage.DisplayAlert("Title", "Editar", "Ok");
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView("Editar", direction));
         }
 
         public void ProcesoSimple()

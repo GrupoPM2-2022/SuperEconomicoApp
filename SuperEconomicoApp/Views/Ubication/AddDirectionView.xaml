@@ -11,9 +11,10 @@
                     Placeholder="Ingrese una descripción de su dirección" 
                     HeightRequest="100" 
                     Margin="0,0,0,5"/>
-                <Button Text="Guardar"
+                <Button Text="{Binding TextButton}"
                     CornerRadius="10"
-                    Command="{Binding ConfirmUbicationCommand}"/>
+                    Command="{Binding ConfirmUbicationCommand}"
+                    IsEnabled="{Binding IsEnabledButton}"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
