@@ -40,5 +40,6 @@ namespace SuperEconomicoApp
         public string typeuser { get; set; }
 
 
+
     }
 }

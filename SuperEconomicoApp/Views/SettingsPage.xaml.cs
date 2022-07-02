@@ -23,7 +23,7 @@ namespace SuperEconomicoApp.Views
             await acd.AddCategoriesAsync();
         }
 
-        async private void ButtonProducts_Clicked(object sender, EventArgs e)
+         private void ButtonProducts_Clicked(object sender, EventArgs e)
         {
             //var apd = new AddProductoItemData();
             //await apd.AddProductoItemAsync();

@@ -37,7 +37,7 @@ namespace SuperEconomicoApp.Services
         return products;
     }
 
-    public async Task<ObservableCollection<ProductoItem>> GetProductoItemsByCategoryAsync(int categoryID)
+    public  Task<ObservableCollection<ProductoItem>> GetProductoItemsByCategoryAsync(int categoryID)
     {
             //var productoItemsByCategory = new ObservableCollection<ProductoItem>();
             //var items = (await GetProductoItemsAsync()).Where(p => p.Status == categoryID).ToList();

@@ -4,7 +4,19 @@
              x:Class="SuperEconomicoApp.Views.ValidateCode">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Margin="30,0,30,0">
-            <Label Text="Te hemos enviado un codigo al correo" x:Name="lblmensaje"/>
+           
+            <StackLayout HorizontalOptions="Center">
+            
+                    <Label Text="Te hemos enviado un codigo al correo" x:Name="lblmensaje" />
+                <Label Text="¿Correo incorrecto?" TextColor="Blue" x:Name="email_incorrect">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnEmail_incorrect" NumberOfTapsRequired="1"/>
+                    </Label.GestureRecognizers>
+                </Label>
+                            
+               
+            </StackLayout>
+            
             <StackLayout VerticalOptions="Start">
                 <Grid>
                     <Entry Keyboard="Numeric" Grid.Column="0" MaxLength="1" x:Name="number1" 
@@ -18,6 +30,13 @@
                 </Grid>
             </StackLayout>
             <Button Text="Verificar" x:Name="btnVerifyCode" Clicked="btnVerifyCode_Clicked"/>
+            
+            <Label Text="Reenviar código" TextColor="Blue" HorizontalTextAlignment="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="btnResendCode" NumberOfTapsRequired="1"/>
+                </Label.GestureRecognizers>
+            </Label>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
