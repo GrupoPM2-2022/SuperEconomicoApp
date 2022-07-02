@@ -46,6 +46,12 @@
                     >
 
                 </Label>
+
+                <Label Text="¿Olvidastes tu contraseña? " TextColor="Blue" HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnRecoveryPass" NumberOfTapsRequired="1"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </StackLayout>
 
             <StackLayout Grid.Row="1" Spacing="10">
@@ -93,7 +99,9 @@
                                 <behaviors:NotNullBehaviorcs x:Name="PasswordNN"/>
                             </controls:StandardEntry.Behaviors>
                         </controls:StandardEntry>
+
                     </StackLayout>
+
                 </Frame>
 
 
