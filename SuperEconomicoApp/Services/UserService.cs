@@ -6,50 +6,51 @@ using System.Threading.Tasks;
 using System.Linq;
 using SuperEconomicoApp.Model;
 using Firebase.Database.Query;
+using System.Net.Http;
+using SuperEconomicoApp.Api;
+using Newtonsoft.Json;
 
 namespace SuperEconomicoApp.Services
 {
-    class UserService
+    public class UserService
     {
-        FirebaseClient client;
+        private static HttpClient client = new HttpClient();
 
         public UserService()
         {
-            client = new FirebaseClient("https://supereconomicoapp-default-rtdb.firebaseio.com/");
         }
-        //public async Task<bool> IsUserExists(string uname)
-        //{
-        //    var user = (await client.Child("Users")
-        //        .OnceAsync<User>()).Where(u => u.Object.Username == uname).FirstOrDefault();
 
-        //    return (user != null);
-        //}
 
-        //public async Task<bool> RegisterUser(string uname, string passwd)
-        //{
-        //    //if (await IsUserExists(uname) == false)
-        //    //{
-        //    //    await client.Child("Users")
-        //    //        .PostAsync(new User()
-        //    //        {
-        //    //            Username = uname,
-        //    //            Password = passwd
-        //    //        });
-        //    //    return true;
-        //    //}
-        //    //else
-        //    //{
-        //    //    return false;
-        //    //}
-        //}
-        //public async Task<bool> LoginUser(string uname, string passwd)
-        //{
-        //    //var user = (await client.Child("Users")
-        //    //    .OnceAsync<User>()).Where(u => u.Object.Username == uname)
-        //    //    .Where(u => u.Object.Password == passwd).FirstOrDefault();
+        public async Task<User> GetUserByEmail(string email)
+        {
+            User user = new User();
+            try
+            {
+                var request = new HttpRequestMessage();
+                request.RequestUri = new Uri(ApiMethods.URL_USER + "?value=" + email + "&method=getUserForEmail");
+                request.Method = HttpMethod.Get;
+                request.Headers.Add("Accept", "application/json");
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    if (content.Equals("[]"))
+                    {
+                        return null;
+                    }
+                    user = JsonConvert.DeserializeObject<User>(content);
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-        //    return (user != null);
-        //}
+            return null;
+        }
+
+
     }
 
 }

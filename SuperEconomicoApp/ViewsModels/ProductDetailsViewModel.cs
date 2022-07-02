@@ -86,7 +86,9 @@ namespace SuperEconomicoApp.ViewsModels
                     ProductName = SelectedProductoItem.Name,
                     Price = SelectedProductoItem.Price,
                     Quantity = TotalQuantity,
-                    ImageProduct = SelectedProductoItem.Image
+                    ImageProduct = SelectedProductoItem.Image,
+                    Stock = SelectedProductoItem.Stock,
+                    Description = SelectedProductoItem.Description
                 };
                 var item = cn.Table<CartItem>().ToList()
                     .FirstOrDefault(c => c.ProductId == SelectedProductoItem.Product_Id);

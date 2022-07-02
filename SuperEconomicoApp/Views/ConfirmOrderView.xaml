@@ -25,12 +25,20 @@
                 </VisualStateGroupList>
             </Setter>
         </Style>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="2" />
+            <Setter Property="BackgroundColor"
+                    Value="#979797" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
     </ContentPage.Resources>
 
     <ScrollView>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal"
-                         Padding="10">
+        <StackLayout Padding="10">
+            <StackLayout Orientation="Horizontal">
                 <Image Source="compras.png" 
                        HeightRequest="50" 
                        VerticalOptions="Center"/>
@@ -50,8 +58,8 @@
             <Grid ColumnDefinitions="auto">
                 <CollectionView ItemsSource="{Binding ListProductsOrdered}"
                         VerticalOptions="CenterAndExpand"
-                        Margin="12,25,12,0"
                         x:Name="ListProductsOrderedCollection"
+                        HeightRequest="550"
                         Header="{Binding .}">
 
                     <CollectionView.HeaderTemplate>
@@ -76,6 +84,7 @@
                            CornerRadius="15">
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}"
+                                           HeightRequest="70"
                                            WidthRequest="70"/>
                                     <StackLayout VerticalOptions="Center">
                                         <Label Text="{Binding ProductName}"
@@ -108,15 +117,20 @@
 
                                 </StackLayout>
 
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.IncreaseQuantityCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                
                             </Frame>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Grid>
 
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
             <StackLayout Orientation="Horizontal"
-                     VerticalOptions="StartAndExpand"
-                     Margin="10,0">
+                     VerticalOptions="StartAndExpand">
                 <Label Text="Total"
                FontSize="18"
                FontAttributes="Bold"
@@ -127,8 +141,30 @@
                VerticalOptions="Center"
                HorizontalOptions="EndAndExpand"/>
             </StackLayout>
+            <BoxView Style="{StaticResource SeparadorBoxview}" />
 
             <StackLayout>
+                <Label Text="Selecionado"
+                   FontSize="16"
+                   Margin="0,0,0,5"
+                   FontAttributes="Bold"/>
+                <Frame CornerRadius="10"
+                   HasShadow="False"
+                       Padding="12">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding UbicationPreview}"
+                           FontAttributes="Bold"
+                           TextColor="White" />
+                    </StackLayout>
+                    <Frame.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#1cb5e0"
+                                      Offset="0.5" />
+                            <GradientStop Color="#36D1DC"
+                                      Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                </Frame>
                 <CollectionView ItemsSource="{Binding ListDirection}"
                                 HeightRequest="100"
                                 SelectionMode="Single">
@@ -149,7 +185,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid BackgroundColor="#DEDEDE" 
-                                  ColumnDefinitions="40,*" 
+                                  ColumnDefinitions="40,200" 
                                   Padding="10,0">
                                 <StackLayout Grid.Column="0" VerticalOptions="Center">
                                     <Image Source="casa.png" HeightRequest="30" WidthRequest="30"/>
@@ -159,7 +195,7 @@
                                        FontAttributes="Bold" 
                                        TextColor="Black" 
                                        FontSize="Medium"/>
-                                    <Label Text="{Binding Description}"
+                                    <Label Text="{Binding description}"
                                        FontSize="Small"/>
                                 </StackLayout>
 
@@ -174,6 +210,10 @@
                     </CollectionView.ItemTemplate>
 
                 </CollectionView>
+                <Button Text="Agregar Dirección"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"/>
+                <BoxView Style="{StaticResource SeparadorBoxview}" />
             </StackLayout>
 
             <Editor VerticalOptions="FillAndExpand" 

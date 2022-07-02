@@ -1,6 +1,8 @@
-﻿using SuperEconomicoApp.Model;
+﻿using Rg.Plugins.Popup.Services;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Reusable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,24 +14,37 @@ namespace SuperEconomicoApp.ViewsModels
 {
     public class ConfirmOrderViewModel : BaseViewModel
     {
-        public ObservableCollection<UserCartItem> ListProductsOrdered { get; set; }
+        public ObservableCollection<UserCartItem> _ListProductsOrdered;
         public Order SelectedOrder { get; set; }
-        public List<Direction> ListDirection { get; set; }
+        public ObservableCollection<Direction> _ListDirection;
         public List<OrderDetails> ListOrders { get; set; }
+        public CartItemService CartItemService { get; set; }
+        private UserCartItem _SelectedProductoItem;
+        public DirectionService DirectionServiceObject { get; set; }
+
+        private double _Total;
+        private string _Comment;
+        private string _UbicationPreview;
+        private int _TotalQuantity;
 
         public Command DeleteOrderCommand { get; set; }
         public Command SaveOrderCommand { get; set; }
         public Command SelectLocationCommand { get; set; }
         public Command DeleteProductCommand { get; set; }
+        public Command IncreaseQuantityCommand { get; set; }
+        public Command IncrementOrderCommand { get; set; }
+        public Command DecrementOrderCommand { get; set; }
+        public Command AddToCartCommand { get; set; }
 
-        CartItemService cartItemService;
-        private double _Total;
-        private string _Comment;
 
         public double Total
         {
             get { return _Total; }
-            set { _Total = value; }
+            set
+            {
+                _Total = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Comment
@@ -41,13 +56,76 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
+        public string UbicationPreview
+        {
+            get { return _UbicationPreview; }
+            set
+            {
+                _UbicationPreview = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public UserCartItem SelectedProductoItem
+        {
+            get { return _SelectedProductoItem; }
+            set
+            {
+                _SelectedProductoItem = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<UserCartItem> ListProductsOrdered
+        {
+            get { return _ListProductsOrdered; }
+            set
+            {
+                _ListProductsOrdered = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<Direction> ListDirection
+        {
+            get { return _ListDirection; }
+            set
+            {
+                _ListDirection = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int TotalQuantity
+        {
+            set
+            {
+                _TotalQuantity = value;
+                if (_TotalQuantity <= 0)
+                    _TotalQuantity = 1;
+                if (SelectedProductoItem != null)
+                {
+                    if (_TotalQuantity > SelectedProductoItem.Stock)
+                    {
+                        Application.Current.MainPage.DisplayAlert("Advertencia", "Este producto alcanzo su limite en stock", "Ok");
+                        _TotalQuantity -= 1;
+                    }
+                }
+                OnPropertyChanged();
+            }
+            get
+            {
+                return _TotalQuantity;
+            }
+        }
 
 
         public ConfirmOrderViewModel(ObservableCollection<UserCartItem> listOrderDetails, Order order)
         {
             ListProductsOrdered = listOrderDetails;
             SelectedOrder = order;
-            cartItemService = new CartItemService();
+            CartItemService = new CartItemService();
+            DirectionServiceObject = new DirectionService();
+            ListDirection = new ObservableCollection<Direction>();
             LoadConfiguration();
 
             // COMANDOS
@@ -55,6 +133,20 @@ namespace SuperEconomicoApp.ViewsModels
             SaveOrderCommand = new Command(SaveOrder);
             SelectLocationCommand = new Command<Direction>((Direction) => SelectLocation(Direction));
             DeleteProductCommand = new Command<UserCartItem>(async (UserCartItem) => await DeleteProduct(UserCartItem));
+            IncreaseQuantityCommand = new Command<UserCartItem>((UserCartItem) => IncreaseQuantity(UserCartItem));
+
+            IncrementOrderCommand = new Command(() => IncrementOrder());
+            DecrementOrderCommand = new Command(() => DecrementOrder());
+            AddToCartCommand = new Command(() => AddToCart());
+        }
+
+        private void IncreaseQuantity(UserCartItem userCartItem)
+        {
+            var popup = new IncreaseQuantity();
+            popup.BindingContext = this;
+            SelectedProductoItem = userCartItem;
+            TotalQuantity = SelectedProductoItem.Quantity;
+            PopupNavigation.Instance.PushAsync(popup);
         }
 
         private async Task DeleteProduct(UserCartItem userCartItem)
@@ -63,40 +155,51 @@ namespace SuperEconomicoApp.ViewsModels
             if (response)
             {
                 ListProductsOrdered.Remove(userCartItem);
-                cartItemService.RemoveProductById(userCartItem);
+                CartItemService.RemoveProductById(userCartItem);
             }
         }
 
         private void SelectLocation(Direction direction)
         {
-            SelectedOrder.client_location = direction.Latitude.ToString() + "," + direction.Longitude.ToString();
+            SelectedOrder.client_location = direction.latitude.ToString() + "," + direction.longitude.ToString();
+            UbicationPreview = direction.description;
         }
 
         private async void SaveOrder()
         {
             try
             {
+                if (ListProductsOrdered.Count == 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No hay productos para procesar su orden.", "Ok");
+                    return;
+                }
+                if (ListDirection.Count == 0)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No tienes ubicaciones registradas, agrega una ubicación.", "Ok");
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(SelectedOrder.client_location))
                 {
-                    await Application.Current.MainPage.DisplayAlert("Title", "Debes seleccionar la ubicación.", "Ok");
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes seleccionar la ubicación.", "Ok");
                     return;
                 }
 
                 FillOrderList();
-                var response = new OrderService().CreateOrder(SelectedOrder);
-                if (!response.IsCompleted)
+                var response = await new OrderService().CreateOrder(SelectedOrder);
+                if (response)
                 {
                     await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
+                    await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
                 }
                 else
                 {
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
                 }
-
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR_INSERT_BD ->: " + ex.Message);
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
             }
         }
@@ -111,7 +214,8 @@ namespace SuperEconomicoApp.ViewsModels
                     product_id = item.ProductId,
                     quantity = item.Quantity,
                     price = item.Price,
-                    discount = 0
+                    discount = 0,
+                    name_product = item.ProductName
                 };
 
                 ListOrders.Add(orderDetail);
@@ -120,36 +224,10 @@ namespace SuperEconomicoApp.ViewsModels
             SelectedOrder.comment = Comment;
         }
 
-        private void LoadConfiguration()
+        private async void LoadConfiguration()
         {
             Total = SelectedOrder.total;
-            ListDirection = new List<Direction>()
-            {
-               new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. Matamoros",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-                new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. La Aleman",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-                new Direction()
-                {
-                    Id = 1,
-                    Description = "Tegucigalpa, Col. La Aleman",
-                    Latitude = "14.55465468",
-                    Longitude = "-87.65484984",
-                    IdUser = 40
-                },
-            };
+            ListDirection = await DirectionServiceObject.GetDirectionByUser();
         }
 
         private async Task DeleteOrder()
@@ -157,11 +235,60 @@ namespace SuperEconomicoApp.ViewsModels
             var response = await Application.Current.MainPage.DisplayAlert("Aviso", "¿Está seguro de cancelar su orden?", "Si", "No");
             if (response)
             {
-                cartItemService.RemoveItemsFromCart();
+                CartItemService.RemoveItemsFromCart();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
             }
 
         }
 
+        private void AddToCart()
+        {
+            try
+            {
+                CartItemService.AddProductTocart(SelectedProductoItem, TotalQuantity);
+                UpdateProductcart();
+                TotalQuantity = 1;
+                PopupNavigation.Instance.PopAsync();
+            }
+            catch (Exception ex)
+            {
+                Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        private void UpdateProductcart()
+        {
+            var cn = DependencyService.Get<ISQLite>().GetConnection();
+            var items = cn.Table<CartItem>().ToList();
+            ListProductsOrdered.Clear();
+            Total = 0;
+            foreach (var item in items)
+            {
+                ListProductsOrdered.Add(new UserCartItem()
+                {
+                    CartItemId = item.CartItemId,
+                    ImageProduct = item.ImageProduct,
+                    ProductId = item.ProductId,
+                    ProductName = item.ProductName,
+                    Description = item.Description,
+                    Price = item.Price,
+                    Quantity = item.Quantity,
+                    Cost = item.Price * item.Quantity,
+                    Stock = item.Stock
+                });
+                Total += (item.Price * item.Quantity);
+            }
+        }
+
+
+        private void DecrementOrder()
+        {
+            TotalQuantity--;
+        }
+
+        private void IncrementOrder()
+        {
+            TotalQuantity++;
+        }
     }
 }

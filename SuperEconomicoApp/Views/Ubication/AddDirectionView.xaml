@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+             x:Class="SuperEconomicoApp.Views.Ubication.AddDirectionView">
+    <ContentPage.Content>
+        <StackLayout>
+            <maps:Map x:Name="map" HeightRequest="480"/>
+            <StackLayout Padding="10">
+                <Editor Text="{Binding Description}" 
+                    Placeholder="Ingrese una descripción de su dirección" 
+                    HeightRequest="100" 
+                    Margin="0,0,0,5"/>
+                <Button Text="{Binding TextButton}"
+                    CornerRadius="10"
+                    Command="{Binding ConfirmUbicationCommand}"
+                    IsEnabled="{Binding IsEnabledButton}"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

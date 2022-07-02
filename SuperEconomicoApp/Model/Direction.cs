@@ -6,11 +6,11 @@ namespace SuperEconomicoApp.Model
 {
     public class Direction
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
-        public int IdUser { get; set; }
+        public int id { get; set; }
+        public string description { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+        public int id_user { get; set; }
 
     }
 }
