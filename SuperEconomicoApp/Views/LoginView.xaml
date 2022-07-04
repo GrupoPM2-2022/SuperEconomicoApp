@@ -47,17 +47,13 @@
 
                 </Label>
 
-                <Label Text="¿Olvidastes tu contraseña? " TextColor="Blue" HorizontalTextAlignment="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="btnRecoveryPass" NumberOfTapsRequired="1"/>
-                    </Label.GestureRecognizers>
-                </Label>
+              
             </StackLayout>
 
             <StackLayout Grid.Row="1" Spacing="10">
                 <Frame CornerRadius="20"  >
                     <StackLayout Orientation="Horizontal">
-                        <Image Source="usuario" 
+                        <Image Source="usuarioBlack" 
                                HorizontalOptions="Start" 
                                VerticalOptions="Center"
                                Aspect="AspectFit"></Image>
@@ -80,7 +76,7 @@
                 </Frame>
                 <Frame CornerRadius="20">
                     <StackLayout Orientation="Horizontal" >
-                        <Image Source="password" 
+                        <Image Source="passwordBlack" 
                                HorizontalOptions="Start" 
                                VerticalOptions="Center"
                                Aspect="AspectFit"></Image>
@@ -104,7 +100,11 @@
 
                 </Frame>
 
-
+                <Label Text="¿Olvidastes tu contraseña? " TextColor="White" HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnRecoveryPass" NumberOfTapsRequired="1"/>
+                    </Label.GestureRecognizers>
+                </Label>
 
 
 

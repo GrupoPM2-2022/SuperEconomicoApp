@@ -1,39 +1,127 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SuperEconomicoApp.Views.AddUser">
-    <ContentPage.Content>
-        <StackLayout>
-            <Image x:Name="img"  HeightRequest="200" WidthRequest="200" BackgroundColor="Azure" 
-               Margin="20,0,20,0" HorizontalOptions="Center" >
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
-                </Image.GestureRecognizers>
-            </Image>
-            <Label Text="Nombres" FontSize="12" Padding="30,10,30,0"/>
-            <Entry x:Name="txtname"  Margin="30,0,30,0" FontSize="12" />
-            <Label Text="Apellidos" FontSize="12" Padding="30,0,30,0"/>
-            <Entry x:Name="txtlastname"  Margin="30,0,30,0" FontSize="12" />
-            <Label Text="Telefono" FontSize="12" Padding="30,0,30,0" />
-            <Entry x:Name="txtphone"  Margin="30,0,30,0" FontSize="12" Keyboard="Telephone" />
-            <Label Text="Correo" FontSize="12"  Padding="30,0,30,0"/>
-            <Entry x:Name="txtemail"  Margin="30,0,30,0" FontSize="12" Keyboard="Email" />
-            <Label Text="Fecha de Nacimiento" FontSize="12" Padding="30,0,30,0"/>
+             x:Class="SuperEconomicoApp.Views.AddUser"
+             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
+    <Grid Padding="20" RowSpacing="10">
 
-            <DatePicker MinimumDate="01/01/1900" Margin="30,0,30,0" FontSize="12" x:Name="txtbirthdate" />
-            
-            <Label Text="Contraseña" FontSize="12" Padding="30,0,30,0"/>
-            <Entry x:Name="txtpassword"  Margin="30,0,30,0" FontSize="12" Keyboard="Text" IsPassword="True" />
-            <Label Text="Repetir Contraseña" FontSize="12" Padding="30,0,30,0"/>
-            <Entry x:Name="txtpassword2"  Margin="30,0,30,0" FontSize="12" Keyboard="Text" IsPassword="True" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
-            <RelativeLayout HorizontalOptions="CenterAndExpand" Margin="20">
-                <Grid>
-                    <Button Text="Guardar" x:Name="btnSave"  WidthRequest="150" Grid.Column="0" Clicked="btnSave_Clicked" />
-                </Grid>
+        <Image  Grid.Row="0" 
+                x:Name="img"  
+                HeightRequest="150" 
+                WidthRequest="150" 
+                Source="camera"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" >
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
+            </Image.GestureRecognizers>
+        </Image>
 
-            </RelativeLayout>
 
+
+
+        <controls:StandardEntry
+            Grid.Row="1"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingrese su nombre"
+            x:Name="txtname"
+            Keyboard="Text"
+            />
+
+        <controls:StandardEntry
+            Grid.Row="2"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa tus apellidos" 
+            x:Name="txtlastname"
+            Keyboard="Text"
+            />
+
+        <controls:StandardEntry
+            Grid.Row="3"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa tu Telefono" 
+             x:Name="txtphone"
+             Keyboard="Telephone"
+            />
+        <controls:StandardEntry
+            Grid.Row="4"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa tu email" 
+            x:Name="txtemail"
+            Keyboard="Email"
+            />
+
+        <StackLayout Grid.Row="5"   >
+            <Frame CornerRadius="20" BackgroundColor="White"  >
+                <StackLayout>
+                    <DatePicker MinimumDate="01/01/1900"  BackgroundColor="Transparent"  x:Name="txtbirthdate"  />
+
+                </StackLayout>
+            </Frame>
         </StackLayout>
-    </ContentPage.Content>
+
+
+
+        <controls:StandardEntry
+            Grid.Row="6"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa tu password"  
+            x:Name="txtpassword"
+            Keyboard="Text"
+            IsPassword="True"
+            />
+        <controls:StandardEntry
+            Grid.Row="7"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Repite tu password" 
+            x:Name="txtpassword2"
+            Keyboard="Text"
+            IsPassword="True"
+            Margin="0,0,0,10"
+            />
+
+        <Button 
+            Grid.Row="8"
+            Text="GUARDAR" 
+            BackgroundColor="#800080" 
+            TextColor="White" 
+            WidthRequest="400" 
+            HeightRequest="60"
+            x:Name="btnSave"
+            Clicked="btnSave_Clicked"
+            CornerRadius="20"/>
+
+
+    </Grid>
+
 </ContentPage>

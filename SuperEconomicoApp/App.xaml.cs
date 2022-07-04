@@ -26,6 +26,7 @@ namespace SuperEconomicoApp
             }
             else
             {
+                //MainPage = new ProductsView();
                 MainPage = new LoginView();
             }
 
