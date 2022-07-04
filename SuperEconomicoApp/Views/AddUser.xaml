@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.AddUser"
-             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
+             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
+             xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
     <Grid Padding="20" RowSpacing="10">
 
         <Grid.RowDefinitions>
@@ -13,94 +14,120 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Image  Grid.Row="0" 
+        <control:CircleImage  Grid.Row="0" 
                 x:Name="img"  
-                HeightRequest="150" 
-                WidthRequest="150" 
-                Source="camera"
+                Source="person2"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" >
+                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
-        </Image>
+        </control:CircleImage>
 
 
-
-
-        <controls:StandardEntry
-            Grid.Row="1"
-            Padding="13"
-             BackgroundColor="White"
-            BorderThickness="1"
-            CornerRadius="20"
-            Placeholder="Ingrese su nombre"
-            x:Name="txtname"
-            Keyboard="Text"
-            />
+        <Label Text="NOMBRES" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="1"/>
 
         <controls:StandardEntry
             Grid.Row="2"
             Padding="13"
              BackgroundColor="White"
             BorderThickness="1"
+            TextColor="Black"
+            CornerRadius="20"
+            Placeholder="Ingrese su nombre"
+            x:Name="txtname"
+            Keyboard="Text"
+            FontSize="Small"
+                PlaceholderColor="Black" 
+            />
+
+        <Label Text="APELLIDOS" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="3"/>
+        <controls:StandardEntry
+            Grid.Row="4"
+            Padding="13"
+             BackgroundColor="White"
+            TextColor="Black"
+            FontSize="Small"
+                PlaceholderColor="Black" 
+            BorderThickness="1"
             CornerRadius="20"
             Placeholder="Ingresa tus apellidos" 
             x:Name="txtlastname"
             Keyboard="Text"
             />
-
+        <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
         <controls:StandardEntry
-            Grid.Row="3"
+            Grid.Row="6"
             Padding="13"
              BackgroundColor="White"
+            TextColor="Black"
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="Ingresa tu Telefono" 
              x:Name="txtphone"
              Keyboard="Telephone"
+                PlaceholderColor="Black"
+            FontSize="Small"
             />
+        <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
         <controls:StandardEntry
-            Grid.Row="4"
+            Grid.Row="8"
             Padding="13"
              BackgroundColor="White"
+            TextColor="Black"
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="Ingresa tu email" 
             x:Name="txtemail"
             Keyboard="Email"
+                PlaceholderColor="Black" 
+            FontSize="Small"
             />
+        <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
+        <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20">
+            <DatePicker MinimumDate="01/01/1900"  BackgroundColor="white"  x:Name="txtbirthdate" FontSize="Small" />
 
-        <StackLayout Grid.Row="5"   >
-            <Frame CornerRadius="20" BackgroundColor="White"  >
-                <StackLayout>
-                    <DatePicker MinimumDate="01/01/1900"  BackgroundColor="Transparent"  x:Name="txtbirthdate"  />
-
-                </StackLayout>
-            </Frame>
-        </StackLayout>
+        </Frame>
 
 
+
+
+
+        <Label Text="PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
 
         <controls:StandardEntry
-            Grid.Row="6"
+            Grid.Row="12"
             Padding="13"
              BackgroundColor="White"
+            TextColor="Black"
             BorderThickness="1"
             CornerRadius="20"
+            PlaceholderColor="Black" 
+            FontSize="Small"
             Placeholder="Ingresa tu password"  
             x:Name="txtpassword"
             Keyboard="Text"
             IsPassword="True"
             />
+        <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="13"/>
         <controls:StandardEntry
-            Grid.Row="7"
+            Grid.Row="14"
             Padding="13"
              BackgroundColor="White"
+            TextColor="Black"
+            PlaceholderColor="Black"
+            FontSize="Small"
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="Repite tu password" 
@@ -111,12 +138,12 @@
             />
 
         <Button 
-            Grid.Row="8"
+            Grid.Row="15"
             Text="GUARDAR" 
-            BackgroundColor="#800080" 
+            BackgroundColor="#8873b6" 
             TextColor="White" 
-            WidthRequest="400" 
-            HeightRequest="60"
+            WidthRequest="300" 
+            HeightRequest="50"
             x:Name="btnSave"
             Clicked="btnSave_Clicked"
             CornerRadius="20"/>

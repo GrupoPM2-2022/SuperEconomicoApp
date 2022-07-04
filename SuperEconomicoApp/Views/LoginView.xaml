@@ -51,7 +51,7 @@
             </StackLayout>
 
             <StackLayout Grid.Row="1" Spacing="10">
-                <Frame CornerRadius="20"  >
+                <Frame CornerRadius="20" Padding="13" >
                     <StackLayout Orientation="Horizontal">
                         <Image Source="usuarioBlack" 
                                HorizontalOptions="Start" 
@@ -74,7 +74,7 @@
                         </controls:StandardEntry>
                     </StackLayout>
                 </Frame>
-                <Frame CornerRadius="20">
+                <Frame CornerRadius="20"  Padding="13">
                     <StackLayout Orientation="Horizontal" >
                         <Image Source="passwordBlack" 
                                HorizontalOptions="Start" 
@@ -99,15 +99,6 @@
                     </StackLayout>
 
                 </Frame>
-
-                <Label Text="¿Olvidastes tu contraseña? " TextColor="White" HorizontalTextAlignment="Center">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="btnRecoveryPass" NumberOfTapsRequired="1"/>
-                    </Label.GestureRecognizers>
-                </Label>
-
-
-
                 <Button 
                     Text="Login" 
                     BackgroundColor="Purple" 
@@ -135,22 +126,19 @@
 
 
                 <Button 
-            Text="REGISTRAR" 
-            BackgroundColor="Purple" 
-            TextColor="White" 
-            WidthRequest="400" 
+                    Text="REGISTRAR" 
+                    BackgroundColor="Purple" 
+                    TextColor="White" 
+                    WidthRequest="400" 
                     HeightRequest="60"
-            Command="{Binding RegisterCommand}"
+                    Command="{Binding RegisterCommand}"
                     CornerRadius="8"/>
 
-
-
-
-
-
-
-
-
+                <Label Text="¿Olvidastes tu contraseña? " TextColor="White" HorizontalTextAlignment="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="btnRecoveryPass" NumberOfTapsRequired="1"/>
+                    </Label.GestureRecognizers>
+                </Label>
             </StackLayout>
 
         </Grid>
