@@ -9,7 +9,7 @@
              x:Class="SuperEconomicoApp.Views.ProductsView"
              xmlns:sombras="clr-namespace:Sharpnado.Shades;assembly=Sharpnado.Shadows"
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-             BackgroundColor="{AppThemeBinding Light={StaticResource LightPageBackgroundColor}, Dark={StaticResource DarkPageBackgroundColor}}">
+             BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Converter:Base64ToImageSource x:Key="Base64ToImage" />
@@ -49,30 +49,29 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Row="0">
+                <!--<Grid Grid.Row="0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        
                     </Grid.ColumnDefinitions>
 
                     <Label Text="Bienvenido " Grid.Row="0" Grid.Column="0" TextColor="Silver" Style="{StaticResource SecondaryLabel}"/>
-                    <Label Text="{Binding UserName}" Grid.Row="1" Grid.Column="0" FontSize="20" FontAttributes="Bold" Style="{StaticResource PrimaryLabel}"/>
+                    <Label Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" FontSize="20" FontAttributes="Bold" Style="{StaticResource PrimaryLabel}" />
 
-                    <ImageButton Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                    --><!--<ImageButton Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
                                  Source="menu1"
                                   BackgroundColor="Transparent"
                                  Margin="0,0,10,0" HorizontalOptions="End"
-                                 Command="{Binding OrdersHistoryCommand}"/>
+                                 Command="{Binding OrdersHistoryCommand}"/>-->
 
 
-                    <Label Text="{Binding UserCartItemsCount}" 
+                    <!--<Label Text="{Binding UserCartItemsCount}" 
                            Style="{StaticResource PrimaryLabelHeader}"
                            Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                            HorizontalTextAlignment="End" VerticalTextAlignment="Start" FontSize="15"/>
@@ -87,10 +86,10 @@
                                  Source="salida1"
                                  BackgroundColor="Transparent"
                                  Margin="0,0,10,0" HorizontalOptions="End"
-                                 Command="{Binding LogoutCommand}"/>
-                </Grid>
+                                 Command="{Binding LogoutCommand}"/>--><!--
+                </Grid>-->
 
-                <Grid Grid.Row="1" Grid.Column="0" >
+                <Grid Grid.Row="0" Grid.Column="0" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -138,7 +137,7 @@
                 <!--<Label Grid.Row="3" Text="Ultimos Productos" FontSize="25" FontAttributes="Bold" Style="{StaticResource PrimaryLabelHeader}"/>-->
 
                 <CollectionView ItemsSource="{Binding ListItemsProducts}"
-                                Margin="0,20,0,0" VerticalOptions="Start"
+                                 VerticalOptions="Start"
                                 VerticalScrollBarVisibility="Never"
                                 x:Name="CVLatest"
                                 SelectionChanged="CVLatest_SelectionChanged"
@@ -200,22 +199,44 @@
                      HeightRequest="25"
                      Margin="20,20,20,10">
                 <sombras:Shadows CornerRadius="10"
-                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}">
-                    <Image Source="home.png" />
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}">
+                    <Image Source="homePurple.png" />
                 </sombras:Shadows>
                 <sombras:Shadows CornerRadius="10"
-                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}"
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
                              HorizontalOptions="CenterAndExpand">
-                    <Image Source="gps.png">
+                    <Image Source="gpsPurple.png">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ViewDirectionCommand}"/>
                         </Image.GestureRecognizers>
                     </Image>
                 </sombras:Shadows>
-               
+
                 <sombras:Shadows CornerRadius="10"
-                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=White}">
-                    <Image Source="usuarioBlack.png" >
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
+                             HorizontalOptions="CenterAndExpand">
+                    <Image Source="comprasPurple.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer   Command="{Binding ViewCartCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+                </sombras:Shadows>
+              
+                <sombras:Shadows CornerRadius="10"
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
+                             HorizontalOptions="CenterAndExpand">
+                    <Image Source="listaPurple.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OrdersHistoryCommand}"/>
+                        </Image.GestureRecognizers>
+
+                    </Image>
+                </sombras:Shadows>
+
+           
+                <sombras:Shadows CornerRadius="10"
+                             Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}">
+                    <Image Source="userPurple.png" >
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding EditUserCommand}"/>
                         </Image.GestureRecognizers>

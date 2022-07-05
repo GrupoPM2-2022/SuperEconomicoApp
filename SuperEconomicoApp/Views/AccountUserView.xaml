@@ -97,6 +97,29 @@
                             x:Name="btnEdit"
                             Command="{Binding EditUserCommand}"
                             CornerRadius="20"/>
+
+            <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent"  Margin="20">
+                <StackLayout Orientation="Horizontal" >
+                    <Image Source="salida1" 
+                               HorizontalOptions="Start" 
+                               VerticalOptions="Center"
+                               Aspect="AspectFit"
+                           >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Button 
+                            Text="Cerrar Sesion" 
+                            BackgroundColor="Transparent"
+                           
+                            x:Name="btnExit"
+                            Command="{Binding LogoutCommand}"
+                            CornerRadius="20"/>
+                 
+                </StackLayout>
+            </Frame>
         </StackLayout>
                
     </ContentPage.Content>
