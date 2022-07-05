@@ -117,7 +117,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         public Command ViewCartCommand { get; set; }
         public Command EditUserCommand { get; set; }
-        public Command LogoutCommand { get; set; }
+        //public Command LogoutCommand { get; set; }
         public Command OrdersHistoryCommand { get; set; }
         public Command SearchViewCommand { get; set; }
         public Command SelectDeparmentCommand { get; set; }
@@ -141,7 +141,7 @@ namespace SuperEconomicoApp.ViewsModels
 
             ViewCartCommand = new Command(async () => await ViewCartAsync());
             EditUserCommand = new Command(async () => await EditUserAsync());
-            LogoutCommand = new Command(async () => await LogoutAsync());
+            //LogoutCommand = new Command(async () => await LogoutAsync());
             OrdersHistoryCommand = new Command(async () => await OrderHistoryAsync());
             SearchViewCommand = new Command(async () => await SearchViewAsync());
             SelectDeparmentCommand = new Command<Department>( (param) => SelectDeparment(param));
@@ -224,10 +224,10 @@ namespace SuperEconomicoApp.ViewsModels
             await Application.Current.MainPage.Navigation.PushModalAsync(new AccountUserView());
         }
 
-        private async Task LogoutAsync()
-        {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new LogoutView());
-        }
+        //private async Task LogoutAsync()
+        //{
+        //    await Application.Current.MainPage.Navigation.PushModalAsync(new LogoutView());
+        //}
 
         private async void GetCategories()
         {
