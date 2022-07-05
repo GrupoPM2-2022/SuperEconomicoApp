@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading;
 using System.Windows.Input;
+using SuperEconomicoApp.Helpers;
 
 namespace SuperEconomicoApp.Views
 {
@@ -72,9 +73,12 @@ namespace SuperEconomicoApp.Views
             else
             {
                 saveUser(this.user);
-                //Thread.Sleep(3000);//RETARDO DE 3 SEGUNDOS PARA QUE GUARDE EN LA BASE DE DATOS
+                
                 var existingPages = Navigation.NavigationStack.ToList(); foreach (var page in existingPages) { Navigation.RemovePage(page); }
-                Application.Current.MainPage.Navigation.PushModalAsync(new Views.LoginView());
+
+                Settings.UserName = user.name + " " + user.lastname;
+                Settings.IdUser = user.id.ToString();
+                Application.Current.MainPage.Navigation.PushModalAsync(new Views.ProductsView());
             }
             
 
@@ -131,7 +135,7 @@ namespace SuperEconomicoApp.Views
                 HttpResponseMessage response = await client.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    await DisplayAlert("Notificación", "Correo enviado con exito " + response, "OK");
+                    await DisplayAlert("Notificación", "Correo enviado con exito ", "OK");
                 }
                 else
                 {
