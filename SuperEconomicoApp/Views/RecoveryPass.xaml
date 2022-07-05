@@ -1,15 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SuperEconomicoApp.Views.RecoveryPass">
+             x:Class="SuperEconomicoApp.Views.RecoveryPass"
+              xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" Margin="15,0,15,0">
+            
+            
+            
             <Label Text="Restablecer la contraseña" FontSize="Title" HorizontalTextAlignment="Center"/>
             <Label Text="Se acaba de enviar un codigo de verificación a " FontSize="14" HorizontalTextAlignment="Center" x:Name="lblsendcodeMs"/>
-            <Entry Placeholder="Codigo de verificación" HorizontalTextAlignment="Center" x:Name="codeVeri"/>
-            <Entry Placeholder="Nueva contraseña" HorizontalTextAlignment="Center" x:Name="newPass"/>
-            <Entry Placeholder="Vuelva a escribir la contraseña" HorizontalTextAlignment="Center" x:Name="repeatPass"/>
-            <Button Text="Cambiar contraseña" x:Name="changePass" Clicked="changePass_Clicked"/>
+
+            <controls:StandardEntry
+            Grid.Row="2"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            TextColor="Black"
+            CornerRadius="20"
+            Placeholder="Codigo de verificación"
+            x:Name="codeVeri"
+            Keyboard="Text"
+            FontSize="Default"
+                PlaceholderColor="Black" 
+            Margin="20,10,20,0"
+            />
+
+
+            <controls:StandardEntry
+            Grid.Row="2"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            TextColor="Black"
+            CornerRadius="20"
+            Placeholder="Nueva contraseña"
+             x:Name="newPass"
+            Keyboard="Text"
+            FontSize="Default"
+                PlaceholderColor="Black" 
+            Margin="20,10,20,0"
+            />
+
+            <controls:StandardEntry
+            Grid.Row="2"
+            Padding="13"
+             BackgroundColor="White"
+            BorderThickness="1"
+            TextColor="Black"
+            CornerRadius="20"
+            Placeholder="Vuelva a escribir la contraseña" 
+             x:Name="repeatPass"
+            Keyboard="Text"
+            FontSize="Default"
+                PlaceholderColor="Black" 
+            Margin="20,10,20,0"
+            />
+
+            <Button Margin="20,10,20,0" CornerRadius="8" Text="Cambiar contraseña" BackgroundColor="#8873b6" TextColor="White" x:Name="changePass" Clicked="changePass_Clicked"/>
+
+            
 
         </StackLayout>
     </ContentPage.Content>
