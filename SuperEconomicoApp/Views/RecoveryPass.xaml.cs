@@ -22,13 +22,14 @@ namespace SuperEconomicoApp.Views
         public RecoveryPass()
         {
             InitializeComponent();
-            lblsendcodeMs.Text += "estebacerrasl";
+            
         }
         public RecoveryPass(User user)
         {
             this.user = user;  
             InitializeComponent();
             sendEmail(user);
+            lblsendcodeMs.Text += user.email;
         }
 
 

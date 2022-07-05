@@ -66,6 +66,19 @@ namespace SuperEconomicoApp.Views
 
         private async void btnSave_Clicked(object sender, EventArgs e)
         {
+            UserService userService = new UserService();
+            User user = await userService.GetUserByEmail(txtemail.Text);
+
+            if (user != null)
+            {
+                if(await DisplayAlert("Notificación", "Correo igresado ya fue registrado.\n \n ¿Desea recuperar su contraseña?", "SI", "NO"))
+                {
+                    await Application.Current.MainPage.Navigation.PushModalAsync(new Views.SendRecoveryPass());
+                };
+                
+                return;
+            }
+
             if (validateData() == true)
             {
                 this.Code = Convert.ToString(numberRandom());
@@ -100,6 +113,8 @@ namespace SuperEconomicoApp.Views
 
         private bool validateData()
         {
+         
+
             if (string.IsNullOrEmpty(txtname.Text))
             {
                 DisplayAlert("Campo obligatorio", "Favor ingresar su nombre ", "OK");
