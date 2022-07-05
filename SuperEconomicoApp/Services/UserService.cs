@@ -27,7 +27,7 @@ namespace SuperEconomicoApp.Services
             try
             {
                 var request = new HttpRequestMessage();
-                request.RequestUri = new Uri(ApiMethods.URL_USER + "?value=" + email + "&method=getUserForEmail");
+                request.RequestUri = new Uri(ApiMethods.URL_USERMETHOD + "?value=" + email + "&method=getUserForEmail");
                 request.Method = HttpMethod.Get;
                 request.Headers.Add("Accept", "application/json");
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -48,6 +48,20 @@ namespace SuperEconomicoApp.Services
             }
 
             return null;
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            
+            Uri requestUri = new Uri(ApiMethods.URL_USER + "?id=" + user.id);
+            var jsonObject = JsonConvert.SerializeObject(user);
+            var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(requestUri, content);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
 

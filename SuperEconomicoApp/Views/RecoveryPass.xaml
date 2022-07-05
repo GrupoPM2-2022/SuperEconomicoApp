@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.RecoveryPass">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Center" Margin="15,0,15,0">
+            <Label Text="Restablecer la contraseña" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Se acaba de enviar un codigo de verificación a " FontSize="14" HorizontalTextAlignment="Center" x:Name="lblsendcodeMs"/>
+            <Entry Placeholder="Codigo de verificación" HorizontalTextAlignment="Center" x:Name="codeVeri"/>
+            <Entry Placeholder="Nueva contraseña" HorizontalTextAlignment="Center" x:Name="newPass"/>
+            <Entry Placeholder="Vuelva a escribir la contraseña" HorizontalTextAlignment="Center" x:Name="repeatPass"/>
+            <Button Text="Cambiar contraseña" x:Name="changePass" Clicked="changePass_Clicked"/>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -40,6 +40,9 @@
     <Compile Update="Views\AccountUserView.xaml.cs">
       <DependentUpon>AccountUserView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\SendRecoveryPass.xaml.cs">
+      <DependentUpon>SendRecoveryPass.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +62,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\EditUserViews.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecoveryPass.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SendRecoveryPass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Ubication\AddDirectionView.xaml">

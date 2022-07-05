@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.SendRecoveryPass">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="CenterAndExpand">
+            <Label Text="Recuperar contraseña" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Ingresa tu correo electrónico y te enviaremos las instrucciones para actualizar tu contraseña." FontSize="16" Margin="15,0,15,0"/>
+            <Entry Margin="15,0,15,0" Placeholder="Ingrese su correo electronico" Keyboard="Email" x:Name="RecoveryEmail"/>
+            <Button Text="Enviar"  Margin="50,0,50,0" x:Name="btnSendCodigo" Clicked="btnSendCodigo_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
