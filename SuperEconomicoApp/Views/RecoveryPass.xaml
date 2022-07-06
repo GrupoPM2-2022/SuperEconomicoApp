@@ -5,10 +5,10 @@
               xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
     <ContentPage.Content>
         <StackLayout VerticalOptions="Center" Margin="15,0,15,0">
-            
-            
-            
-            <Label Text="Restablecer la contraseña" FontSize="Title" HorizontalTextAlignment="Center"/>
+
+
+
+            <Label Text="Restablecer la contraseña" FontSize="Title" HorizontalTextAlignment="Center" FontFamily="{StaticResource CabinSketch-Bold}"/>
             <Label Text="Se acaba de enviar un codigo de verificación a " FontSize="14" HorizontalTextAlignment="Center" x:Name="lblsendcodeMs"/>
 
             <controls:StandardEntry
@@ -22,7 +22,6 @@
             x:Name="codeVeri"
             Keyboard="Text"
             FontSize="Default"
-                PlaceholderColor="Black" 
             Margin="20,10,20,0"
             />
 

@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.SendRecoveryPass"
-             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
+             xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
+             Visual="Material">
     <ContentPage.Content>
         <StackLayout VerticalOptions="CenterAndExpand">
-            <Label Text="Recuperar contraseña" FontSize="Title" HorizontalTextAlignment="Center"/>
+            <Label Text="Recuperar contraseña" FontSize="Title" HorizontalTextAlignment="Center" FontFamily="{StaticResource CabinSketch-Bold}"/>
             <Label Text="Ingresa tu correo electrónico y te enviaremos las instrucciones para actualizar tu contraseña." FontSize="16" Margin="20,0,20,0"/>
             <controls:StandardEntry
             Grid.Row="2"
@@ -18,7 +19,6 @@
             x:Name="RecoveryEmail"
             Keyboard="Email" 
             FontSize="Default"
-                PlaceholderColor="Black" 
             Margin="20,10,20,0"
             />
             <Button Text="Enviar" CornerRadius="8"  BackgroundColor="#8873b6" TextColor="White" Margin="150,10,20,0" x:Name="btnSendCodigo" Clicked="btnSendCodigo_Clicked"/>

@@ -98,12 +98,12 @@
     <AndroidAsset Include="..\SuperEconomicoApp\Fonts\CabinSketch-Bold.ttf">
       <Link>Assets\CabinSketch-Bold.ttf</Link>
     </AndroidAsset>
-    <AndroidAsset Include="..\SuperEconomicoApp\Fonts\materialdesignicons-webfont.ttf">
-      <Link>Assets\materialdesignicons-webfont.ttf</Link>
-    </AndroidAsset>
     <AndroidAsset Include="Assets\FontAwesome6Brands-Regular-400.otf" />
     <AndroidAsset Include="Assets\FontAwesome6Free-Regular-400.otf" />
     <AndroidAsset Include="Assets\FontAwesome6Free-Solid-900.otf" />
+    <AndroidAsset Include="..\..\..\Desktop\imagenes\Fonts\materialdesignicons-webfont.ttf">
+      <Link>Assets\materialdesignicons-webfont.ttf</Link>
+    </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
