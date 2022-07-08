@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using AndroidX.Core.App;
-
+using System;
 using AndroidApp = Android.App.Application;
 
 
@@ -49,7 +49,7 @@ namespace SuperEconomicoApp.Droid
                 CreateNotificationChannel();
             }
 
-            messageId++;
+            messageId = new Random().Next(1, 10000);
 
             Intent intent = new Intent(AndroidApp.Context, typeof(MainActivity));
             intent.PutExtra(TitleKey, pTitle);
@@ -65,8 +65,8 @@ namespace SuperEconomicoApp.Droid
                 .SetAutoCancel(true)
                 .SetLargeIcon(BitmapFactory.DecodeResource(AndroidApp.Context.Resources, Resource.Drawable.abc_btn_check_material))
                 .SetSmallIcon(Resource.Drawable.abc_btn_check_material)
-                .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
-                .SetPriority((int)NotificationPriority.Max);
+                .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
+                //.SetPriority((int)NotificationPriority.Max);
 
             var notification = builder.Build();
             manager.Notify(messageId, notification);
