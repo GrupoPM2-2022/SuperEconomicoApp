@@ -212,7 +212,8 @@
                 </CollectionView>
                 <Button Text="Agregar Dirección"
                         VerticalOptions="Center"
-                        HorizontalOptions="Start"/>
+                        HorizontalOptions="Start"
+                        Command="{Binding AddDirectionCommand}"/>
                 <BoxView Style="{StaticResource SeparadorBoxview}" />
             </StackLayout>
 

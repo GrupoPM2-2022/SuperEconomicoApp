@@ -3,6 +3,7 @@ using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
 using SuperEconomicoApp.Views.Reusable;
+using SuperEconomicoApp.Views.Ubication;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,7 +36,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Command IncrementOrderCommand { get; set; }
         public Command DecrementOrderCommand { get; set; }
         public Command AddToCartCommand { get; set; }
-
+        public Command AddDirectionCommand { get; set; }
 
         public double Total
         {
@@ -138,6 +139,12 @@ namespace SuperEconomicoApp.ViewsModels
             IncrementOrderCommand = new Command(() => IncrementOrder());
             DecrementOrderCommand = new Command(() => DecrementOrder());
             AddToCartCommand = new Command(() => AddToCart());
+            AddDirectionCommand = new Command(async () => await AddDirection());
+        }
+
+        private async Task AddDirection()
+        {
+            await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView("Guardar", null));
         }
 
         private void IncreaseQuantity(UserCartItem userCartItem)
@@ -156,6 +163,7 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 ListProductsOrdered.Remove(userCartItem);
                 CartItemService.RemoveProductById(userCartItem);
+                UpdateProductCart();
             }
         }
 
@@ -226,7 +234,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void LoadConfiguration()
         {
-            Total = SelectedOrder.total;
+            Total = Math.Round(SelectedOrder.total, 2);
             ListDirection = await DirectionServiceObject.GetDirectionByUser();
         }
 
@@ -246,7 +254,7 @@ namespace SuperEconomicoApp.ViewsModels
             try
             {
                 CartItemService.AddProductTocart(SelectedProductoItem, TotalQuantity);
-                UpdateProductcart();
+                UpdateProductCart();
                 TotalQuantity = 1;
                 PopupNavigation.Instance.PopAsync();
             }
@@ -256,7 +264,7 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private void UpdateProductcart()
+        private void UpdateProductCart()
         {
             var cn = DependencyService.Get<ISQLite>().GetConnection();
             var items = cn.Table<CartItem>().ToList();
@@ -271,13 +279,15 @@ namespace SuperEconomicoApp.ViewsModels
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Description = item.Description,
-                    Price = item.Price,
+                    Price = Math.Round(item.Price, 2),
                     Quantity = item.Quantity,
                     Cost = item.Price * item.Quantity,
                     Stock = item.Stock
                 });
                 Total += (item.Price * item.Quantity);
             }
+
+            Total = Math.Round(Total, 2);
         }
 
 

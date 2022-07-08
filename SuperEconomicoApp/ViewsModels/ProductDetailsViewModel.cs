@@ -84,7 +84,7 @@ namespace SuperEconomicoApp.ViewsModels
                 {
                     ProductId = SelectedProductoItem.Product_Id,
                     ProductName = SelectedProductoItem.Name,
-                    Price = SelectedProductoItem.Price,
+                    Price = Math.Round(SelectedProductoItem.Price, 2),
                     Quantity = TotalQuantity,
                     ImageProduct = SelectedProductoItem.Image,
                     Stock = SelectedProductoItem.Stock,

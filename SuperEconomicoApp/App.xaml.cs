@@ -22,11 +22,10 @@ namespace SuperEconomicoApp
 
             if (Settings.ExistUser)
             {
-                MainPage = new LoginView();
+                MainPage = new ProductsView();
             }
             else
             {
-                //MainPage = new ProductsView();
                 MainPage = new LoginView();
             }
 

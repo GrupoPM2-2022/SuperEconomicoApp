@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.supereconomicoapp">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="30" />
 	<application android:label="SuperEconomicoApp.Android" android:theme="@style/MainTheme" android:usesCleartextTraffic="true">
-		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCaCgj84fV1j4uLD7kefOg63yNz-QZiaT0" />
+		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyB5OCYlrtUdnx32QJgDn7vwwl8T32p6_i8" />
 		<provider android:name="androidx.core.content.FileProvider"
 					android:authorities="${applicationId}.fileprovider"
 					android:exported="false"

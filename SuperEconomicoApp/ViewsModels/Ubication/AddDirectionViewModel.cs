@@ -201,7 +201,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             if (response)
             {
                 await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección Agregada Correctamente", "Ok");
-                await Application.Current.MainPage.Navigation.PopModalAsync();
             }
             else
             {
