@@ -82,15 +82,22 @@ namespace SuperEconomicoApp.Services
 
         public async Task<bool> UpdateUser(User user)
         {
-            
-            Uri requestUri = new Uri(ApiMethods.URL_USER + "?id=" + user.id);
-            var jsonObject = JsonConvert.SerializeObject(user);
-            var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
-            var response = await client.PutAsync(requestUri, content);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return true;
+                Uri requestUri = new Uri(ApiMethods.URL_USER + "?id=" + user.id);
+                var jsonObject = JsonConvert.SerializeObject(user);
+                var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+                var response = await client.PutAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return false;
         }
 

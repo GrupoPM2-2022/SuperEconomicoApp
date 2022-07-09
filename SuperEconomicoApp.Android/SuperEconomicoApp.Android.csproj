@@ -104,7 +104,6 @@
     <AndroidAsset Include="Assets\FontAwesome6Brands-Regular-400.otf" />
     <AndroidAsset Include="Assets\FontAwesome6Free-Regular-400.otf" />
     <AndroidAsset Include="Assets\FontAwesome6Free-Solid-900.otf" />
-    <AndroidAsset Include="Assets\materialdesignicons-webfont.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

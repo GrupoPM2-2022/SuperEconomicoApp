@@ -13,10 +13,13 @@ namespace SuperEconomicoApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AccountUserView : ContentPage
     {
+
+        UserAccountModels userAccountModels;
         public AccountUserView()
         {
             InitializeComponent();
-            BindingContext = new UserAccountModels();
+            userAccountModels = new UserAccountModels();
+            BindingContext = userAccountModels;
 
         }
 
@@ -35,6 +38,12 @@ namespace SuperEconomicoApp.Views
 
         }
 
-       
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            userAccountModels.GetUserById();
+        }
+
+
     }
 }

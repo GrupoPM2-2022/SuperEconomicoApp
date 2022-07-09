@@ -2,6 +2,7 @@
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using SuperEconomicoApp.Services;
+using SuperEconomicoApp.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,83 +28,168 @@ namespace SuperEconomicoApp.ViewsModels
         private bool _IsImageBD;
         private CircleImage circleImage;
         UserService userService;
+        User userSelected;
         #endregion
 
         public EditUserViewModels(User user, CircleImage imageForm)
         {
             circleImage = imageForm;
             userService = new UserService();
-            LoadConfiguration(user);
+            userSelected = user;
+            LoadConfiguration();
         }
 
         #region OBJETOS
         public DateTime BirthDate
         {
             get { return _BirthDate; }
-            set { _BirthDate = value; }
+            set
+            {
+                _BirthDate = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Name
         {
             get { return _Name; }
-            set { _Name = value; }
+            set
+            {
+                _Name = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Lastname
         {
             get { return _Lastname; }
-            set { _Lastname = value; }
+            set
+            {
+                _Lastname = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Telephone
         {
             get { return _Telephone; }
-            set { _Telephone = value; }
+            set
+            {
+                _Telephone = value;
+                OnPropertyChanged();
+            }
         }
 
         public string EmailNew
         {
             get { return _Email; }
-            set { _Email = value; }
+            set
+            {
+                _Email = value;
+                OnPropertyChanged();
+            }
         }
 
         public byte[] Image
         {
             get { return _Image; }
-            set { _Image = value; }
+            set
+            {
+                _Image = value;
+                OnPropertyChanged();
+            }
         }
 
         public bool IsImageBD
         {
             get { return _IsImageBD; }
-            set { _IsImageBD = value; }
+            set
+            {
+                _IsImageBD = value;
+                OnPropertyChanged();
+            }
         }
 
         #endregion
         #region PROCESOS
         private async void SelectImage()
         {
-            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions());
+            bool response = await Application.Current.MainPage.DisplayAlert("Advertencia", "Seleccione el tipo de imagen que desea", "Camara", "Galeria");
 
-            if (file == null)
-                return;
+            if (response)
+                GetImageFromCamera();
+            else
+                GetImageFromGallery();
+        }
 
-            Image = File.ReadAllBytes(file.Path);
-            circleImage.Source = ImageSource.FromStream(() => { return file.GetStream(); });
+        private async void GetImageFromGallery()
+        {
+            try
+            {
+                if (CrossMedia.Current.IsPickPhotoSupported)
+                {
+                    var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+                    {
+                        PhotoSize = PhotoSize.Medium,
+                    });
+                    if (file == null)
+                        return;
+
+                    if (IsImageBD)
+                    {
+                        ShowTypeImage("default");
+                    }
+
+                    circleImage.Source = ImageSource.FromStream(() => { return file.GetStream(); });
+                    Image = File.ReadAllBytes(file.Path);
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al seleccionar la imagen.", "Ok");
+                }
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al seleccionar la imagen.", "Ok");
+            }
+
+        }
+
+        private async void GetImageFromCamera()
+        {
+            try
+            {
+                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    PhotoSize = PhotoSize.Medium,
+                });
+
+                if (file == null)
+                    return;
+
+                if (IsImageBD)
+                    ShowTypeImage("default");
+
+                circleImage.Source = ImageSource.FromStream(() => { return file.GetStream(); });
+                Image = File.ReadAllBytes(file.Path);
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al tomar la fotografia.", "Ok");
+            }
         }
 
         private void ShowTypeImage(string type)
         {
             if (type.Equals("default"))
             {
-                circleImage.Source = "person2.png";
                 circleImage.IsVisible = true;
-                _IsImageBD = false;
+                IsImageBD = false;
             }
             else
             {
                 circleImage.IsVisible = false;
-                _IsImageBD = true;
+                IsImageBD = true;
             }
         }
 
@@ -123,12 +209,26 @@ namespace SuperEconomicoApp.ViewsModels
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "El correo que ingresaste ya pertenece a otro usuario.", "Ok");
                     return;
                 }
-                else
-                {
-
-                }
             }
 
+            userSelected.name = Name;
+            userSelected.lastname = Lastname;
+            userSelected.phone = Telephone;
+            userSelected.image = Image;
+            userSelected.email = EmailNew;
+            userSelected.birthdate = BirthDate;
+
+            bool confirmationUpdate = await userService.UpdateUser(userSelected);
+
+            if (confirmationUpdate)
+            {
+                await Application.Current.MainPage.DisplayAlert("Confirmacion", "Usuario actualizado correctamente.", "Ok");
+                await Application.Current.MainPage.Navigation.PushModalAsync(new AccountUserView());
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al actualizar el usuario.", "Ok");
+            }
 
         }
 
@@ -167,23 +267,24 @@ namespace SuperEconomicoApp.ViewsModels
             return "Ok";
         }
 
-        private void LoadConfiguration(User user)
+        private void LoadConfiguration()
         {
-            Name = user.name;
-            Lastname = user.lastname;
-            BirthDate = user.birthdate;
-            EmailCurrent = user.email;
-            EmailNew = user.email;
-            Telephone = user.phone;
+            Name = userSelected.name;
+            Lastname = userSelected.lastname;
+            BirthDate = userSelected.birthdate;
+            EmailCurrent = userSelected.email;
+            EmailNew = userSelected.email;
+            Telephone = userSelected.phone;
 
-            if (user.image == null)
+            if (userSelected.image == null || userSelected.image.Length == 0)
             {
+                circleImage.Source = "person2.png";
                 ShowTypeImage("default");
             }
             else
             {
                 ShowTypeImage("principal");
-                Image = user.image;
+                Image = userSelected.image;
             }
 
         }

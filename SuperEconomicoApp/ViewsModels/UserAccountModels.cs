@@ -61,7 +61,7 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public bool ImageDefault
+        public bool IsImageDefault
         {
             get { return _ImageDefault; }
             set
@@ -71,7 +71,7 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public bool ImageBD
+        public bool IsImageBD
         {
             get { return _ImageBD; }
             set
@@ -80,8 +80,6 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
-
-
 
         public UserAccountModels()
         {
@@ -106,15 +104,15 @@ namespace SuperEconomicoApp.ViewsModels
                 Lastname = user.lastname;
                 Email = user.email;
 
-                if (user.image == null)
+                if (user.image == null || user.image.Length == 0)
                 {
-                    ImageDefault = true;
-                    ImageBD = false;
+                    IsImageDefault = true;
+                    IsImageBD = false;
                 }
                 else
                 {
-                    ImageDefault = false;
-                    ImageBD = true;
+                    IsImageDefault = false;
+                    IsImageBD = true;
                     Image = user.image;
                 }
             }

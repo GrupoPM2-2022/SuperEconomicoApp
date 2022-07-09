@@ -33,7 +33,9 @@
                 Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1"
-                IsVisible="{Binding IsImageBD}">
+                IsVisible="{Binding IsImageBD}"
+                HeightRequest="90"
+                WidthRequest="90">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SelectImageCommand}"  NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
@@ -45,8 +47,8 @@
                 HorizontalOptions="Center" 
                 BorderColor="Purple"
                 BorderThickness="1"
-                HeightRequest="70"
-                WidthRequest="70">
+                HeightRequest="90"
+                WidthRequest="90">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding SelectImageCommand}"  NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
