@@ -4,6 +4,7 @@
              x:Class="SuperEconomicoApp.Views.AddUser"
              xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
              xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+    <ScrollView>
     <Grid Padding="20" RowSpacing="10">
 
         <Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                 x:Name="img"  
                 Source="person2"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1">
+                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1" HeightRequest="200">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
@@ -127,7 +128,7 @@
             Margin="0,0,0,10"
             />
 
-        <Button 
+            <Button 
             Grid.Row="15"
             Text="GUARDAR" 
             BackgroundColor="#8873b6" 
@@ -137,8 +138,7 @@
             x:Name="btnSave"
             Clicked="btnSave_Clicked"
             CornerRadius="20"/>
-
-
-    </Grid>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>
