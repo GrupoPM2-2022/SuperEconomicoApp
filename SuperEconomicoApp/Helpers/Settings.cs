@@ -45,5 +45,12 @@ namespace SuperEconomicoApp.Helpers
         {
             AppSettings.Clear();
         }
+        
+        // DELETE KEYS
+        public static void RemoveUserName() => AppSettings.Remove(nameof(UserName));
+        public static void RemoveIdUser() => AppSettings.Remove(nameof(IdUser));
+        public static void RemoveCoordinates() => AppSettings.Remove(nameof(Coordinates));
+        public static void RemoveDepartment() => AppSettings.Remove(nameof(Department));
+
     }
 }

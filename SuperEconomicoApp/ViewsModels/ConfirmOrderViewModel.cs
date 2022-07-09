@@ -232,9 +232,13 @@ namespace SuperEconomicoApp.ViewsModels
             SelectedOrder.comment = Comment;
         }
 
-        private async void LoadConfiguration()
+        private void LoadConfiguration()
         {
             Total = Math.Round(SelectedOrder.total, 2);
+            GetAllDirections();
+        }
+
+        public async void GetAllDirections() {
             ListDirection = await DirectionServiceObject.GetDirectionByUser();
         }
 

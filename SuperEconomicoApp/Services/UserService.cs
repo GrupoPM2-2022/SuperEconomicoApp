@@ -9,6 +9,7 @@ using Firebase.Database.Query;
 using System.Net.Http;
 using SuperEconomicoApp.Api;
 using Newtonsoft.Json;
+using SuperEconomicoApp.Helpers;
 
 namespace SuperEconomicoApp.Services
 {
@@ -28,6 +29,35 @@ namespace SuperEconomicoApp.Services
             {
                 var request = new HttpRequestMessage();
                 request.RequestUri = new Uri(ApiMethods.URL_USERMETHOD + "?value=" + email + "&method=getUserForEmail");
+                request.Method = HttpMethod.Get;
+                request.Headers.Add("Accept", "application/json");
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    if (content.Equals("[]"))
+                    {
+                        return null;
+                    }
+                    user = JsonConvert.DeserializeObject<User>(content);
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<User> GetUserById()
+        {
+            User user = new User();
+            try
+            {
+                var request = new HttpRequestMessage();
+                request.RequestUri = new Uri(ApiMethods.URL_USER + "?id=" + Settings.IdUser);
                 request.Method = HttpMethod.Get;
                 request.Headers.Add("Accept", "application/json");
                 HttpResponseMessage response = await client.SendAsync(request);

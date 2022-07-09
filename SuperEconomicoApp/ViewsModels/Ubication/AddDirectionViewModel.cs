@@ -15,7 +15,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
     public class AddDirectionViewModel : BaseViewModel
     {
         #region VARIABLES
-        private static double VALID_KILOMETERS = 30;
         string _Description;
         Pin pinUser = new Pin();
         Map map;
@@ -91,14 +90,14 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             latitudeUser = e.Pin.Position.Latitude.ToString();
             longitudeUser = e.Pin.Position.Longitude.ToString();
             var position = new Position(e.Pin.Position.Latitude, e.Pin.Position.Longitude);
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(400)));
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(500)));
             coordinatesUser = latitudeUser + "," + longitudeUser;
             googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(coordinatesSupermarket, coordinatesUser);
 
             int meters = googleDistanceMatrix.rows[0].elements[0].distance.value;
 
             double kilometers = meters / 1000;
-            if (kilometers > VALID_KILOMETERS)
+            if (kilometers > Constants.VALID_KILOMETERS)
             {
                 await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
                 IsEnabledButton = false;
@@ -139,7 +138,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             pinUser.IsDraggable = true;
 
             map.Pins.Add(pinUser);
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(positionMap, Xamarin.Forms.GoogleMaps.Distance.FromMeters(700)));
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(positionMap, Xamarin.Forms.GoogleMaps.Distance.FromMeters(800)));
         }
 
         private void ApplyMapTheme()
@@ -201,6 +200,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             if (response)
             {
                 await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección Agregada Correctamente", "Ok");
+                await Application.Current.MainPage.Navigation.PopModalAsync();
             }
             else
             {

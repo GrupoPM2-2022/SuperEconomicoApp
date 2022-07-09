@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Services;
+﻿using SuperEconomicoApp.Helpers;
+using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,9 @@ namespace SuperEconomicoApp.ViewsModels
         {
             var cis = new CartItemService();
             cis.RemoveItemsFromCart();
-            Preferences.Remove("Username");
+            //Settings.RemoveIdUser();
+            //Settings.RemoveUserName();
+            Settings.ClearAllData();
             await Application.Current.MainPage.Navigation.PushModalAsync(new LoginView());
 
         }

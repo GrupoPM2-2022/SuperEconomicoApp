@@ -110,11 +110,8 @@ namespace SuperEconomicoApp.Views
 
         }
 
-
         private bool validateData()
         {
-         
-
             if (string.IsNullOrEmpty(txtname.Text))
             {
                 DisplayAlert("Campo obligatorio", "Favor ingresar su nombre ", "OK");
@@ -171,8 +168,6 @@ namespace SuperEconomicoApp.Views
 
             return EmailRegex.IsMatch(email);
         }
-
-
 
     }
 }

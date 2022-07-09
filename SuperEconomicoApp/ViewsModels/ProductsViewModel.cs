@@ -22,6 +22,8 @@ namespace SuperEconomicoApp.ViewsModels
         private string _UserName;
         private string _DepartamentPreview;
         private string _Coordinates;
+        private GoogleDistanceMatrix googleDistanceMatrix;
+        private GoogleServiceApi googleServiceApi;
         public string UserName
         {
             set
@@ -117,7 +119,6 @@ namespace SuperEconomicoApp.ViewsModels
 
         public Command ViewCartCommand { get; set; }
         public Command EditUserCommand { get; set; }
-        //public Command LogoutCommand { get; set; }
         public Command OrdersHistoryCommand { get; set; }
         public Command SearchViewCommand { get; set; }
         public Command SelectDeparmentCommand { get; set; }
@@ -138,13 +139,14 @@ namespace SuperEconomicoApp.ViewsModels
             UserCartItemsCount = new CartItemService().GetUserCartCount();
             ListItemsProducts = new ObservableCollection<ProductoItem>();
             Categories = new ObservableCollection<Category>();
+            googleDistanceMatrix = new GoogleDistanceMatrix();
+            googleServiceApi = new GoogleServiceApi();
 
             ViewCartCommand = new Command(async () => await ViewCartAsync());
             EditUserCommand = new Command(async () => await EditUserAsync());
-            //LogoutCommand = new Command(async () => await LogoutAsync());
             OrdersHistoryCommand = new Command(async () => await OrderHistoryAsync());
             SearchViewCommand = new Command(async () => await SearchViewAsync());
-            SelectDeparmentCommand = new Command<Department>( (param) => SelectDeparment(param));
+            SelectDeparmentCommand = new Command<Department>((param) => SelectDeparment(param));
             ConfirmDepartmentCommand = new Command(ConfirmDepartment);
             ViewDirectionCommand = new Command(async () => await ViewDirection());
 
@@ -158,11 +160,50 @@ namespace SuperEconomicoApp.ViewsModels
             await Application.Current.MainPage.Navigation.PushModalAsync(new ListDirectionView());
         }
 
-        private void ConfirmDepartment()
+        private async void ConfirmDepartment()
         {
-            Settings.Department = DepartamentPreview;
-            Settings.Coordinates = Coordinates;
-            PopupNavigation.Instance.PopAsync();
+            if (string.IsNullOrEmpty(DepartamentPreview))
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes seleccionar tu departamento actual.", "Ok");
+                return;
+            }
+            var statusCheck = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (statusCheck == PermissionStatus.Granted)
+            {
+                IsValidDistance();
+            }
+            else {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes conceder permisos de localizacion a la aplicacion.", "Ok");
+                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            }
+        }
+
+        private async void IsValidDistance()
+        {
+            var location = await Geolocation.GetLocationAsync();
+            if (location != null)
+            {
+                string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(Coordinates, coordinatesUser);
+
+                int meters = googleDistanceMatrix.rows[0].elements[0].distance.value;
+
+                double kilometers = meters / 1000;
+                if (kilometers > Constants.VALID_KILOMETERS)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
+                }
+                else
+                {
+                    Settings.Department = DepartamentPreview;
+                    Settings.Coordinates = Coordinates;
+                    await PopupNavigation.Instance.PopAsync();
+                }
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "No podemos obtener tu localizacion actual.", "Ok");
+            }
         }
 
         private void SelectDeparment(Department department)
@@ -171,14 +212,15 @@ namespace SuperEconomicoApp.ViewsModels
             DepartamentPreview = department.Name;
         }
 
-        private void ConfigurationDepartment()
+        private async void ConfigurationDepartment()
         {
             if (!Settings.ExistDepartment)
             {
                 var popup = new SelectDepartment();
                 popup.BindingContext = this;
                 LoadListDepartment();
-                PopupNavigation.Instance.PushAsync(popup);
+                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                await PopupNavigation.Instance.PushAsync(popup);
             }
         }
 
