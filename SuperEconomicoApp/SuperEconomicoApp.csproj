@@ -40,6 +40,9 @@
     <Compile Update="Views\AccountUserView.xaml.cs">
       <DependentUpon>AccountUserView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\TabbedOrdersView.xaml.cs">
+      <DependentUpon>TabbedOrdersView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SendRecoveryPass.xaml.cs">
       <DependentUpon>SendRecoveryPass.xaml</DependentUpon>
     </Compile>
@@ -70,6 +73,15 @@
     <EmbeddedResource Update="Views\SendRecoveryPass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ShowOrderDetailView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TabbedOrder\ActiveOrdersView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\TabbedOrder\OrderHistoryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Ubication\AddDirectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -82,7 +94,7 @@
     <EmbeddedResource Update="Views\LogoutView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\OrdersHistoryView.xaml">
+    <EmbeddedResource Update="Views\TabbedOrdersView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\OrderView.xaml">

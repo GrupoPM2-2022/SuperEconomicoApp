@@ -7,6 +7,7 @@ namespace SuperEconomicoApp.Model
 
     public class OrderDetails
     {
+        public int order_id { get; set; }
         public int product_id { get; set; }
         public int quantity { get; set; }
         public string name_product { get; set; }

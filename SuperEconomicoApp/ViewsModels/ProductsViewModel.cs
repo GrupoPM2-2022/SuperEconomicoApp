@@ -253,7 +253,8 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async Task OrderHistoryAsync()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new OrdersHistoryView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedOrdersView());
+            
         }
 
         private async Task ViewCartAsync()

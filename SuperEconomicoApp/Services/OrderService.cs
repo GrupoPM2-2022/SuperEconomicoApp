@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
@@ -16,6 +17,8 @@ namespace SuperEconomicoApp.Services
 {
     public class OrderService
     {
+        private static HttpClient client = new HttpClient();
+
         public OrderService()
         {
         }
@@ -31,8 +34,6 @@ namespace SuperEconomicoApp.Services
             try
             {
                 var coordinates = Settings.Coordinates.Split(',');
-
-                var client = new HttpClient();
                 Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?latitude=" + coordinates[0] + "&longitude=" + coordinates[1]);
 
                 var json = JsonConvert.SerializeObject(order);
@@ -52,6 +53,35 @@ namespace SuperEconomicoApp.Services
                 Console.WriteLine("ERROR_INSERT_BD ->: " + ex.Message);
             }
             return false;
+        }
+
+        public async Task<OrdersActiveByUser> GetActiveOrdersByUser()
+        {
+            try
+            {
+                OrdersActiveByUser ordersActiveByUser = new OrdersActiveByUser();
+                var uri = new Uri(ApiMethods.URL_ORDERS_USER + Settings.IdUser + "&method=getUserOrderActive");
+                var response = await client.GetAsync(uri);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    ordersActiveByUser = JsonConvert.DeserializeObject<OrdersActiveByUser>(content);
+
+                    return ordersActiveByUser;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
         }
 
     }
