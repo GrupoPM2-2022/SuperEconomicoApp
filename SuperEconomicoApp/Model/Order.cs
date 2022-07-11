@@ -22,8 +22,9 @@ namespace SuperEconomicoApp.Model
         public string delivery_name { get; set; }
         public string delivery_lastname { get; set; }
         public string phone_delivery { get; set; }
+        public byte[] delivery_image { get; set; }
+        public string sucursal { get; set; }
         public List<OrderDetails> orders_detail { get; set; }
-        public List<OrderDetails> order_detail { get; set; }
     }
 
     public class OrdersActiveByUser {

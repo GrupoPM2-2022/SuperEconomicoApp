@@ -23,6 +23,7 @@ namespace SuperEconomicoApp
 
             if (Settings.ExistUser)
             {
+                //MainPage = new ProductsView();
                 MainPage = new TabbedOrdersView();
             }
             else

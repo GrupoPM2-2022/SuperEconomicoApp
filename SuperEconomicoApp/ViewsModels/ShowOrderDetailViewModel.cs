@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
+using Plugin.CloudFirestore;
 
 namespace SuperEconomicoApp.ViewsModels
 {
@@ -20,6 +21,8 @@ namespace SuperEconomicoApp.ViewsModels
         private bool _IsPhoneEnabled;
         private Map map;
         private Order order;
+        private byte[] _ImageDelivery;
+        private Pin pinDelivery;
 
         #endregion
 
@@ -28,6 +31,7 @@ namespace SuperEconomicoApp.ViewsModels
         {
             map = mapParam;
             order = orderParam;
+            pinDelivery = new Pin();
             LoadConfiguration();
         }
 
@@ -40,6 +44,16 @@ namespace SuperEconomicoApp.ViewsModels
             set
             {
                 _ListOrderDetails = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public byte[] ImageDelivery
+        {
+            get { return _ImageDelivery; }
+            set
+            {
+                _ImageDelivery = value;
                 OnPropertyChanged();
             }
         }
@@ -73,7 +87,7 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool IsPhoneEnabled
         {
             get { return _IsPhoneEnabled; }
@@ -96,13 +110,14 @@ namespace SuperEconomicoApp.ViewsModels
                 return;
             }
 
-            ListOrdersDetail = order.order_detail;
+            ListOrdersDetail = order.orders_detail;
+            ImageDelivery = order.delivery_image;
             Total = order.total.ToString("F", CultureInfo.InvariantCulture);
 
             if (!order.delivery_name.Equals("no asignado"))
             {
                 NameDelivery = order.delivery_name + " " + order.delivery_lastname;
-                NumberPhoneDelivery = "+504 " + order.phone_delivery;
+                NumberPhoneDelivery = order.phone_delivery;
                 IsPhoneEnabled = true;
             }
             else
@@ -118,7 +133,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private void ConfigurationMap()
         {
-            var coordinatesSup = Settings.Coordinates.Split(',');
+            var coordinatesSup = order.sucursal.Split(',');
             var coordinatesUser = order.client_location.Split(',');
             Position currentPosition = new Position(Convert.ToDouble(coordinatesSup[0]), Convert.ToDouble(coordinatesSup[1]));
 
@@ -129,7 +144,7 @@ namespace SuperEconomicoApp.ViewsModels
                 Icon = BitmapDescriptorFactory.FromBundle("supermercado.png"),
                 Position = currentPosition,
             };
-            
+
             Pin pinDestination = new Pin
             {
                 Label = "Destino",
@@ -138,9 +153,61 @@ namespace SuperEconomicoApp.ViewsModels
                 Position = new Position(Convert.ToDouble(coordinatesUser[0]), Convert.ToDouble(coordinatesUser[1])),
             };
 
+            pinDelivery.Label = "Repartidor";
+            pinDelivery.Type = PinType.Place;
+            pinDelivery.Icon = BitmapDescriptorFactory.FromBundle("pin_delivery.png");
+            pinDelivery.Position = currentPosition;
+
             map.Pins.Add(pinSupermarket);
             map.Pins.Add(pinDestination);
+            map.Pins.Add(pinDelivery);
             map.MoveToRegion(MapSpan.FromCenterAndRadius(currentPosition, Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1.5)));
+
+            GetTrackingRealTime();
+        }
+
+        private void GetTrackingRealTime()
+        {
+            string idUserDelivery = order.delivery_user_id.ToString();
+            //if (!idUserDelivery.Equals(300))
+            //{
+            CrossCloudFirestore.Current
+               .Instance
+               .Collection("Ubicacion2")
+               .AddSnapshotListener((snapshot, error) =>
+               {
+                   if (snapshot != null)
+                   {
+                       foreach (var documentChange in snapshot.DocumentChanges)
+                       {
+                           if (documentChange.Type == DocumentChangeType.Modified)
+                           {
+
+                               if (documentChange.Document.Id.Equals(idUserDelivery))
+                               {
+                                   Dictionary<string, object> city = (Dictionary<string, object>)documentChange.Document.Data;
+                                   double latitude = 0, longitude = 0;
+
+                                   foreach (KeyValuePair<string, object> pair in city)
+                                   {
+                                       if (pair.Key.Equals("ubicacion"))
+                                       {
+                                           string[] ubication = pair.Value.ToString().Split(',');
+                                           latitude = Convert.ToDouble(ubication[0]);
+                                           longitude = Convert.ToDouble(ubication[1]);
+                                       }
+                                   }
+
+                                   pinDelivery.Position = new Position(latitude, longitude);
+                                   map.MoveToRegion(MapSpan.FromCenterAndRadius(pinDelivery.Position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(800)));
+
+                               }
+
+                           }
+                       }
+                   }
+               });
+            //}
         }
 
         public void ProcesoSimple()

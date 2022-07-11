@@ -217,10 +217,10 @@
                 <BoxView Style="{StaticResource SeparadorBoxview}" />
             </StackLayout>
 
-            <Editor VerticalOptions="FillAndExpand" 
+            <!--<Editor VerticalOptions="FillAndExpand" 
                     Placeholder="Alguna instrucción en la orden (opcional)"
                     Margin="10"
-                    Text="{Binding Comment}"/>
+                    Text="{Binding Comment}"/>-->
 
             <Button Text="PROCESAR ORDEN"
                     Command="{Binding SaveOrderCommand}"/>
