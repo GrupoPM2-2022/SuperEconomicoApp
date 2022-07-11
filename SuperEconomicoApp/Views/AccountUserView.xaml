@@ -48,8 +48,10 @@
                             <controls:CircleImage 
                                 Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
                                 IsVisible="{Binding IsImageBD}"
-                                HeightRequest="70"
-                                WidthRequest="70"/>
+                                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                                HeightRequest="100"
+                                />
                         </StackLayout>
 
                     </pancake:PancakeView>
@@ -105,17 +107,21 @@
                             Text="ACTUALIZAR PERFIL" 
                             BackgroundColor="#8873b6" 
                             TextColor="White" 
-                            Margin="20"
+                            Margin="60,-15,60,0"
                             x:Name="btnEdit"
                             Command="{Binding EditUserCommand}"
-                            CornerRadius="20"/>
+                            CornerRadius="20"
+                WidthRequest="200" 
+            HeightRequest="40"/>
 
+            
             <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent"  Margin="20">
                 <StackLayout Orientation="Horizontal" >
                     <Image Source="salida1" 
                                HorizontalOptions="Start" 
                                VerticalOptions="Center"
                                Aspect="AspectFit"
+                               HeightRequest="20"
                            >
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
@@ -125,10 +131,21 @@
                     <Button 
                             Text="Cerrar Sesion" 
                             BackgroundColor="Transparent"
-                           
+                            FontSize="Small"
                             x:Name="btnExit"
                             Command="{Binding LogoutCommand}"
-                            CornerRadius="20"/>
+                            CornerRadius="20"
+                            HorizontalOptions="Center"/>
+                    <Image Source="flecha" 
+                               HorizontalOptions="EndAndExpand" 
+                               VerticalOptions="Center"
+                               Aspect="AspectFit"
+                               HeightRequest="20"
+                           >
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
 
                 </StackLayout>
             </Frame>

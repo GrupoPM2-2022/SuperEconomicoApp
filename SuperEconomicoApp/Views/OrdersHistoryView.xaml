@@ -17,14 +17,16 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <ImageButton Source="{FontImage FontFamily=FontAwesome,
-                Glyph={x:Static helpers:IconFont.ArrowLeft}, Size=30,Color=White}"
+            <ImageButton Source="atras"
                          Grid.Row="0" HorizontalOptions="Start" Aspect="AspectFit"
+                         BackgroundColor="Transparent"
                          VerticalOptions="Start" Margin="10,30" Clicked="ImageButton_Clicked"/>
-            <Label Text="El Economico" FontSize="40" TextColor="WhiteSmoke"
-                   FontFamily="CabinSketch" HorizontalOptions="Center" VerticalOptions="Start"/>
+            <Label Text="El Economico" FontFamily="{StaticResource CabinSketch-Bold}"
+                   TextColor="White" FontAttributes="Bold"
+                    HorizontalOptions="Center"  VerticalOptions="Start"
+                   FontSize="30"/>
 
-            <Label x:Name="LabelName" FontSize="Subtitle" Margin="20,0" TextColor="WhiteSmoke"
+            <Label x:Name="LabelName" FontSize="Subtitle" Margin="20,20,20,0" TextColor="WhiteSmoke"
                    HorizontalOptions="Center" VerticalOptions="Center"/>
 
             <pancake:PancakeView BackgroundColor="WhiteSmoke" CornerRadius="40,40,0,0"
