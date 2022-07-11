@@ -8,6 +8,9 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Plugin.CloudFirestore;
+using SuperEconomicoApp.Services;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SuperEconomicoApp.ViewsModels
 {
@@ -15,6 +18,7 @@ namespace SuperEconomicoApp.ViewsModels
     {
         #region VARIABLES
         private List<OrderDetails> _ListOrderDetails;
+        private List<Position> pathContent;
         private string _Total;
         private string _NameDelivery;
         private string _NumberPhoneDelivery;
@@ -23,6 +27,7 @@ namespace SuperEconomicoApp.ViewsModels
         private Order order;
         private byte[] _ImageDelivery;
         private Pin pinDelivery;
+        private string[] coordinatesUser;
 
         #endregion
 
@@ -134,7 +139,10 @@ namespace SuperEconomicoApp.ViewsModels
         private void ConfigurationMap()
         {
             var coordinatesSup = order.sucursal.Split(',');
-            var coordinatesUser = order.client_location.Split(',');
+            coordinatesUser = order.client_location.Split(',');
+
+            TraceRoute(coordinatesSup, 900);
+
             Position currentPosition = new Position(Convert.ToDouble(coordinatesSup[0]), Convert.ToDouble(coordinatesSup[1]));
 
             Pin pinSupermarket = new Pin
@@ -157,11 +165,11 @@ namespace SuperEconomicoApp.ViewsModels
             pinDelivery.Type = PinType.Place;
             pinDelivery.Icon = BitmapDescriptorFactory.FromBundle("pin_delivery.png");
             pinDelivery.Position = currentPosition;
+            pinDelivery.IsVisible = false;
 
             map.Pins.Add(pinSupermarket);
             map.Pins.Add(pinDestination);
             map.Pins.Add(pinDelivery);
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(currentPosition, Xamarin.Forms.GoogleMaps.Distance.FromKilometers(1.5)));
 
             GetTrackingRealTime();
         }
@@ -169,8 +177,6 @@ namespace SuperEconomicoApp.ViewsModels
         private void GetTrackingRealTime()
         {
             string idUserDelivery = order.delivery_user_id.ToString();
-            //if (!idUserDelivery.Equals(300))
-            //{
             CrossCloudFirestore.Current
                .Instance
                .Collection("Ubicacion2")
@@ -182,32 +188,73 @@ namespace SuperEconomicoApp.ViewsModels
                        {
                            if (documentChange.Type == DocumentChangeType.Modified)
                            {
+                               if (!pinDelivery.IsVisible)
+                               {
+                                   pinDelivery.IsVisible = true;
+                               }
 
                                if (documentChange.Document.Id.Equals(idUserDelivery))
                                {
-                                   Dictionary<string, object> city = (Dictionary<string, object>)documentChange.Document.Data;
-                                   double latitude = 0, longitude = 0;
+                                   Dictionary<string, object> element = (Dictionary<string, object>) documentChange.Document.Data;
+                                   string[] ubication = { };
 
-                                   foreach (KeyValuePair<string, object> pair in city)
+                                   foreach (KeyValuePair<string, object> pair in element)
                                    {
                                        if (pair.Key.Equals("ubicacion"))
                                        {
-                                           string[] ubication = pair.Value.ToString().Split(',');
-                                           latitude = Convert.ToDouble(ubication[0]);
-                                           longitude = Convert.ToDouble(ubication[1]);
+                                           ubication = pair.Value.ToString().Split(',');
                                        }
                                    }
 
-                                   pinDelivery.Position = new Position(latitude, longitude);
-                                   map.MoveToRegion(MapSpan.FromCenterAndRadius(pinDelivery.Position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(800)));
-
+                                   TraceRoute(ubication, 350);
+                                   pinDelivery.Position = new Position(Convert.ToDouble(ubication[0]), Convert.ToDouble(ubication[1]));
                                }
 
                            }
                        }
                    }
                });
-            //}
+        }
+
+        private async void TraceRoute(string[] coordinatesOrigin, double meters) {
+            pathContent = await LoadRoute(coordinatesOrigin);
+            map.Polylines.Clear();
+
+            var polyline = new Xamarin.Forms.GoogleMaps.Polyline();
+            polyline.StrokeColor = Color.Purple;
+            polyline.StrokeWidth = 3;
+
+            foreach (var item in pathContent)
+            {
+                polyline.Positions.Add(item);
+            }
+
+            map.Polylines.Add(polyline);
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(polyline.Positions[0].Latitude, polyline.Positions[0].Longitude), Xamarin.Forms.GoogleMaps.Distance.FromMeters(meters)));
+        }
+
+
+        private async Task<List<Position>> LoadRoute(string[] coordinatesOrigin) {
+            try
+            {
+                var googleDirection = await ApiServices.ServiceClientInstance.GetDirections(coordinatesOrigin[0], coordinatesOrigin[1], coordinatesUser[0], coordinatesUser[1]);
+                if (googleDirection.Routes != null && googleDirection.Routes.Count > 0)
+                {
+                    var positions = (Enumerable.ToList(PolylineHelper.Decode(googleDirection.Routes.First().OverviewPolyline.Points)));
+                    return positions;
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Agrega tu método de pago dentro de la consola de Google Maps", "Ok");
+                    return null;
+                }
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Aviso", "Se produjo un error al trazar la ruta", "Ok");
+            }
+
+            return null;
         }
 
         public void ProcesoSimple()

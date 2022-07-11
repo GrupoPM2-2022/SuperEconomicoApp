@@ -21,7 +21,7 @@
 
         <ScrollView>
             <StackLayout>
-                <StackLayout Padding="5">
+                <StackLayout Padding="5,2,5,5">
 
                     <Frame BackgroundColor="White"
                    CornerRadius="3"
@@ -59,7 +59,7 @@
 
                             <Button 
                                 Text="LLAMAR AL REPARTIDOR" 
-                                BackgroundColor="#8873b6" 
+                                BackgroundColor="#76448A" 
                                 TextColor="White" 
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
