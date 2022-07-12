@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pop:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Reusable.PreviewOpinion"
+             xmlns:pop="http://rotorgames.com">
+
+    <pop:PopupPage.Animation>
+        <pop:MoveAnimation PositionIn="Left"
+                           PositionOut="Right"
+                           DurationIn="400"
+                           DurationOut="320"
+                           HasBackgroundAnimation="True"/>
+    </pop:PopupPage.Animation>
+
+    <pop:PopupPage.Resources>
+        <Style TargetType="BoxView"
+                   x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                        Value="2"/>
+            <Setter Property="BackgroundColor"
+                        Value="#979797" />
+            <Setter Property="Opacity"
+                        Value="0.1" />
+        </Style>
+    </pop:PopupPage.Resources>
+
+    <Grid Margin="0,400,0,0">
+
+        <BoxView BackgroundColor="White"
+                 CornerRadius="15, 15, 0, 0 "/>
+
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="5">
+                <Label Text="Calificación"
+                       FontSize="18"
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center"
+                       HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <BoxView Style="{StaticResource SeparadorBoxview}"/>
+
+            <StackLayout Padding="15">
+                <Image Source="{Binding ImageScore}"
+                        WidthRequest="90"
+                        IsVisible="{Binding IsVisibleScore}"
+                        HorizontalOptions="Start"/>
+
+                <Label Text="{Binding NameUser}"
+                        FontAttributes="Bold"
+                        TextColor="Black"
+                        FontSize="16"
+                        HorizontalTextAlignment="Start"/>
+
+                <Label Text="{Binding Comment}"
+                                   HorizontalTextAlignment="Start"
+                                   FontSize="15"/>
+            </StackLayout>
+
+        </StackLayout>
+
+    </Grid>
+    
+</pop:PopupPage>

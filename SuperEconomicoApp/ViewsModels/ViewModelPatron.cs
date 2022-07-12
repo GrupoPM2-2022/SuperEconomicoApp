@@ -26,12 +26,14 @@ namespace SuperEconomicoApp.ViewsModels
             set { _Texto = value; }
         }
         #endregion
+
         #region PROCESOS
         public void ProcesoSimple()
         {
 
         }
         #endregion
+
         #region COMANDOS
         public ICommand ProcesoSimpcommand => new Command(ProcesoSimple);
         #endregion

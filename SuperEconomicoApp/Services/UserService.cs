@@ -1,11 +1,9 @@
-﻿using Firebase.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using SuperEconomicoApp.Model;
-using Firebase.Database.Query;
 using System.Net.Http;
 using SuperEconomicoApp.Api;
 using Newtonsoft.Json;

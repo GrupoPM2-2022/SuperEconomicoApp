@@ -1,4 +1,5 @@
 ﻿using Rg.Plugins.Popup.Services;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -24,7 +25,6 @@ namespace SuperEconomicoApp.ViewsModels
         public DirectionService DirectionServiceObject { get; set; }
 
         private double _Total;
-        private string _Comment;
         private string _UbicationPreview;
         private int _TotalQuantity;
 
@@ -38,6 +38,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Command AddToCartCommand { get; set; }
         public Command AddDirectionCommand { get; set; }
 
+        #region OBJETOS
         public double Total
         {
             get { return _Total; }
@@ -48,15 +49,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public string Comment
-        {
-            get { return _Comment; }
-            set
-            {
-                _Comment = value;
-                OnPropertyChanged();
-            }
-        }
         public string UbicationPreview
         {
             get { return _UbicationPreview; }
@@ -118,8 +110,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return _TotalQuantity;
             }
         }
-
-
+        #endregion
         public ConfirmOrderViewModel(ObservableCollection<UserCartItem> listOrderDetails, Order order)
         {
             ListProductsOrdered = listOrderDetails;
@@ -228,8 +219,9 @@ namespace SuperEconomicoApp.ViewsModels
 
                 ListOrders.Add(orderDetail);
             }
+
             SelectedOrder.orders_detail = ListOrders;
-            SelectedOrder.comment = Comment;
+            SelectedOrder.sucursal = Settings.Coordinates;
         }
 
         private void LoadConfiguration()

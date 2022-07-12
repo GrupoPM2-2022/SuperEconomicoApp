@@ -10,11 +10,11 @@ namespace SuperEconomicoApp.Model
         public int value { get; set; }
     }
 
-    public class Duration
-    {
-        public string text { get; set; }
-        public int value { get; set; }
-    }
+    //public class Duration
+    //{
+    //    public string text { get; set; }
+    //    public int value { get; set; }
+    //}
 
     public class Element
     {

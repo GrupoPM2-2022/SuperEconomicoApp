@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
+             x:Class="SuperEconomicoApp.Views.ShowOrderDetailView"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:Converter="clr-namespace:SuperEconomicoApp.Converters"
+             BackgroundColor="#EFF0F0">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Converter:Base64ToImageSource x:Key="Base64ToImage" />
+            <Converter:ByteArrayToImage x:Key="ByteToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <StackLayout>
+        <StackLayout HeightRequest="480">
+            <maps:Map x:Name="map" />
+        </StackLayout>
+
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Padding="5,2,5,5">
+
+                    <Frame BackgroundColor="White"
+                   CornerRadius="3"
+                   HasShadow="False"
+                   Padding="10">
+                        <StackLayout>
+                            <Label Text="Informacion Repartidor"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="Purple"/>
+
+                            <StackLayout Orientation="Horizontal"
+                                     Margin="10,0,0,8">
+                                <controls:CircleImage 
+                                    Source="{Binding ImageDelivery,  Converter={StaticResource ByteToImage}}"
+                                    HeightRequest="55"
+                                    HorizontalOptions="Center"
+                                    BorderColor="Purple"  
+                                    BorderThickness="1"/>
+
+                                <StackLayout>
+                                    <Label Text="{Binding NameDelivery}"
+                                        FontSize="15"
+                                        FontAttributes="Bold"
+                                        Margin="10,0,0,0"/>
+                                    <Label Text="{Binding NumberPhoneDelivery}"
+                                       Margin="10,0,0,0"
+                                       FontSize="14"
+                                       FontAttributes="Italic"/>
+
+                                </StackLayout>
+
+                            </StackLayout>
+
+                            <Button 
+                                Text="LLAMAR AL REPARTIDOR" 
+                                BackgroundColor="#76448A" 
+                                TextColor="White" 
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                                WidthRequest="250"
+                                HeightRequest="40"
+                                CornerRadius="10"
+                                IsEnabled="{Binding IsPhoneEnabled}"
+                                Command="{Binding CallDeliveryCommand}"/>
+
+                        </StackLayout>
+
+                    </Frame>
+
+                    <Frame BackgroundColor="White"
+                   CornerRadius="3"
+                   HasShadow="False"
+                   Padding="20">
+                        <StackLayout Orientation="Horizontal">
+
+                            <Label Text="Total:"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               VerticalOptions="Center"
+                               TextColor="Black"/>
+
+                            <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               HorizontalOptions="EndAndExpand"
+                               VerticalOptions="Center"
+                               TextColor="Black"/>
+
+                        </StackLayout>
+
+                    </Frame>
+
+                </StackLayout>
+
+                <StackLayout HeightRequest="300" Padding="5,2,5,5">
+                    <CollectionView ItemsSource="{Binding ListOrdersDetail}"
+                                VerticalOptions="CenterAndExpand">
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame BackgroundColor="White"
+                               CornerRadius="4"
+                               HasShadow="False">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding image_product,  Converter={StaticResource Base64ToImage}}"
+                                           HeightRequest="70"
+                                           WidthRequest="70"/>
+                                        <StackLayout VerticalOptions="Center">
+                                            <Label Text="{Binding name_product}"
+                                               FontSize="17"
+                                               FontAttributes="Bold"/>
+                                            <Label Text="{Binding price, StringFormat='L. {0:F0}'}"
+                                               FontSize="16"
+                                               FontAttributes="Italic"/>
+                                        </StackLayout>
+
+                                        <StackLayout VerticalOptions="Center"
+                                                 Orientation="Horizontal"
+                                                 HorizontalOptions="EndAndExpand">
+                                            <Frame CornerRadius="50"
+                                               Padding="18,8"
+                                               BackgroundColor="Purple">
+                                                <Label Text="{Binding quantity}"
+                                               VerticalOptions="Center"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="End"
+                                               TextColor="White"/>
+                                            </Frame>
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+
+            </StackLayout>
+
+        </ScrollView>
+    </StackLayout>
+
+
+</ContentPage>
