@@ -117,8 +117,7 @@
                                 SelectionMode="Single"
                                 SelectionChanged="CollectionView_SelectionChanged"
                                 Grid.Row="0"
-                                BackgroundColor="Gray"
-                               >
+                                BackgroundColor="Gray">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="0,0,15,0">
