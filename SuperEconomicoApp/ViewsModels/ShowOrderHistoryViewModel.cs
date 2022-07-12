@@ -185,7 +185,7 @@ namespace SuperEconomicoApp.ViewsModels
 
             NameDelivery = order.delivery_name + " " + order.delivery_lastname;
             NumberPhoneDelivery = order.phone_delivery;
-            DateOrder = order.order_date;
+            DateOrder = order.order_date.ToString();
             DateDelivery = order.deliver_date;
             Comment = order.comment;
             NameUser = Settings.UserName;

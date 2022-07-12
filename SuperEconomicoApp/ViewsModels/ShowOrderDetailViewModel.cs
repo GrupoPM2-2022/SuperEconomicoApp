@@ -256,15 +256,6 @@ namespace SuperEconomicoApp.ViewsModels
             return null;
         }
 
-        public void ProcesoSimple()
-        {
-
-        }
-        #endregion
-
-        #region COMANDOS
-        public ICommand CallDeliveryCommand => new Command(CallDelivery);
-
         private async void CallDelivery()
         {
             try
@@ -273,9 +264,13 @@ namespace SuperEconomicoApp.ViewsModels
             }
             catch (Exception)
             {
-                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al llamar al repartidor", "Ok"); 
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al llamar al repartidor", "Ok");
             }
         }
+        #endregion
+
+        #region COMANDOS
+        public ICommand CallDeliveryCommand => new Command(CallDelivery);
         #endregion
     }
 }

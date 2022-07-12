@@ -15,7 +15,6 @@ namespace SuperEconomicoApp.Views
         public TabbedOrdersView()
         {
             InitializeComponent();
-
         }
     }
 }

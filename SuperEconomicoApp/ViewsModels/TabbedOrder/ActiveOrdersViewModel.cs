@@ -48,8 +48,8 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 NotExistOrders = false;
                 ExistOrders = true;
 
-                ListOrders = (List<Order>)ordersByUser.orders;
-                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, Convert.ToDateTime(y.order_date)));
+                ListOrders = (List<Order>) ordersByUser.orders;
+                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, y.order_date));
             }
 
         }

@@ -8,35 +8,33 @@ using SuperEconomicoApp.Views.Ubication;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace SuperEconomicoApp.ViewsModels
 {
     public class ConfirmOrderViewModel : BaseViewModel
     {
+        #region Variables
         public ObservableCollection<UserCartItem> _ListProductsOrdered;
-        public Order SelectedOrder { get; set; }
         public ObservableCollection<Direction> _ListDirection;
         public List<OrderDetails> ListOrders { get; set; }
+        public Order SelectedOrder { get; set; }
         public CartItemService CartItemService { get; set; }
         private UserCartItem _SelectedProductoItem;
         public DirectionService DirectionServiceObject { get; set; }
+        GoogleServiceApi googleServiceApi;
+        GoogleDistanceMatrix googleDistanceMatrix;
 
         private double _Total;
+        private string _TotalPrincipal;
         private string _UbicationPreview;
         private int _TotalQuantity;
-
-        public Command DeleteOrderCommand { get; set; }
-        public Command SaveOrderCommand { get; set; }
-        public Command SelectLocationCommand { get; set; }
-        public Command DeleteProductCommand { get; set; }
-        public Command IncreaseQuantityCommand { get; set; }
-        public Command IncrementOrderCommand { get; set; }
-        public Command DecrementOrderCommand { get; set; }
-        public Command AddToCartCommand { get; set; }
-        public Command AddDirectionCommand { get; set; }
+        #endregion
 
         #region OBJETOS
         public double Total
@@ -45,6 +43,16 @@ namespace SuperEconomicoApp.ViewsModels
             set
             {
                 _Total = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string TotalPrincipal
+        {
+            get { return _TotalPrincipal; }
+            set
+            {
+                _TotalPrincipal = value;
                 OnPropertyChanged();
             }
         }
@@ -111,6 +119,7 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
         #endregion
+
         public ConfirmOrderViewModel(ObservableCollection<UserCartItem> listOrderDetails, Order order)
         {
             ListProductsOrdered = listOrderDetails;
@@ -118,24 +127,85 @@ namespace SuperEconomicoApp.ViewsModels
             CartItemService = new CartItemService();
             DirectionServiceObject = new DirectionService();
             ListDirection = new ObservableCollection<Direction>();
+            googleServiceApi = new GoogleServiceApi();
+            googleDistanceMatrix = new GoogleDistanceMatrix();
+
             LoadConfiguration();
-
-            // COMANDOS
-            DeleteOrderCommand = new Command(async () => await DeleteOrder());
-            SaveOrderCommand = new Command(SaveOrder);
-            SelectLocationCommand = new Command<Direction>((Direction) => SelectLocation(Direction));
-            DeleteProductCommand = new Command<UserCartItem>(async (UserCartItem) => await DeleteProduct(UserCartItem));
-            IncreaseQuantityCommand = new Command<UserCartItem>((UserCartItem) => IncreaseQuantity(UserCartItem));
-
-            IncrementOrderCommand = new Command(() => IncrementOrder());
-            DecrementOrderCommand = new Command(() => DecrementOrder());
-            AddToCartCommand = new Command(() => AddToCart());
-            AddDirectionCommand = new Command(async () => await AddDirection());
         }
 
+        #region Procesos
         private async Task AddDirection()
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView("Guardar", null));
+        }
+
+        private async Task AddDirectionCurrent()
+        {
+            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (status == PermissionStatus.Granted)
+            {
+                CreateDirection();
+            }
+            else
+            {
+                var request = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                if (request == PermissionStatus.Granted)
+                {
+                    CreateDirection();
+                }
+            }
+        }
+
+        public async Task<bool> IsValidCoverageRange() {
+            var location = await Geolocation.GetLocationAsync();
+            if (location != null)
+            {
+                string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(Settings.Coordinates, coordinatesUser);
+
+                int meters = googleDistanceMatrix.rows[0].elements[0].distance.value;
+                
+                double kilometers = meters / 1000;
+                if (kilometers <= Constants.VALID_KILOMETERS)
+                {
+                    UbicationPreview = googleDistanceMatrix.destination_addresses[0];
+                    SelectedOrder.client_location = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                    return true;
+                }
+                
+                return false;
+            }
+
+            return false;
+        }
+
+        public async void CreateDirection()
+        {
+            //string[] coordinates = SelectedOrder.client_location.Split(',');
+            bool isValid = await IsValidCoverageRange();
+            if (!isValid)
+            {
+                await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual, trabajaremos en eso pronto", "Ok");
+                return;
+            }
+
+            //Direction direction = new Direction
+            //{
+            //    description = UbicationPreview,
+            //    latitude = coordinates[0],
+            //    longitude = coordinates[1],
+            //    id_user = Convert.ToInt32(Settings.IdUser)
+            //};
+
+            //bool response = await DirectionServiceObject.CreateDirection(direction);
+            //if (response)
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección agregada correctamente", "Ok");
+            //}
+            //else
+            //{
+            //    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener su dirección actual", "Ok");
+            //}
         }
 
         private void IncreaseQuantity(UserCartItem userCartItem)
@@ -226,11 +296,13 @@ namespace SuperEconomicoApp.ViewsModels
 
         private void LoadConfiguration()
         {
-            Total = Math.Round(SelectedOrder.total, 2);
+            TotalPrincipal = SelectedOrder.total.ToString("F", CultureInfo.InvariantCulture);
+            //Total = Math.Round(, 2);
             GetAllDirections();
         }
 
-        public async void GetAllDirections() {
+        public async void GetAllDirections()
+        {
             ListDirection = await DirectionServiceObject.GetDirectionByUser();
         }
 
@@ -242,7 +314,6 @@ namespace SuperEconomicoApp.ViewsModels
                 CartItemService.RemoveItemsFromCart();
                 await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
             }
-
         }
 
         private void AddToCart()
@@ -283,7 +354,8 @@ namespace SuperEconomicoApp.ViewsModels
                 Total += (item.Price * item.Quantity);
             }
 
-            Total = Math.Round(Total, 2);
+            //Total = Math.Round(Total, 2);
+            TotalPrincipal = Total.ToString("F", CultureInfo.InvariantCulture);
         }
 
 
@@ -296,5 +368,21 @@ namespace SuperEconomicoApp.ViewsModels
         {
             TotalQuantity++;
         }
+
+        #endregion
+
+        #region Comandos
+        public ICommand DeleteOrderCommand => new Command(async () => await DeleteOrder());
+        public ICommand SaveOrderCommand => new Command(SaveOrder);
+        public ICommand SelectLocationCommand => new Command<Direction>((Direction) => SelectLocation(Direction));
+        public ICommand DeleteProductCommand => new Command<UserCartItem>(async (UserCartItem) => await DeleteProduct(UserCartItem));
+        public ICommand IncreaseQuantityCommand => new Command<UserCartItem>((UserCartItem) => IncreaseQuantity(UserCartItem));
+        public ICommand IncrementOrderCommand => new Command(() => IncrementOrder());
+        public ICommand DecrementOrderCommand => new Command(() => DecrementOrder());
+        public ICommand AddToCartCommand => new Command(() => AddToCart());
+        public ICommand AddDirectionCommand => new Command(async () => await AddDirection());
+        public ICommand AddDirectionCurrentCommand => new Command(async () => await AddDirectionCurrent());
+
+        #endregion
     }
 }

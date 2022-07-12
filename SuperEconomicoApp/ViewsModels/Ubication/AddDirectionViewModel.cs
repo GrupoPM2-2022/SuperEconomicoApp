@@ -111,7 +111,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             double kilometers = meters / 1000;
             if (kilometers > Constants.VALID_KILOMETERS)
             {
-                await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual, trabajaremos en eso pronto", "Ok");
                 IsEnabledButton = false;
             }
             else
