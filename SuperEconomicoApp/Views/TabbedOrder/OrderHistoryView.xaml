@@ -16,8 +16,8 @@
                     Value="0.1" />
         </Style>
     </ContentPage.Resources>
-    
-    
+
+
     <Grid Padding="8">
         <StackLayout IsVisible="{Binding ExistOrders}">
             <CollectionView ItemsSource="{Binding ListOrders}"
@@ -33,7 +33,8 @@
                     <DataTemplate>
                         <Frame BackgroundColor="White"
                            CornerRadius="4"
-                               HasShadow="False">
+                               HasShadow="False"
+                               Padding="15,13,15,13">
                             <StackLayout>
                                 <StackLayout Orientation="Horizontal">
 
@@ -48,7 +49,7 @@
                                                HorizontalOptions="EndAndExpand"/>
 
                                 </StackLayout>
-                                
+
 
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="icon_historial.png"
@@ -61,7 +62,7 @@
                                         <StackLayout Orientation="Horizontal">
                                             <Label Text="{Binding total, StringFormat='L. {0:F0}.00'}"
                                                FontSize="16"
-                                               FontAttributes="Italic"/>            
+                                               FontAttributes="Italic"/>
                                             <Label Text="{Binding payment_type, StringFormat='- {0:F0}'}"
                                                FontSize="15"
                                                FontAttributes="Bold"/>
@@ -69,38 +70,21 @@
 
                                     </StackLayout>
                                 </StackLayout>
-                                
-                                <BoxView Style="{StaticResource SeparadorBoxview}" Margin="0,0,0,3" />
 
-                                <StackLayout Orientation="Horizontal">
+                                <BoxView Style="{StaticResource SeparadorBoxview}" Margin="0,0,0,5" />
 
-                                    <Button Text="Ver opinión"
-                                            FontSize="12"
-                                            VerticalOptions="Center"
-                                            HorizontalOptions="Start"
-                                            CornerRadius="15"
-                                            BackgroundColor="#F7F4F4"
-                                            TextColor="#B9B6BB"
-                                            TextTransform="None"
-                                            FontAttributes="Bold"
-                                            WidthRequest="155"
-                                            Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.ShowCommentCommand}"
-                                            CommandParameter="{Binding .}"/>
-
-                                    <Button Text="Ver calificación"
-                                            FontSize="12"
-                                            VerticalOptions="Center"
-                                            HorizontalOptions="EndAndExpand"
-                                            CornerRadius="15"
-                                            BackgroundColor="#F7F4F4"
-                                            TextColor="#B9B6BB"
-                                            TextTransform="None"
-                                            FontAttributes="Bold"
-                                            WidthRequest="155"
-                                            Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.ShowScoreCommand}"
-                                            CommandParameter="{Binding .}"/>
-
-                                </StackLayout>
+                                <Button Text="Ver opinión"
+                                        FontSize="12"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="CenterAndExpand"
+                                        CornerRadius="15"
+                                        BackgroundColor="#8873b6" 
+                                        TextColor="White" 
+                                        TextTransform="None"
+                                        FontAttributes="Bold"
+                                        WidthRequest="200"
+                                        Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.ShowCommentCommand}"
+                                        CommandParameter="{Binding .}"/>
 
                             </StackLayout>
 

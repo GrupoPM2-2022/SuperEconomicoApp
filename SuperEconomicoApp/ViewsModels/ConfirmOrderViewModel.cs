@@ -38,6 +38,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Command AddToCartCommand { get; set; }
         public Command AddDirectionCommand { get; set; }
 
+        #region OBJETOS
         public double Total
         {
             get { return _Total; }
@@ -109,8 +110,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return _TotalQuantity;
             }
         }
-
-
+        #endregion
         public ConfirmOrderViewModel(ObservableCollection<UserCartItem> listOrderDetails, Order order)
         {
             ListProductsOrdered = listOrderDetails;

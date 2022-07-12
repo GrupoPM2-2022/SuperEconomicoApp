@@ -38,7 +38,7 @@
                                      Margin="10,0,0,8">
                                 <controls:CircleImage 
                                     Source="{Binding ImageDelivery,  Converter={StaticResource ByteToImage}}"
-                                    HeightRequest="45"
+                                    HeightRequest="55"
                                     HorizontalOptions="Center"
                                     BorderColor="Purple"  
                                     BorderThickness="1"/>

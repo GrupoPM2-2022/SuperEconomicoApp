@@ -1,13 +1,15 @@
 ﻿using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Reusable;
+using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
-
+using SuperEconomicoApp.Helpers;
 
 namespace SuperEconomicoApp.ViewsModels.TabbedOrder
 {
@@ -19,6 +21,9 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
         private List<Order> _ListOrders;
         private bool _ExistOrders;
         private bool _NotExistOrders;
+        private string _ImageScore;
+        private string _NameUser;
+        private string _Comment;
         #endregion
 
         #region CONSTRUCTOR
@@ -28,32 +33,6 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             orderService = new OrderService();
 
             LoadConfiguration();
-        }
-
-        private async void LoadConfiguration()
-        {
-            ordersActiveByUsers = await orderService.GetOrdersUserByMethod("getUserOrderForId");
-            if (ordersActiveByUsers == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener las ordenes activas", "Ok");
-                return;
-            }
-
-            if (ordersActiveByUsers.orders.Count == 0)
-            {
-                NotExistOrders = true;
-                ExistOrders = false;
-            }
-            else
-            {
-                NotExistOrders = false;
-                ExistOrders = true;
-
-                ListOrders = (List<Order>)ordersActiveByUsers.orders;
-                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, Convert.ToDateTime(y.order_date)));
-            }
-
-            
         }
         #endregion
 
@@ -87,17 +66,116 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 OnPropertyChanged();
             }
         }
+        public string ImageScore
+        {
+            get { return _ImageScore; }
+            set
+            {
+                _ImageScore = value;
+                OnPropertyChanged();
+            }
+        }
+        public string NameUser
+        {
+            get { return _NameUser; }
+            set
+            {
+                _NameUser = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Comment
+        {
+            get { return _Comment; }
+            set
+            {
+                _Comment = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region PROCESOS
+        private async void LoadConfiguration()
+        {
+            ordersActiveByUsers = await orderService.GetOrdersUserByMethod("getUserOrderForId");
+            if (ordersActiveByUsers == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener las ordenes activas", "Ok");
+                return;
+            }
+
+            if (ordersActiveByUsers.orders.Count == 0)
+            {
+                NotExistOrders = true;
+                ExistOrders = false;
+            }
+            else
+            {
+                NotExistOrders = false;
+                ExistOrders = true;
+
+                ListOrders = (List<Order>)ordersActiveByUsers.orders;
+                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, Convert.ToDateTime(y.order_date)));
+            }
+
+        }
+
         private async Task ShowOrderDetail(Order order)
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new ShowOrderHistoryView(order));
+        }
+
+        private async Task ShowComment(Order order)
+        {
+            if (string.IsNullOrEmpty(order.comment))
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Aun no has agregado una opinion", "Ok");
+                return;
+            }
+
+            ImageScore = SelectImageRating(order.score);
+            NameUser = Settings.UserName;
+            Comment = order.comment;
+
+            var popup = new PreviewOpinion();
+            popup.BindingContext = this;
+            await PopupNavigation.Instance.PushAsync(popup);
+        }
+
+        private string SelectImageRating(string score)
+        {
+            if (score.Equals("1"))
+            {
+                return "una_estrellas.png";
+            }
+            else if (score.Equals("2"))
+            {
+                return "dos_estrellas.png";
+            }
+            else if (score.Equals("3"))
+            {
+                return "tres_estrellas.png";
+            }
+            else if (score.Equals("4"))
+            {
+                return "cuatro_estrellas.png";
+            }
+            else if (score.Equals("5"))
+            {
+                return "cinco_estrellas.png";
+            }
+            else
+            {
+                return "Empty";
+            }
         }
         #endregion
 
         #region COMANDOS
         public ICommand OrderDetailCommand => new Command<Order>(async (Order) => await ShowOrderDetail(Order));
+        public ICommand ShowCommentCommand => new Command<Order>(async (Order) => await ShowComment(Order));
 
         #endregion
     }
