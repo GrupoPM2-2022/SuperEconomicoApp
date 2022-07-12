@@ -263,7 +263,19 @@ namespace SuperEconomicoApp.ViewsModels
         #endregion
 
         #region COMANDOS
-        public ICommand ProcesoSimpcommand => new Command(ProcesoSimple);
+        public ICommand CallDeliveryCommand => new Command(CallDelivery);
+
+        private async void CallDelivery()
+        {
+            try
+            {
+                Xamarin.Essentials.PhoneDialer.Open(NumberPhoneDelivery);
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al llamar al repartidor", "Ok"); 
+            }
+        }
         #endregion
     }
 }

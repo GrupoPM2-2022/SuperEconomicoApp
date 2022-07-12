@@ -50,6 +50,14 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             directionService = new DirectionService();
             LoadConfiguration();
             map.PinDragEnd += Map_PinDragEnd;
+            map.MapClicked += Map_MapClicked;    
+        }
+
+        private void Map_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            latitudeUser = e.Point.Latitude.ToString();
+            longitudeUser = e.Point.Longitude.ToString();
+            SelectLocation(true);
         }
 
         #endregion
@@ -85,11 +93,15 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         #endregion
 
         #region PROCESOS
-        private async void Map_PinDragEnd(object sender, PinDragEventArgs e)
+        private void Map_PinDragEnd(object sender, PinDragEventArgs e)
         {
             latitudeUser = e.Pin.Position.Latitude.ToString();
             longitudeUser = e.Pin.Position.Longitude.ToString();
-            var position = new Position(e.Pin.Position.Latitude, e.Pin.Position.Longitude);
+            SelectLocation();
+        }
+
+        private async void SelectLocation(bool movePin = false) {
+            var position = new Position(Convert.ToDouble(latitudeUser), Convert.ToDouble(longitudeUser));
             map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(500)));
             coordinatesUser = latitudeUser + "," + longitudeUser;
             googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(coordinatesSupermarket, coordinatesUser);
@@ -104,10 +116,11 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             }
             else
             {
-                if (TextButton.Equals("Editar") && Description.Equals(directionReference.description))
+                if (movePin)
                 {
-                    Description = "";
+                    pinUser.Position = position;
                 }
+                Description = googleDistanceMatrix.destination_addresses[0];
                 IsEnabledButton = true;
             }
         }

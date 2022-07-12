@@ -16,7 +16,7 @@
 
     <StackLayout>
         <StackLayout HeightRequest="480">
-            <maps:Map x:Name="map" />
+            <maps:Map x:Name="map" MyLocationEnabled="True" />
         </StackLayout>
 
         <ScrollView>
