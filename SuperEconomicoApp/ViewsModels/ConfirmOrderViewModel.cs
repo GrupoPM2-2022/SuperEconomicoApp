@@ -219,6 +219,7 @@ namespace SuperEconomicoApp.ViewsModels
 
                 ListOrders.Add(orderDetail);
             }
+
             SelectedOrder.orders_detail = ListOrders;
             SelectedOrder.sucursal = Settings.Coordinates;
         }

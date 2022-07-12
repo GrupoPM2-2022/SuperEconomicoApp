@@ -18,7 +18,6 @@ namespace SuperEconomicoApp.ViewsModels
     {
         #region VARIABLES
         private List<OrderDetails> _ListOrderDetails;
-        private List<Position> pathContent;
         private string _Total;
         private string _NameDelivery;
         private string _NumberPhoneDelivery;
@@ -217,7 +216,7 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         private async void TraceRoute(string[] coordinatesOrigin, double meters) {
-            pathContent = await LoadRoute(coordinatesOrigin);
+            var pathContent = await LoadRoute(coordinatesOrigin);
             map.Polylines.Clear();
 
             var polyline = new Xamarin.Forms.GoogleMaps.Polyline();

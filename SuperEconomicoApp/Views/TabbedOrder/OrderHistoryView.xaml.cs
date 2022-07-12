@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SuperEconomicoApp.ViewsModels.TabbedOrder;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace SuperEconomicoApp.Views.TabbedOrder
         public OrderHistoryView()
         {
             InitializeComponent();
+            BindingContext = new OrderHistoryViewModel();
         }
     }
 }

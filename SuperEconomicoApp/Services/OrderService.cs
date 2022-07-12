@@ -35,8 +35,9 @@ namespace SuperEconomicoApp.Services
             {
                 var coordinates = Settings.Coordinates.Split(',');
                 Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?latitude=" + coordinates[0] + "&longitude=" + coordinates[1]);
+                var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-                var json = JsonConvert.SerializeObject(order);
+                var json = JsonConvert.SerializeObject(order, settings);
                 HttpContent content = new StringContent(json);
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 var response = await client.PostAsync(requestUri, content);
@@ -55,18 +56,18 @@ namespace SuperEconomicoApp.Services
             return false;
         }
 
-        public async Task<OrdersActiveByUser> GetActiveOrdersByUser()
+        public async Task<OrdersByUser> GetOrdersUserByMethod(string method)
         {
             try
             {
-                OrdersActiveByUser ordersActiveByUser = new OrdersActiveByUser();
-                var uri = new Uri(ApiMethods.URL_ORDERS_USER + Settings.IdUser + "&method=getUserOrderActive");
+                OrdersByUser ordersActiveByUser = new OrdersByUser();
+                var uri = new Uri(ApiMethods.URL_ORDERS_USER + Settings.IdUser + "&method="+method);
                 var response = await client.GetAsync(uri);
                 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    ordersActiveByUser = JsonConvert.DeserializeObject<OrdersActiveByUser>(content);
+                    ordersActiveByUser = JsonConvert.DeserializeObject<OrdersByUser>(content);
 
                     return ordersActiveByUser;
                 }

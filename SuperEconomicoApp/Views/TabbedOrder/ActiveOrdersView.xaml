@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.TabbedOrder.ActiveOrdersView"
              Title="Activos"
-             x:Name="CurrentPage">
+             x:Name="CurrentPage"
+             BackgroundColor="#EFF0F0">
 
-    <Grid Padding="12">
-        <StackLayout>
+    <Grid Padding="8">
+        <StackLayout IsVisible="{Binding ExistOrders}">
             <CollectionView ItemsSource="{Binding ListOrders}"
                         VerticalOptions="CenterAndExpand">
 
@@ -18,9 +19,10 @@
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Frame BackgroundColor="#EFF0F0"
-                           CornerRadius="15"
-                               HasShadow="False">
+                        <Frame BackgroundColor="White"
+                               CornerRadius="4"
+                               HasShadow="False"
+                               Padding="15,12">
                             <StackLayout>
                                 <Label Text="{Binding status, StringFormat='{0:F0} MOMENTÁNEAMENTE'}"
                                        FontSize="13"
@@ -47,6 +49,10 @@
                                     </StackLayout>
 
                                 </StackLayout>
+                                <Label Text="{Binding total, StringFormat='L. {0:F0}.00'}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               HorizontalTextAlignment="End"/>
 
                             </StackLayout>
 
@@ -59,6 +65,16 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
+            <Image Source="list_empty.png"
+                   WidthRequest="100"/>
+            <Label Text="No tienes ningún pedido pendiente" 
+                   HorizontalTextAlignment="Center"
+                   FontSize="23"
+                   TextColor="#212F3D"
+                   FontAttributes="Bold"/>
         </StackLayout>
 
     </Grid>

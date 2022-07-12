@@ -27,7 +27,7 @@ namespace SuperEconomicoApp.Model
         public List<OrderDetails> orders_detail { get; set; }
     }
 
-    public class OrdersActiveByUser {
+    public class OrdersByUser {
         public string id { get; set; }
         public string password { get; set; }
         public string typeuser { get; set; }

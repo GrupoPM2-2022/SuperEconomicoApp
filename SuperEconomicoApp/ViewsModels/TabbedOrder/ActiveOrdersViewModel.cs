@@ -13,16 +13,17 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
     public class ActiveOrdersViewModel : BaseViewModel
     {
         #region VARIABLES
-        private string _Texto;
         private OrderService orderService;
-        OrdersActiveByUser ordersActiveByUsers;
+        OrdersByUser ordersByUser;
         private List<Order> _ListOrders;
+        private bool _ExistOrders;
+        private bool _NotExistOrders;
         #endregion
 
         #region CONSTRUCTOR
         public ActiveOrdersViewModel()
         {
-            ordersActiveByUsers = new OrdersActiveByUser();
+            ordersByUser = new OrdersByUser();
             orderService = new OrderService();
 
             LoadConfiguration();
@@ -30,29 +31,31 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
 
         private async void LoadConfiguration()
         {
-            ordersActiveByUsers = await orderService.GetActiveOrdersByUser();
-            if (ordersActiveByUsers == null)
+            ordersByUser = await orderService.GetOrdersUserByMethod("getUserOrderActive");
+
+            if (ordersByUser == null)
             {
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener las ordenes activas", "Ok");
                 return;
             }
 
-            ListOrders = (List<Order>) ordersActiveByUsers.orders;
+            if (ordersByUser.orders.Count == 0)
+            {
+                NotExistOrders = true;
+                ExistOrders = false;
+            } else
+            {
+                NotExistOrders = false;
+                ExistOrders = true;
+
+                ListOrders = (List<Order>)ordersByUser.orders;
+                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, Convert.ToDateTime(y.order_date)));
+            }
+
         }
         #endregion
 
         #region OBJETOS
-        public string Texto
-        {
-            get { return _Texto; }
-            set
-            {
-                _Texto = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         public List<Order> ListOrders
         {
             get { return _ListOrders; }
@@ -62,6 +65,27 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 OnPropertyChanged();
             }
         }
+        
+        public bool NotExistOrders
+        {
+            get { return _NotExistOrders; }
+            set
+            {
+                _NotExistOrders = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ExistOrders
+        {
+            get { return _ExistOrders; }
+            set
+            {
+                _ExistOrders = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region PROCESOS
