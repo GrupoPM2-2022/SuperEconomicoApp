@@ -46,13 +46,13 @@ namespace SuperEconomicoApp.ViewsModels
         }
         private async void GetProductoItems(int categoryID)
         {
-            var data = await new ProductoItemService().GetProductoItemsByCategoryAsync(categoryID);
-            ProductoItemsByCategory.Clear();
-            foreach (var item in data)
-            {
-                ProductoItemsByCategory.Add(item);
-            }
-            TotalProductoItems = ProductoItemsByCategory.Count;
+            //var data = await new ProductoService().GetProductoItemsByCategoryAsync(categoryID);
+            //ProductoItemsByCategory.Clear();
+            //foreach (var item in data)
+            //{
+            //    ProductoItemsByCategory.Add(item);
+            //}
+            //TotalProductoItems = ProductoItemsByCategory.Count;
         }
 
     }

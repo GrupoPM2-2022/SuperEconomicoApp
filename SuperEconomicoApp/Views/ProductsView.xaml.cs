@@ -1,4 +1,5 @@
 ﻿using SuperEconomicoApp.Model;
+using SuperEconomicoApp.ViewsModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SuperEconomicoApp.Views
         public ProductsView()
         {
             InitializeComponent();
-            
+            BindingContext = new ProductsViewModel(CVLatest);
         }
 
        async  void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)

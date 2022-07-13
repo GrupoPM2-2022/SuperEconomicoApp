@@ -69,7 +69,8 @@
 
         <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
             <Image Source="list_empty.png"
-                   WidthRequest="100"/>
+                   WidthRequest="100"
+                   />
             <Label Text="No tienes ningún pedido pendiente" 
                    HorizontalTextAlignment="Center"
                    FontSize="23"

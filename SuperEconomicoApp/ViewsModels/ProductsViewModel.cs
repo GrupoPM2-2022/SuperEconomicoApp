@@ -14,16 +14,29 @@ using SuperEconomicoApp.Views.Ubication;
 using SuperEconomicoApp.Views.Reusable;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System.Linq;
+using System.Windows.Input;
 
 namespace SuperEconomicoApp.ViewsModels
 {
     public class ProductsViewModel : BaseViewModel
     {
+        #region Variables
+        private ObservableCollection<ProductoItem> _ListItemsProducts;
+        private List<Department> _ListDepartment;
         private string _UserName;
         private string _DepartamentPreview;
         private string _Coordinates;
+        private string _SearchText;
+        private int _UserCartItemsCount;
         private GoogleDistanceMatrix googleDistanceMatrix;
         private GoogleServiceApi googleServiceApi;
+        CollectionView collectionView;
+        #endregion
+
+        public ObservableCollection<Category> Categories { get; set; }
+
+        #region Objetos
         public string UserName
         {
             set
@@ -64,7 +77,7 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private int _UserCartItemsCount;
+
         public int UserCartItemsCount
         {
             set
@@ -79,7 +92,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private string _SearchText;
         public string SearchText
         {
             set
@@ -93,10 +105,6 @@ namespace SuperEconomicoApp.ViewsModels
                 return _SearchText;
             }
         }
-
-        public ObservableCollection<Category> Categories { get; set; }
-        private ObservableCollection<ProductoItem> _ListItemsProducts;
-        private List<Department> _ListDepartment;
 
         public ObservableCollection<ProductoItem> ListItemsProducts
         {
@@ -117,42 +125,27 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public Command ViewCartCommand { get; set; }
-        public Command EditUserCommand { get; set; }
-        public Command OrdersHistoryCommand { get; set; }
-        public Command SearchViewCommand { get; set; }
-        public Command SelectDeparmentCommand { get; set; }
-        public Command ConfirmDepartmentCommand { get; set; }
-        public Command ViewDirectionCommand { get; set; }
+        #endregion
 
-        public ProductsViewModel()
+        public ProductsViewModel(CollectionView collectionViewReceived)
         {
-            if (Settings.ExistUser)
-            {
-                UserName = Settings.UserName;
-            }
-            else
-            {
-                UserName = "Usuario";
-            }
-
             UserCartItemsCount = new CartItemService().GetUserCartCount();
             ListItemsProducts = new ObservableCollection<ProductoItem>();
             Categories = new ObservableCollection<Category>();
             googleDistanceMatrix = new GoogleDistanceMatrix();
             googleServiceApi = new GoogleServiceApi();
-
-            ViewCartCommand = new Command(async () => await ViewCartAsync());
-            EditUserCommand = new Command(async () => await EditUserAsync());
-            OrdersHistoryCommand = new Command(async () => await OrderHistoryAsync());
-            SearchViewCommand = new Command(async () => await SearchViewAsync());
-            SelectDeparmentCommand = new Command<Department>((param) => SelectDeparment(param));
-            ConfirmDepartmentCommand = new Command(ConfirmDepartment);
-            ViewDirectionCommand = new Command(async () => await ViewDirection());
+            collectionView = collectionViewReceived;
 
             //GetCategories();
-            ConfigurationDepartment();
             GetAllProducts();
+            ConfigurationDepartment();
+        }
+
+        #region Procesos
+        private void SearchProduct()
+        {
+            var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
+            collectionView.ItemsSource = searchResult;
         }
 
         private async Task ViewDirection()
@@ -172,7 +165,8 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 IsValidDistance();
             }
-            else {
+            else
+            {
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes conceder permisos de localizacion a la aplicacion.", "Ok");
                 await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
             }
@@ -245,16 +239,10 @@ namespace SuperEconomicoApp.ViewsModels
             };
         }
 
-        private async Task SearchViewAsync()
-        {
-            await Application.Current.MainPage.Navigation.PushModalAsync(
-            new SearchResultsView(SearchText));
-        }
-
         private async Task OrderHistoryAsync()
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedOrdersView());
-            
+
         }
 
         private async Task ViewCartAsync()
@@ -266,11 +254,6 @@ namespace SuperEconomicoApp.ViewsModels
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new AccountUserView());
         }
-
-        //private async Task LogoutAsync()
-        //{
-        //    await Application.Current.MainPage.Navigation.PushModalAsync(new LogoutView());
-        //}
 
         private async void GetCategories()
         {
@@ -284,20 +267,25 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void GetAllProducts()
         {
-            //ListItemsProducts.Clear();
-            var request = new HttpRequestMessage();
-            request.RequestUri = new Uri(ApiMethods.URL_PRODUCTS);
-            request.Method = HttpMethod.Get;
-            request.Headers.Add("Accept", "application/json");
-            var client = new HttpClient();
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            var listProducts = await ProductoService.GetAllProducts();
+            if (listProducts != null)
             {
-                string content = await response.Content.ReadAsStringAsync();
-                ListItemsProducts = JsonConvert.DeserializeObject<ObservableCollection<ProductoItem>>(content);
+                ListItemsProducts = listProducts;
+                collectionView.ItemsSource = ListItemsProducts;
             }
 
         }
+        #endregion
+
+        #region Comandos
+        public ICommand ViewCartCommand => new Command(async () => await ViewCartAsync());
+        public ICommand EditUserCommand => new Command(async () => await EditUserAsync());
+        public ICommand OrdersHistoryCommand => new Command(async () => await OrderHistoryAsync());
+        public ICommand SelectDeparmentCommand => new Command<Department>((param) => SelectDeparment(param));
+        public ICommand ConfirmDepartmentCommand => new Command(ConfirmDepartment);
+        public ICommand ViewDirectionCommand => new Command(async () => await ViewDirection());
+        public ICommand SearchProductCommand => new Command(SearchProduct);
+        #endregion
 
     }
 }
