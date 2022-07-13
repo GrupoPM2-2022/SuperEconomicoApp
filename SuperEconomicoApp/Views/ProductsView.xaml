@@ -9,10 +9,12 @@
              xmlns:sombras="clr-namespace:Sharpnado.Shades;assembly=Sharpnado.Shadows"
              xmlns:toolkit="http://xamarin.com/schemas/2020/toolkit"
              xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
-             BackgroundColor="White">
+             BackgroundColor="White"
+             x:Name="CurrentPage">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Converter:Base64ToImageSource x:Key="Base64ToImage" />
+            <Converter:ByteArrayToImage x:Key="ByteToImage" />
         </ResourceDictionary>
         <Style TargetType="Grid">
             <Setter Property="VisualStateManager.VisualStateGroups">
@@ -60,14 +62,15 @@
                     <Label Text="Bienvenido " Grid.Row="0" Grid.Column="0" TextColor="Silver" Style="{StaticResource SecondaryLabel}"/>
                     <Label Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" FontSize="20" FontAttributes="Bold" Style="{StaticResource PrimaryLabel}" />
 
-                    --><!--<ImageButton Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
+                    -->
+                <!--<ImageButton Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" 
                                  Source="menu1"
                                   BackgroundColor="Transparent"
                                  Margin="0,0,10,0" HorizontalOptions="End"
                                  Command="{Binding OrdersHistoryCommand}"/>-->
 
 
-                    <!--<Label Text="{Binding UserCartItemsCount}" 
+                <!--<Label Text="{Binding UserCartItemsCount}" 
                            Style="{StaticResource PrimaryLabelHeader}"
                            Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                            HorizontalTextAlignment="End" VerticalTextAlignment="Start" FontSize="15"/>
@@ -82,7 +85,8 @@
                                  Source="salida1"
                                  BackgroundColor="Transparent"
                                  Margin="0,0,10,0" HorizontalOptions="End"
-                                 Command="{Binding LogoutCommand}"/>--><!--
+                                 Command="{Binding LogoutCommand}"/>-->
+                <!--
                 </Grid>-->
 
                 <StackLayout Grid.Row="0" Grid.Column="0" >
@@ -99,101 +103,111 @@
                             <toolkit:EventToCommandBehavior EventName="TextChanged"
                                                             Command="{Binding SearchProductCommand}"/>
                         </SearchBar.Behaviors>
-                        
-                        
                     </SearchBar>
-
-                    <!--<ImageButton Grid.Column="1" 
-                                 Source="buscar"
-                                 BackgroundColor="Transparent"
-                                 Margin="0,0,10,0" HorizontalOptions="End" 
-                                 Command="{Binding SearchViewCommand}"/>-->
                 </StackLayout>
 
-                <!--<CollectionView ItemsSource="{Binding Categories}"
-                                Margin="0,10"
-                                HeightRequest="125" VerticalOptions="FillAndExpand"
-                                HorizontalScrollBarVisibility="Never"
+                <CollectionView ItemsSource="{Binding ListCategories}"
+                                Margin="0,5"
+                                HeightRequest="120" 
+                                VerticalOptions="FillAndExpand"
                                 ItemsLayout="HorizontalList"
                                 SelectionMode="Single"
-                                SelectionChanged="CollectionView_SelectionChanged"
-                                Grid.Row="0"
-                                BackgroundColor="Gray">
+                                Grid.Row="1">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Padding="0,0,15,0">
+                            <StackLayout Padding="0,0,10,0">
                                 <Frame CornerRadius="50"
                                            HasShadow="False">
-                                    <sombras:Shadows CornerRadius="50"
-                                                         Shades="{sombras:SingleShade   Offset='0,12' ,Opacity=1.0,Color=#F5C2BE,BlurRadius=10}">
-                                        <Image Source="{Binding .}"
-                                                   HeightRequest="30" />
-                                    </sombras:Shadows>
-                                </Frame>
-                                <Label Text="{Binding CategoryName}" HorizontalTextAlignment="Center"
+                                    <StackLayout>
+                                        <sombras:Shadows CornerRadius="50"
+                                                     Shades="{sombras:SingleShade   Offset='0,12' ,Opacity=1.0,Color=#F5C2BE,BlurRadius=10}">
+                                            <Image Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
+                                                HeightRequest="60" />
+                                        </sombras:Shadows>
+                                        <Label Text="{Binding Name}" HorizontalTextAlignment="Center"
                                        Style="{StaticResource SecondaryLabel}"/>
+                                    </StackLayout>
+                                </Frame>
+
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.SelectCategoryCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </StackLayout.GestureRecognizers>
+
                             </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>-->
-
-                <!--<Label Grid.Row="3" Text="Ultimos Productos" FontSize="25" FontAttributes="Bold" Style="{StaticResource PrimaryLabelHeader}"/>-->
-
-                <CollectionView 
-                                VerticalOptions="Start"
-                                VerticalScrollBarVisibility="Never"
-                                x:Name="CVLatest"
-                                SelectionChanged="CVLatest_SelectionChanged"
-                                SelectionMode="Single"
-                                Grid.Row="3">
-
-                    <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="20" HorizontalItemSpacing="20" Span="2" />
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame   >
-                                <Grid WidthRequest="145" HeightRequest="170" BackgroundColor="White" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-
-                                    <pancake:PancakeView Grid.Row="0" >
-                                        <Image Source="{Binding Image,  Converter={StaticResource Base64ToImage}}"
-                                               HeightRequest="90" 
-                                               WidthRequest="110" />
-
-                                    </pancake:PancakeView>
-
-                                    <Label Grid.Row="1" Text="{Binding Price, StringFormat='L{0}'}" FontSize="12"
-                                               Style="{StaticResource SecondaryLabel}"
-                                           
-                                               FontAttributes="Bold"   WidthRequest="50" HorizontalOptions="Start" VerticalOptions="Center"/>
-                                    <Label Grid.Row="2" Text="{Binding Name}" FontSize="12" FontAttributes="Bold"
-                                               Style="{StaticResource SecondaryLabel}"
-                                               VerticalTextAlignment="Center" />
-
-                                    <Image Grid.Row="3" Source="Star" HorizontalOptions="Start" WidthRequest="20" />
-                                    <Label Grid.Row="3" Margin="30,0,0,0" FontSize="10" VerticalOptions="Center" >
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding Description, StringFormat='{0}'}" TextColor="{AppThemeBinding Light={StaticResource LightContentTextColor},
-                                                 Dark={StaticResource DarkContentTextColor}}"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-
-                                </Grid>
-                            </Frame>
-
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+                <!--<Label Grid.Row="3" Text="Ultimos Productos" FontSize="25" FontAttributes="Bold" Style="{StaticResource PrimaryLabelHeader}"/>-->
+
+                <StackLayout Grid.Row="3">
+                    <CollectionView VerticalOptions="Start"
+                                VerticalScrollBarVisibility="Never"
+                                x:Name="CVLatest"
+                                SelectionMode="Single"
+                                IsVisible="{Binding IsVisibleProducts}">
+
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="20" HorizontalItemSpacing="20" Span="2" />
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame>
+                                    <Grid WidthRequest="145" HeightRequest="170" BackgroundColor="White" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <pancake:PancakeView Grid.Row="0" >
+                                            <Image Source="{Binding Image,  Converter={StaticResource Base64ToImage}}"
+                                               HeightRequest="90" 
+                                               WidthRequest="110" />
+
+                                        </pancake:PancakeView>
+
+                                        <Label Grid.Row="1" Text="{Binding Price, StringFormat='L{0}'}" FontSize="12"
+                                               Style="{StaticResource SecondaryLabel}"
+                                           
+                                               FontAttributes="Bold"   WidthRequest="50" HorizontalOptions="Start" VerticalOptions="Center"/>
+                                        <Label Grid.Row="2" Text="{Binding Name}" FontSize="12" FontAttributes="Bold"
+                                               Style="{StaticResource SecondaryLabel}"
+                                               VerticalTextAlignment="Center" />
+
+                                        <Image Grid.Row="3" Source="Star" HorizontalOptions="Start" WidthRequest="20" />
+                                        <Label Grid.Row="3" Margin="30,0,0,0" FontSize="10" VerticalOptions="Center" >
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="{Binding Description, StringFormat='{0}'}" TextColor="{AppThemeBinding Light={StaticResource LightContentTextColor},
+                                                 Dark={StaticResource DarkContentTextColor}}"/>
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                    </Grid>
+                                </Frame>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+
+                    <StackLayout IsVisible="{Binding IsVisibleEmptyMessage}">
+                        <Image Source="list_empty.png"
+                               WidthRequest="100"/>
+
+                        <Label Text="Sin resultados para tu búsqueda" 
+                               HorizontalTextAlignment="Center"
+                               FontSize="22"
+                               TextColor="#212F3D"
+                               FontAttributes="Bold"/>
+
+                    </StackLayout>
+                </StackLayout>
 
             </Grid>
 
@@ -224,7 +238,7 @@
                         </Image.GestureRecognizers>
                     </Image>
                 </sombras:Shadows>
-              
+
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
                              HorizontalOptions="CenterAndExpand">
@@ -236,7 +250,7 @@
                     </Image>
                 </sombras:Shadows>
 
-           
+
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}">
                     <Image Source="userPurple.png" >

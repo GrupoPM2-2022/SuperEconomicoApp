@@ -23,18 +23,20 @@ namespace SuperEconomicoApp.ViewsModels
     {
         #region Variables
         private ObservableCollection<ProductoItem> _ListItemsProducts;
+        private ObservableCollection<Category> _ListCategories;
         private List<Department> _ListDepartment;
         private string _UserName;
         private string _DepartamentPreview;
         private string _Coordinates;
         private string _SearchText;
         private int _UserCartItemsCount;
+        private bool _IsVisibleEmptyMessage = false;
+        private bool _IsVisibleProducts = true;
+
         private GoogleDistanceMatrix googleDistanceMatrix;
         private GoogleServiceApi googleServiceApi;
         CollectionView collectionView;
         #endregion
-
-        public ObservableCollection<Category> Categories { get; set; }
 
         #region Objetos
         public string UserName
@@ -50,6 +52,36 @@ namespace SuperEconomicoApp.ViewsModels
                 return _UserName;
             }
         }
+
+        public bool IsVisibleProducts
+        {
+            set
+            {
+                _IsVisibleProducts = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleProducts;
+            }
+        }
+        
+        public bool IsVisibleEmptyMessage
+        {
+            set
+            {
+                _IsVisibleEmptyMessage = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleEmptyMessage;
+            }
+        }
+
+
         public string DepartamentPreview
         {
             set
@@ -115,6 +147,16 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged("ListItemsProducts");
             }
         }
+
+        public ObservableCollection<Category> ListCategories
+        {
+            get { return _ListCategories; }
+            set
+            {
+                _ListCategories = value;
+                OnPropertyChanged("ListCategories");
+            }
+        }
         public List<Department> ListDepartment
         {
             get { return _ListDepartment; }
@@ -131,12 +173,12 @@ namespace SuperEconomicoApp.ViewsModels
         {
             UserCartItemsCount = new CartItemService().GetUserCartCount();
             ListItemsProducts = new ObservableCollection<ProductoItem>();
-            Categories = new ObservableCollection<Category>();
+            ListCategories = new ObservableCollection<Category>();
             googleDistanceMatrix = new GoogleDistanceMatrix();
             googleServiceApi = new GoogleServiceApi();
             collectionView = collectionViewReceived;
 
-            //GetCategories();
+            GetCategories();
             GetAllProducts();
             ConfigurationDepartment();
         }
@@ -146,6 +188,31 @@ namespace SuperEconomicoApp.ViewsModels
         {
             var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
             collectionView.ItemsSource = searchResult;
+        }
+
+        private void SelectCategory(Category category)
+        {
+            if (category.Name.Equals("Todos"))
+            {
+                collectionView.ItemsSource = ListItemsProducts;
+            }
+            else
+            {
+                var searchbyCategory = ListItemsProducts.Where(item => item.Category_Id.ToString().Contains(category.CategoryID.ToString()));
+
+                if (searchbyCategory.Count() == 0)
+                {
+                    IsVisibleEmptyMessage = true;
+                    IsVisibleProducts = false;
+                } else
+                {
+                    IsVisibleEmptyMessage = false;
+                    IsVisibleProducts = true;
+                    collectionView.ItemsSource = searchbyCategory;
+                }
+
+            }
+
         }
 
         private async Task ViewDirection()
@@ -257,11 +324,10 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void GetCategories()
         {
-            var data = await new CategoryDataService().GetCategoriesAsync();
-            Categories.Clear();
-            foreach (var item in data)
+            var categories = await CategoryService.GetAllCategories();
+            if (categories != null)
             {
-                Categories.Add(item);
+                ListCategories = categories;
             }
         }
 
@@ -285,6 +351,8 @@ namespace SuperEconomicoApp.ViewsModels
         public ICommand ConfirmDepartmentCommand => new Command(ConfirmDepartment);
         public ICommand ViewDirectionCommand => new Command(async () => await ViewDirection());
         public ICommand SearchProductCommand => new Command(SearchProduct);
+        public ICommand SelectCategoryCommand => new Command<Category>((Category) => SelectCategory(Category));
+
         #endregion
 
     }

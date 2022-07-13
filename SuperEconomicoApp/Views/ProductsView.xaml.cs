@@ -19,17 +19,6 @@ namespace SuperEconomicoApp.Views
             BindingContext = new ProductsViewModel(CVLatest);
         }
 
-       async  void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var category = e.CurrentSelection.FirstOrDefault() as Category;
-            if (category == null)
-                return;
-
-            await Navigation.PushModalAsync(new Views.CategoryView(category));
-
-            ((CollectionView)sender).SelectedItem = null;
-        }
-
         async void CVLatest_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedProduct = e.CurrentSelection.FirstOrDefault() as ProductoItem;
