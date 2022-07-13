@@ -144,6 +144,7 @@
                 <StackLayout Grid.Row="3">
                     <CollectionView VerticalOptions="Start"
                                 VerticalScrollBarVisibility="Never"
+                                SelectionChanged="CVLatest_SelectionChanged"
                                 x:Name="CVLatest"
                                 SelectionMode="Single"
                                 IsVisible="{Binding IsVisibleProducts}">
