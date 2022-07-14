@@ -107,7 +107,6 @@
                 </StackLayout>
 
                 <CollectionView ItemsSource="{Binding ListCategories}"
-                                Margin="0,5"
                                 HeightRequest="120" 
                                 VerticalOptions="FillAndExpand"
                                 ItemsLayout="HorizontalList"
@@ -142,6 +141,16 @@
                 <!--<Label Grid.Row="3" Text="Ultimos Productos" FontSize="25" FontAttributes="Bold" Style="{StaticResource PrimaryLabelHeader}"/>-->
 
                 <StackLayout Grid.Row="3">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding CategorySelected, StringFormat='Productos/{0:F0}'}"
+                               TextColor="Black"
+                               FontSize="14"/>
+                        <Label Text="{Binding QuantityProducts, StringFormat='{0:F0} Productos'}" 
+                               TextColor="Black"
+                               HorizontalOptions="EndAndExpand"
+                               FontSize="14"/>
+
+                    </StackLayout>
                     <CollectionView VerticalOptions="Start"
                                 VerticalScrollBarVisibility="Never"
                                 SelectionChanged="CVLatest_SelectionChanged"
@@ -233,11 +242,19 @@
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
                              HorizontalOptions="CenterAndExpand">
-                    <Image Source="comprasPurple.png" HeightRequest="28">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer   Command="{Binding ViewCartCommand}"/>
-                        </Image.GestureRecognizers>
-                    </Image>
+                    <Grid>
+                        <Label Text="{Binding UserCartItemsCount}" 
+                           Style="{StaticResource PrimaryLabelHeader}"
+                           FontSize="15"
+                           TextColor="Black"
+                           HorizontalOptions="End"
+                           IsVisible="{Binding IsVisibleCounter}"/>
+                        <Image Source="comprasPurple.png" HeightRequest="28" Margin="0,0,8,0" />
+
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ViewCartCommand}"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
                 </sombras:Shadows>
 
                 <sombras:Shadows CornerRadius="10"

@@ -29,9 +29,12 @@ namespace SuperEconomicoApp.ViewsModels
         private string _DepartamentPreview;
         private string _Coordinates;
         private string _SearchText;
+        private string _CategorySelected = "General";
+        private int _QuantityProducts;
         private int _UserCartItemsCount;
         private bool _IsVisibleEmptyMessage = false;
         private bool _IsVisibleProducts = true;
+        private bool _IsVisibleCounter;
 
         private GoogleDistanceMatrix googleDistanceMatrix;
         private GoogleServiceApi googleServiceApi;
@@ -50,6 +53,34 @@ namespace SuperEconomicoApp.ViewsModels
             get
             {
                 return _UserName;
+            }
+        }
+        
+        public int QuantityProducts
+        {
+            set
+            {
+                _QuantityProducts = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _QuantityProducts;
+            }
+        }
+        
+        public string CategorySelected
+        {
+            set
+            {
+                _CategorySelected = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _CategorySelected;
             }
         }
 
@@ -81,6 +112,36 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
+        public bool IsVisibleCounter
+        {
+            set
+            {
+                _IsVisibleCounter = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleCounter;
+            }
+        }
+
+
+
+        public int UserCartItemsCount
+        {
+            set
+            {
+                _UserCartItemsCount = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _UserCartItemsCount;
+            }
+        }
+
 
         public string DepartamentPreview
         {
@@ -106,21 +167,6 @@ namespace SuperEconomicoApp.ViewsModels
             get
             {
                 return _Coordinates;
-            }
-        }
-
-
-        public int UserCartItemsCount
-        {
-            set
-            {
-                _UserCartItemsCount = value;
-                OnPropertyChanged();
-            }
-
-            get
-            {
-                return _UserCartItemsCount;
             }
         }
 
@@ -171,7 +217,6 @@ namespace SuperEconomicoApp.ViewsModels
 
         public ProductsViewModel(CollectionView collectionViewReceived)
         {
-            UserCartItemsCount = new CartItemService().GetUserCartCount();
             ListItemsProducts = new ObservableCollection<ProductoItem>();
             ListCategories = new ObservableCollection<Category>();
             googleDistanceMatrix = new GoogleDistanceMatrix();
@@ -184,6 +229,16 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         #region Procesos
+        public void GetQuantityProductsCart() {
+            UserCartItemsCount = new CartItemService().GetUserCartCount();
+            if (UserCartItemsCount.Equals(0))
+            {
+                IsVisibleCounter = false;
+                return;
+            } 
+            IsVisibleCounter = true;
+        }
+
         private void SearchProduct()
         {
             var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
@@ -197,12 +252,16 @@ namespace SuperEconomicoApp.ViewsModels
                 collectionView.ItemsSource = ListItemsProducts;
                 IsVisibleEmptyMessage = false;
                 IsVisibleProducts = true;
+                QuantityProducts = ListItemsProducts.Count();
+                CategorySelected = "General";
             }
             else
             {
                 var searchbyCategory = ListItemsProducts.Where(item => item.Category_Id.ToString().Contains(category.CategoryID.ToString()));
+                CategorySelected = category.Name;
+                QuantityProducts = searchbyCategory.Count();
 
-                if (searchbyCategory.Count() == 0)
+                if (QuantityProducts.Equals(0))
                 {
                     IsVisibleEmptyMessage = true;
                     IsVisibleProducts = false;
@@ -340,6 +399,7 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 ListItemsProducts = listProducts;
                 collectionView.ItemsSource = ListItemsProducts;
+                QuantityProducts = ListItemsProducts.Count();
             }
 
         }

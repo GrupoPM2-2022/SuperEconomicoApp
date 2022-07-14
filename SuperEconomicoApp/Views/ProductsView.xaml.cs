@@ -13,10 +13,12 @@ namespace SuperEconomicoApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProductsView : ContentPage
     {
+        ProductsViewModel productsViewModel;
         public ProductsView()
         {
             InitializeComponent();
-            BindingContext = new ProductsViewModel(CVLatest);
+            productsViewModel = new ProductsViewModel(CVLatest);
+            BindingContext = productsViewModel;
         }
 
         async void CVLatest_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -27,6 +29,12 @@ namespace SuperEconomicoApp.Views
             await Navigation.PushModalAsync(new ProductDetailsView(selectedProduct));
             ((CollectionView)sender).SelectedItem = null;
         }
-       
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            productsViewModel.GetQuantityProductsCart();
+        }
+
     }
 }
