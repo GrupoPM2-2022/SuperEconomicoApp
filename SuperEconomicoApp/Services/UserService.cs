@@ -25,11 +25,8 @@ namespace SuperEconomicoApp.Services
             User user = new User();
             try
             {
-                var request = new HttpRequestMessage();
-                request.RequestUri = new Uri(ApiMethods.URL_USERMETHOD + "?value=" + email + "&method=getUserForEmail");
-                request.Method = HttpMethod.Get;
-                request.Headers.Add("Accept", "application/json");
-                HttpResponseMessage response = await client.SendAsync(request);
+                Uri uri = new Uri(ApiMethods.URL_USERMETHOD + "?value=" + email + "&method=getUserForEmail");
+                var response = await client.GetAsync(uri);
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
@@ -51,28 +48,31 @@ namespace SuperEconomicoApp.Services
 
         public async Task<User> GetUserById()
         {
-            User user = new User();
             try
             {
-                var request = new HttpRequestMessage();
-                request.RequestUri = new Uri(ApiMethods.URL_USER + "?id=" + Settings.IdUser);
-                request.Method = HttpMethod.Get;
-                request.Headers.Add("Accept", "application/json");
-                HttpResponseMessage response = await client.SendAsync(request);
+                User user = new User();
+                var uri = new Uri(ApiMethods.URL_USER + "?id=" + Settings.IdUser);
+                var response = await client.GetAsync(uri);
+
                 if (response.IsSuccessStatusCode)
                 {
-                    string content = await response.Content.ReadAsStringAsync();
+                    var content = await response.Content.ReadAsStringAsync();
                     if (content.Equals("[]"))
                     {
                         return null;
                     }
                     user = JsonConvert.DeserializeObject<User>(content);
+                    return user;
                 }
-                return user;
+                else
+                {
+                    return null;
+                }
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("ERROR_USER ",ex.Message);
             }
 
             return null;

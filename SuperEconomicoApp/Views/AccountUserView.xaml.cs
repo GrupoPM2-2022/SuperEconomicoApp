@@ -14,11 +14,11 @@ namespace SuperEconomicoApp.Views
     public partial class AccountUserView : ContentPage
     {
 
-        UserAccountModels userAccountModels;
+        AccountUserViewModels userAccountModels;
         public AccountUserView()
         {
             InitializeComponent();
-            userAccountModels = new UserAccountModels();
+            userAccountModels = new AccountUserViewModels();
             BindingContext = userAccountModels;
 
         }
