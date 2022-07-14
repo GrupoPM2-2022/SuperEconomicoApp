@@ -178,7 +178,7 @@ namespace SuperEconomicoApp.ViewsModels
             string idUserDelivery = order.delivery_user_id.ToString();
             CrossCloudFirestore.Current
                .Instance
-               .Collection("Ubicacion2")
+               .Collection("Ubication")
                .AddSnapshotListener((snapshot, error) =>
                {
                    if (snapshot != null)
@@ -199,7 +199,7 @@ namespace SuperEconomicoApp.ViewsModels
 
                                    foreach (KeyValuePair<string, object> pair in element)
                                    {
-                                       if (pair.Key.Equals("ubicacion"))
+                                       if (pair.Key.Equals("ubication"))
                                        {
                                            ubication = pair.Value.ToString().Split(',');
                                        }

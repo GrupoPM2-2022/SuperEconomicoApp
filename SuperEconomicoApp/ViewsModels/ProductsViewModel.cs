@@ -195,6 +195,8 @@ namespace SuperEconomicoApp.ViewsModels
             if (category.Name.Equals("Todos"))
             {
                 collectionView.ItemsSource = ListItemsProducts;
+                IsVisibleEmptyMessage = false;
+                IsVisibleProducts = true;
             }
             else
             {
