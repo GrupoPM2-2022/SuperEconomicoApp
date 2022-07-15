@@ -43,15 +43,34 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             {
                 NotExistOrders = true;
                 ExistOrders = false;
-            } else
+            }
+            else
             {
                 NotExistOrders = false;
                 ExistOrders = true;
 
-                ListOrders = (List<Order>) ordersByUser.orders;
-                ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, y.order_date));
+                ListOrders = GetOrdersActiveByUser((List<Order>)ordersByUser.orders);
+                //ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, y.order_date));
             }
 
+        }
+
+        private List<Order> GetOrdersActiveByUser(List<Order> orders)
+        {
+            foreach (var item in orders)
+            {
+                if (item.status.Equals("ACTIVO"))
+                {
+                    item.ColorStatus = "#1E8449";
+                    item.status = "ACTIVO MOMENTÁNEAMENTE";
+                }
+                else if (item.status.Equals("ENTREGA"))
+                {
+                    item.ColorStatus = "#6C3483";
+                    item.status = "ENTREGANDO";
+                }
+            }
+            return orders;
         }
         #endregion
 
@@ -65,7 +84,7 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 OnPropertyChanged();
             }
         }
-        
+
         public bool NotExistOrders
         {
             get { return _NotExistOrders; }

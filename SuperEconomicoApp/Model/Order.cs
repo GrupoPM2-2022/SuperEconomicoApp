@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SuperEconomicoApp.Model
 {
@@ -25,9 +26,16 @@ namespace SuperEconomicoApp.Model
         public byte[] delivery_image { get; set; }
         public string sucursal { get; set; }
         public List<OrderDetails> orders_detail { get; set; }
+        
+        [JsonIgnore]
+        public string NameButton { get; set; }
+        
+        [JsonIgnore]
+        public string ColorStatus { get; set; }
     }
 
-    public class OrdersByUser {
+    public class OrdersByUser
+    {
         public string id { get; set; }
         public string password { get; set; }
         public string typeuser { get; set; }

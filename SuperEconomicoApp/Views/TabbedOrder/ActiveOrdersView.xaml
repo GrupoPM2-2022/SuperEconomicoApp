@@ -24,10 +24,10 @@
                                HasShadow="False"
                                Padding="15,12">
                             <StackLayout>
-                                <Label Text="{Binding status, StringFormat='{0:F0} MOMENTÁNEAMENTE'}"
+                                <Label Text="{Binding status}"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="Green"/>
+                                       TextColor="{Binding ColorStatus}"/>
 
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="supermarket.png"
