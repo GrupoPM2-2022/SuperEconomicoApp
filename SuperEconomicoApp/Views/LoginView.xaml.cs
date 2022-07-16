@@ -30,7 +30,7 @@ namespace SuperEconomicoApp.Views
 
         private void btnRecoveryPass(object sender, EventArgs e)
         {
-
+            Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
         }
     }
 }

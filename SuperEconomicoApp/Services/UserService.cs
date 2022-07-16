@@ -1,14 +1,13 @@
-﻿using Firebase.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using SuperEconomicoApp.Model;
-using Firebase.Database.Query;
 using System.Net.Http;
 using SuperEconomicoApp.Api;
 using Newtonsoft.Json;
+using SuperEconomicoApp.Helpers;
 
 namespace SuperEconomicoApp.Services
 {
@@ -26,11 +25,8 @@ namespace SuperEconomicoApp.Services
             User user = new User();
             try
             {
-                var request = new HttpRequestMessage();
-                request.RequestUri = new Uri(ApiMethods.URL_USER + "?value=" + email + "&method=getUserForEmail");
-                request.Method = HttpMethod.Get;
-                request.Headers.Add("Accept", "application/json");
-                HttpResponseMessage response = await client.SendAsync(request);
+                Uri uri = new Uri(ApiMethods.URL_USERMETHOD + "?value=" + email + "&method=getUserForEmail");
+                var response = await client.GetAsync(uri);
                 if (response.IsSuccessStatusCode)
                 {
                     string content = await response.Content.ReadAsStringAsync();
@@ -48,6 +44,59 @@ namespace SuperEconomicoApp.Services
             }
 
             return null;
+        }
+
+        public async Task<User> GetUserById()
+        {
+            try
+            {
+                User user = new User();
+                var uri = new Uri(ApiMethods.URL_USER + "?id=" + Settings.IdUser);
+                var response = await client.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    if (content.Equals("[]"))
+                    {
+                        return null;
+                    }
+                    user = JsonConvert.DeserializeObject<User>(content);
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ERROR_USER ",ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<bool> UpdateUser(User user)
+        {
+            try
+            {
+                Uri requestUri = new Uri(ApiMethods.URL_USER + "?id=" + user.id);
+                var jsonObject = JsonConvert.SerializeObject(user);
+                var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+                var response = await client.PutAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return false;
         }
 
 

@@ -5,7 +5,7 @@
              x:Class="SuperEconomicoApp.Views.Ubication.AddDirectionView">
     <ContentPage.Content>
         <StackLayout>
-            <maps:Map x:Name="map" HeightRequest="480"/>
+            <maps:Map x:Name="map" HeightRequest="480" MyLocationEnabled="True" IsShowingUser="True"/>
             <StackLayout Padding="10">
                 <Editor Text="{Binding Description}" 
                     Placeholder="Ingrese una descripción de su dirección" 

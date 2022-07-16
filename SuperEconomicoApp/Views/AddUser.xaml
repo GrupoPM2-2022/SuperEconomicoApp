@@ -4,6 +4,7 @@
              x:Class="SuperEconomicoApp.Views.AddUser"
              xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
              xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+    <ScrollView>
     <Grid Padding="20" RowSpacing="10">
 
         <Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                 x:Name="img"  
                 Source="person2"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1">
+                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1" HeightRequest="200">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
@@ -49,7 +50,6 @@
             x:Name="txtname"
             Keyboard="Text"
             FontSize="Small"
-                PlaceholderColor="Black" 
             />
 
         <Label Text="APELLIDOS" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="3"/>
@@ -59,7 +59,6 @@
              BackgroundColor="White"
             TextColor="Black"
             FontSize="Small"
-                PlaceholderColor="Black" 
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="Ingresa tus apellidos" 
@@ -77,7 +76,6 @@
             Placeholder="Ingresa tu Telefono" 
              x:Name="txtphone"
              Keyboard="Telephone"
-                PlaceholderColor="Black"
             FontSize="Small"
             />
         <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
@@ -91,18 +89,13 @@
             Placeholder="Ingresa tu email" 
             x:Name="txtemail"
             Keyboard="Email"
-                PlaceholderColor="Black" 
             FontSize="Small"
             />
         <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
-        <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20">
-            <DatePicker MinimumDate="01/01/1900"  BackgroundColor="white"  x:Name="txtbirthdate" FontSize="Small" />
+        <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20" >
+            <DatePicker MinimumDate="01/01/1900" TextColor="#B4B4B4"  BackgroundColor="white"  x:Name="txtbirthdate" FontSize="Small" />
 
         </Frame>
-
-
-
-
 
         <Label Text="PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
 
@@ -113,7 +106,6 @@
             TextColor="Black"
             BorderThickness="1"
             CornerRadius="20"
-            PlaceholderColor="Black" 
             FontSize="Small"
             Placeholder="Ingresa tu password"  
             x:Name="txtpassword"
@@ -126,7 +118,6 @@
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
-            PlaceholderColor="Black"
             FontSize="Small"
             BorderThickness="1"
             CornerRadius="20"
@@ -137,7 +128,7 @@
             Margin="0,0,0,10"
             />
 
-        <Button 
+            <Button 
             Grid.Row="15"
             Text="GUARDAR" 
             BackgroundColor="#8873b6" 
@@ -147,8 +138,7 @@
             x:Name="btnSave"
             Clicked="btnSave_Clicked"
             CornerRadius="20"/>
-
-
-    </Grid>
+        </Grid>
+    </ScrollView>
 
 </ContentPage>

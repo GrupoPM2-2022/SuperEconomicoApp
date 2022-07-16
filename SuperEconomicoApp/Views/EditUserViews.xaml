@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:SuperEconomicoApp.Converters"
              x:Class="SuperEconomicoApp.Views.EditUserViews"
              xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
              xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteArrayToImage x:Key="ByteToImage" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid Padding="20" RowSpacing="10">
 
         <Grid.RowDefinitions>
@@ -19,37 +27,46 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <control:CircleImage  Grid.Row="0" 
-                x:Name="img"  
-                Source="person2"
+                Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1">
+                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1"
+                IsVisible="{Binding IsImageBD}"
+                HeightRequest="90"
+                WidthRequest="90">
             <Image.GestureRecognizers>
-                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  NumberOfTapsRequired="1"/>
+                <TapGestureRecognizer Command="{Binding SelectImageCommand}"  NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
         </control:CircleImage>
 
+        <control:CircleImage  Grid.Row="0"  
+                x:Name="imageForm"
+                VerticalOptions="Center"
+                HorizontalOptions="Center" 
+                BorderColor="Purple"
+                BorderThickness="1"
+                HeightRequest="90"
+                WidthRequest="90">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SelectImageCommand}"  NumberOfTapsRequired="1"/>
+            </Image.GestureRecognizers>
+        </control:CircleImage>
 
         <Label Text="NOMBRES" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="1"/>
 
         <controls:StandardEntry
             Grid.Row="2"
             Padding="13"
-             BackgroundColor="White"
+            BackgroundColor="White"
             BorderThickness="1"
             TextColor="Black"
             CornerRadius="20"
-            Placeholder="Levin Mauricio Lainez"
-            x:Name="txtname"
+            Placeholder="Levin Mauricio"
             Keyboard="Text"
             FontSize="Small"
-                PlaceholderColor="Black" 
+            Text="{Binding Name}"
             />
 
         <Label Text="APELLIDOS" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="3"/>
@@ -59,11 +76,10 @@
              BackgroundColor="White"
             TextColor="Black"
             FontSize="Small"
-                PlaceholderColor="Black" 
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="Aguirre Lainez" 
-            x:Name="txtlastname"
+            Text="{Binding Lastname}"
             Keyboard="Text"
             />
         <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
@@ -75,9 +91,8 @@
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="33552513" 
-             x:Name="txtphone"
+             Text="{Binding Telephone}"
              Keyboard="Telephone"
-                PlaceholderColor="Black"
             FontSize="Small"
             />
         <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
@@ -89,53 +104,18 @@
             BorderThickness="1"
             CornerRadius="20"
             Placeholder="sinle.lainez@gmail.com" 
-            x:Name="txtemail"
+            Text="{Binding EmailNew}"
             Keyboard="Email"
-                PlaceholderColor="Black" 
-            FontSize="Small"
-            />
+            FontSize="Small"/>
         <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
         <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20">
-            <DatePicker MinimumDate="01/01/1900"  BackgroundColor="white"  x:Name="txtbirthdate" FontSize="Small" />
-
+            <DatePicker MinimumDate="01/01/1900" 
+                        TextColor="Black" 
+                        BackgroundColor="white"  
+                        x:Name="txtBirthDate" 
+                        FontSize="Small" 
+                        Date="{Binding BirthDate}"/>
         </Frame>
-
-
-
-
-
-        <Label Text="PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
-
-        <controls:StandardEntry
-            Grid.Row="12"
-            Padding="13"
-             BackgroundColor="White"
-            TextColor="Black"
-            BorderThickness="1"
-            CornerRadius="20"
-            PlaceholderColor="Black" 
-            FontSize="Small"
-            Placeholder="Ingresa tu password"  
-            x:Name="txtpassword"
-            Keyboard="Text"
-            IsPassword="True"
-            />
-        <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="13"/>
-        <controls:StandardEntry
-            Grid.Row="14"
-            Padding="13"
-             BackgroundColor="White"
-            TextColor="Black"
-            PlaceholderColor="Black"
-            FontSize="Small"
-            BorderThickness="1"
-            CornerRadius="20"
-            Placeholder="Repite tu password" 
-            x:Name="txtpassword2"
-            Keyboard="Text"
-            IsPassword="True"
-            Margin="0,0,0,10"
-            />
 
         <Button 
             Grid.Row="15"
@@ -144,10 +124,8 @@
             TextColor="White" 
             WidthRequest="300" 
             HeightRequest="50"
-            x:Name="btnActualizar"
-            Clicked="btnActualizar_Clicked"
+            Command="{Binding UpdateUserCommand}"
             CornerRadius="20"/>
-
 
     </Grid>
 

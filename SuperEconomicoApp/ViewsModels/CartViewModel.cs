@@ -138,6 +138,7 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 CartItems.Remove(item);
                 cartItemService.RemoveProductById(item);
+                LoadItems();
             }  
         }
 
@@ -149,7 +150,7 @@ namespace SuperEconomicoApp.ViewsModels
                 {
                     client_user_id = Convert.ToInt32(Settings.IdUser),
                     delivery_user_id = 0,
-                    order_date = DateTime.Now.ToString("dd-MM-yyyy"),
+                    order_date = DateTime.Now,
                     deliver_date = DateTime.Now.ToString("dd-MM-yyyy"),
                     score = "0",
                     comment = "",
@@ -183,6 +184,7 @@ namespace SuperEconomicoApp.ViewsModels
             var cn = DependencyService.Get<ISQLite>().GetConnection();
             var items = cn.Table<CartItem>().ToList();
             CartItems.Clear();
+            TotalCost = 0;
             foreach (var item in items)
             {
                 CartItems.Add(new UserCartItem()
@@ -192,13 +194,14 @@ namespace SuperEconomicoApp.ViewsModels
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Description = item.Description,
-                    Price = item.Price,
+                    Price = Math.Round(item.Price, 2),
                     Quantity = item.Quantity,
                     Cost = item.Price * item.Quantity,
                     Stock = item.Stock
                 });
                 TotalCost += (item.Price * item.Quantity);
             }
+            TotalCost = Math.Round(TotalCost, 2);
         }
 
         private void DecrementOrder()

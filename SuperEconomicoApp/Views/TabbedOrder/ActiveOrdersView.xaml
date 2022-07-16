@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.TabbedOrder.ActiveOrdersView"
+             Title="Activos"
+             x:Name="CurrentPage"
+             BackgroundColor="#EFF0F0">
+
+    <Grid Padding="8">
+        <StackLayout IsVisible="{Binding ExistOrders}">
+            <CollectionView ItemsSource="{Binding ListOrders}"
+                        VerticalOptions="CenterAndExpand">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="White"
+                               CornerRadius="4"
+                               HasShadow="False"
+                               Padding="15,12">
+                            <StackLayout>
+                                <Label Text="{Binding status}"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="{Binding ColorStatus}"/>
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="supermarket.png"
+                                           WidthRequest="45"
+                                           HeightRequest="45"/>
+                                    <StackLayout Margin="15,0,0,0">
+                                        <Label Text="El Economico"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding order_date}"
+                                               FontSize="14"
+                                               FontAttributes="Italic"/>
+                                            <Label Text="{Binding payment_type, StringFormat='- {0:F0}'}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"/>
+                                        </StackLayout>
+
+                                    </StackLayout>
+
+                                </StackLayout>
+                                <Label Text="{Binding total, StringFormat='L. {0:F0}.00'}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               HorizontalTextAlignment="End"/>
+
+                            </StackLayout>
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.OrderDetailCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
+            <Image Source="list_empty.png"
+                   WidthRequest="100"
+                   />
+            <Label Text="No tienes ningún pedido pendiente" 
+                   HorizontalTextAlignment="Center"
+                   FontSize="23"
+                   TextColor="#212F3D"
+                   FontAttributes="Bold"/>
+        </StackLayout>
+
+    </Grid>
+</ContentPage>

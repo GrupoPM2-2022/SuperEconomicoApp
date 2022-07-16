@@ -1,4 +1,5 @@
 ﻿using SuperEconomicoApp.Model;
+using SuperEconomicoApp.ViewsModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,21 +13,12 @@ namespace SuperEconomicoApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProductsView : ContentPage
     {
+        ProductsViewModel productsViewModel;
         public ProductsView()
         {
             InitializeComponent();
-            
-        }
-
-       async  void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var category = e.CurrentSelection.FirstOrDefault() as Category;
-            if (category == null)
-                return;
-
-            await Navigation.PushModalAsync(new Views.CategoryView(category));
-
-            ((CollectionView)sender).SelectedItem = null;
+            productsViewModel = new ProductsViewModel(CVLatest);
+            BindingContext = productsViewModel;
         }
 
         async void CVLatest_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -37,6 +29,12 @@ namespace SuperEconomicoApp.Views
             await Navigation.PushModalAsync(new ProductDetailsView(selectedProduct));
             ((CollectionView)sender).SelectedItem = null;
         }
-       
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            productsViewModel.GetQuantityProductsCart();
+        }
+
     }
 }

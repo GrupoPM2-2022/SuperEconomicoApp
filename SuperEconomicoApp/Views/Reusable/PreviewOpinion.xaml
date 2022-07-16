@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pop:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Reusable.PreviewOpinion"
+             xmlns:pop="http://rotorgames.com">
+
+    <pop:PopupPage.Animation>
+        <pop:MoveAnimation PositionIn="Left"
+                           PositionOut="Right"
+                           DurationIn="400"
+                           DurationOut="320"
+                           HasBackgroundAnimation="True"/>
+    </pop:PopupPage.Animation>
+
+    <pop:PopupPage.Resources>
+        <Style TargetType="BoxView"
+                   x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                        Value="2"/>
+            <Setter Property="BackgroundColor"
+                        Value="#979797" />
+            <Setter Property="Opacity"
+                        Value="0.1" />
+        </Style>
+    </pop:PopupPage.Resources>
+
+    <Grid Margin="0,350,0,0">
+
+        <BoxView BackgroundColor="White"
+                 CornerRadius="15, 15, 0, 0 "/>
+
+        <StackLayout>
+            <StackLayout Orientation="Horizontal" Padding="5">
+                <Label Text="Calificación"
+                       FontSize="18"
+                       FontAttributes="Bold" 
+                       VerticalOptions="Center"
+                       HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <BoxView Style="{StaticResource SeparadorBoxview}"/>
+
+            <StackLayout Padding="15" IsVisible="{Binding IsVisiblePreview}">
+                <Image Source="{Binding ImageScore}"
+                        WidthRequest="90"
+                        IsVisible="{Binding IsVisibleScore}"
+                        HorizontalOptions="Start"/>
+
+                <Label Text="{Binding NameUser}"
+                        FontAttributes="Bold"
+                        TextColor="Black"
+                        FontSize="16"
+                        HorizontalTextAlignment="Start"/>
+
+                <Label Text="{Binding Comment}"
+                                   HorizontalTextAlignment="Start"
+                                   FontSize="15"/>
+            </StackLayout>
+
+
+
+            <StackLayout IsVisible="{Binding IsVisibleSaveScore}"
+                         Padding="15">
+
+                <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center" Margin="0,0,0,10">
+
+                    <Image Source="{Binding Star1}"
+                           WidthRequest="35"
+                           HeightRequest="35">
+
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
+                                                  CommandParameter="1"/>
+                        </Image.GestureRecognizers>
+
+                    </Image>
+
+                    <Image Source="{Binding Star2}"
+                           WidthRequest="35"
+                           HeightRequest="30">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
+                                                  CommandParameter="2"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image Source="{Binding Star3}"
+                           WidthRequest="35"
+                           HeightRequest="35">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
+                                                  CommandParameter="3"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image Source="{Binding Star4}"
+                           WidthRequest="35"
+                           HeightRequest="35">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
+                                                  CommandParameter="4"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                    <Image Source="{Binding Star5}"
+                           WidthRequest="35"
+                           HeightRequest="35">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
+                                                  CommandParameter="5"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                </StackLayout>
+
+                <Editor Text="{Binding Comment}" 
+                        Placeholder="Comentario" 
+                        HeightRequest="150"
+                        PlaceholderColor="Black"/>
+
+                <Button Text="Guardar Calificación"
+                        FontSize="12"
+                        CornerRadius="8"
+                        BackgroundColor="Purple" 
+                        TextColor="White" 
+                        FontAttributes="Bold"
+                        VerticalOptions="FillAndExpand"
+                        WidthRequest="200"
+                        Command="{Binding SaveScoreCommand}"/>
+
+            </StackLayout>
+
+        </StackLayout>
+
+    </Grid>
+
+</pop:PopupPage>

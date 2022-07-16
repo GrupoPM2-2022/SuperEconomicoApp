@@ -15,7 +15,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
     public class AddDirectionViewModel : BaseViewModel
     {
         #region VARIABLES
-        private static double VALID_KILOMETERS = 30;
         string _Description;
         Pin pinUser = new Pin();
         Map map;
@@ -51,6 +50,14 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             directionService = new DirectionService();
             LoadConfiguration();
             map.PinDragEnd += Map_PinDragEnd;
+            map.MapClicked += Map_MapClicked;    
+        }
+
+        private void Map_MapClicked(object sender, MapClickedEventArgs e)
+        {
+            latitudeUser = e.Point.Latitude.ToString();
+            longitudeUser = e.Point.Longitude.ToString();
+            SelectLocation(true);
         }
 
         #endregion
@@ -86,29 +93,34 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         #endregion
 
         #region PROCESOS
-        private async void Map_PinDragEnd(object sender, PinDragEventArgs e)
+        private void Map_PinDragEnd(object sender, PinDragEventArgs e)
         {
             latitudeUser = e.Pin.Position.Latitude.ToString();
             longitudeUser = e.Pin.Position.Longitude.ToString();
-            var position = new Position(e.Pin.Position.Latitude, e.Pin.Position.Longitude);
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(400)));
+            SelectLocation();
+        }
+
+        private async void SelectLocation(bool movePin = false) {
+            var position = new Position(Convert.ToDouble(latitudeUser), Convert.ToDouble(longitudeUser));
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(position, Xamarin.Forms.GoogleMaps.Distance.FromMeters(500)));
             coordinatesUser = latitudeUser + "," + longitudeUser;
             googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(coordinatesSupermarket, coordinatesUser);
 
             int meters = googleDistanceMatrix.rows[0].elements[0].distance.value;
 
             double kilometers = meters / 1000;
-            if (kilometers > VALID_KILOMETERS)
+            if (kilometers > Constants.VALID_KILOMETERS)
             {
-                await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
+                await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual, trabajaremos en eso pronto", "Ok");
                 IsEnabledButton = false;
             }
             else
             {
-                if (TextButton.Equals("Editar") && Description.Equals(directionReference.description))
+                if (movePin)
                 {
-                    Description = "";
+                    pinUser.Position = position;
                 }
+                Description = googleDistanceMatrix.destination_addresses[0];
                 IsEnabledButton = true;
             }
         }
@@ -139,7 +151,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             pinUser.IsDraggable = true;
 
             map.Pins.Add(pinUser);
-            map.MoveToRegion(MapSpan.FromCenterAndRadius(positionMap, Xamarin.Forms.GoogleMaps.Distance.FromMeters(700)));
+            map.MoveToRegion(MapSpan.FromCenterAndRadius(positionMap, Xamarin.Forms.GoogleMaps.Distance.FromMeters(800)));
         }
 
         private void ApplyMapTheme()

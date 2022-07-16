@@ -135,7 +135,7 @@
                FontSize="18"
                FontAttributes="Bold"
                VerticalOptions="Center"/>
-                <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+                <Label Text="{Binding TotalPrincipal, StringFormat='L. {0:F0}'}"
                FontSize="19"
                FontAttributes="Bold"
                VerticalOptions="Center"
@@ -210,16 +210,27 @@
                     </CollectionView.ItemTemplate>
 
                 </CollectionView>
-                <Button Text="Agregar Dirección"
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Agregar dirección"
                         VerticalOptions="Center"
-                        HorizontalOptions="Start"/>
+                        HorizontalOptions="Start"
+                        Command="{Binding AddDirectionCommand}"
+                        FontSize="14"
+                        TextTransform="None"/>
+                    <Button Text="Dirección actual"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        Command="{Binding AddDirectionCurrentCommand}"
+                        FontSize="14"
+                        TextTransform="None"/>
+                </StackLayout>
                 <BoxView Style="{StaticResource SeparadorBoxview}" />
             </StackLayout>
 
-            <Editor VerticalOptions="FillAndExpand" 
+            <!--<Editor VerticalOptions="FillAndExpand" 
                     Placeholder="Alguna instrucción en la orden (opcional)"
                     Margin="10"
-                    Text="{Binding Comment}"/>
+                    Text="{Binding Comment}"/>-->
 
             <Button Text="PROCESAR ORDEN"
                     Command="{Binding SaveOrderCommand}"/>

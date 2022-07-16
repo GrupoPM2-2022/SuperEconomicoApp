@@ -2,7 +2,8 @@
 <pop:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.Reusable.SelectDepartment"
-             xmlns:pop="http://rotorgames.com">
+             xmlns:pop="http://rotorgames.com"
+             CloseWhenBackgroundIsClicked="False">
 
     <pop:PopupPage.Animation>
         <pop:MoveAnimation PositionIn="Bottom"

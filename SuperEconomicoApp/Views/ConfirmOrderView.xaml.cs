@@ -15,10 +15,19 @@ namespace SuperEconomicoApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ConfirmOrderView : ContentPage
     {
+
+        ConfirmOrderViewModel confirmOrderViewModel;
         public ConfirmOrderView(ObservableCollection<UserCartItem> listOrderDetails, Order order)
         {
             InitializeComponent();
-            BindingContext = new ConfirmOrderViewModel(listOrderDetails, order);
+            confirmOrderViewModel = new ConfirmOrderViewModel(listOrderDetails, order);
+            BindingContext = confirmOrderViewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            confirmOrderViewModel.GetAllDirections();
         }
     }
 }

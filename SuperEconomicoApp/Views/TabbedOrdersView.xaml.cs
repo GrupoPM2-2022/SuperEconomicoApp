@@ -10,18 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace SuperEconomicoApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class OrdersHistoryView : ContentPage
+    public partial class TabbedOrdersView : TabbedPage
     {
-        public OrdersHistoryView()
+        public TabbedOrdersView()
         {
             InitializeComponent();
-            LabelName.Text = @"Historial de Pedidos" + Preferences.Get("Username", "Guest") + ",";
-
-        }
-
-        private async void ImageButton_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PopModalAsync();
         }
     }
 }

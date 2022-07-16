@@ -14,14 +14,34 @@ using SuperEconomicoApp.Views.Ubication;
 using SuperEconomicoApp.Views.Reusable;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using System.Linq;
+using System.Windows.Input;
 
 namespace SuperEconomicoApp.ViewsModels
 {
     public class ProductsViewModel : BaseViewModel
     {
+        #region Variables
+        private ObservableCollection<ProductoItem> _ListItemsProducts;
+        private ObservableCollection<Category> _ListCategories;
+        private List<Department> _ListDepartment;
         private string _UserName;
         private string _DepartamentPreview;
         private string _Coordinates;
+        private string _SearchText;
+        private string _CategorySelected = "General";
+        private int _QuantityProducts;
+        private int _UserCartItemsCount;
+        private bool _IsVisibleEmptyMessage = false;
+        private bool _IsVisibleProducts = true;
+        private bool _IsVisibleCounter;
+
+        private GoogleDistanceMatrix googleDistanceMatrix;
+        private GoogleServiceApi googleServiceApi;
+        CollectionView collectionView;
+        #endregion
+
+        #region Objetos
         public string UserName
         {
             set
@@ -35,6 +55,94 @@ namespace SuperEconomicoApp.ViewsModels
                 return _UserName;
             }
         }
+        
+        public int QuantityProducts
+        {
+            set
+            {
+                _QuantityProducts = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _QuantityProducts;
+            }
+        }
+        
+        public string CategorySelected
+        {
+            set
+            {
+                _CategorySelected = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _CategorySelected;
+            }
+        }
+
+        public bool IsVisibleProducts
+        {
+            set
+            {
+                _IsVisibleProducts = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleProducts;
+            }
+        }
+        
+        public bool IsVisibleEmptyMessage
+        {
+            set
+            {
+                _IsVisibleEmptyMessage = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleEmptyMessage;
+            }
+        }
+
+        public bool IsVisibleCounter
+        {
+            set
+            {
+                _IsVisibleCounter = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsVisibleCounter;
+            }
+        }
+
+
+
+        public int UserCartItemsCount
+        {
+            set
+            {
+                _UserCartItemsCount = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _UserCartItemsCount;
+            }
+        }
+
+
         public string DepartamentPreview
         {
             set
@@ -62,22 +170,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private int _UserCartItemsCount;
-        public int UserCartItemsCount
-        {
-            set
-            {
-                _UserCartItemsCount = value;
-                OnPropertyChanged();
-            }
-
-            get
-            {
-                return _UserCartItemsCount;
-            }
-        }
-
-        private string _SearchText;
         public string SearchText
         {
             set
@@ -92,10 +184,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public ObservableCollection<Category> Categories { get; set; }
-        private ObservableCollection<ProductoItem> _ListItemsProducts;
-        private List<Department> _ListDepartment;
-
         public ObservableCollection<ProductoItem> ListItemsProducts
         {
             get { return _ListItemsProducts; }
@@ -103,6 +191,16 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 _ListItemsProducts = value;
                 OnPropertyChanged("ListItemsProducts");
+            }
+        }
+
+        public ObservableCollection<Category> ListCategories
+        {
+            get { return _ListCategories; }
+            set
+            {
+                _ListCategories = value;
+                OnPropertyChanged("ListCategories");
             }
         }
         public List<Department> ListDepartment
@@ -115,42 +213,67 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        public Command ViewCartCommand { get; set; }
-        public Command EditUserCommand { get; set; }
-        public Command LogoutCommand { get; set; }
-        public Command OrdersHistoryCommand { get; set; }
-        public Command SearchViewCommand { get; set; }
-        public Command SelectDeparmentCommand { get; set; }
-        public Command ConfirmDepartmentCommand { get; set; }
-        public Command ViewDirectionCommand { get; set; }
+        #endregion
 
-        public ProductsViewModel()
+        public ProductsViewModel(CollectionView collectionViewReceived)
         {
-            if (Settings.ExistUser)
+            ListItemsProducts = new ObservableCollection<ProductoItem>();
+            ListCategories = new ObservableCollection<Category>();
+            googleDistanceMatrix = new GoogleDistanceMatrix();
+            googleServiceApi = new GoogleServiceApi();
+            collectionView = collectionViewReceived;
+
+            GetCategories();
+            GetAllProducts();
+            ConfigurationDepartment();
+        }
+
+        #region Procesos
+        public void GetQuantityProductsCart() {
+            UserCartItemsCount = new CartItemService().GetUserCartCount();
+            if (UserCartItemsCount.Equals(0))
             {
-                UserName = Settings.UserName;
+                IsVisibleCounter = false;
+                return;
+            } 
+            IsVisibleCounter = true;
+        }
+
+        private void SearchProduct()
+        {
+            var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
+            collectionView.ItemsSource = searchResult;
+        }
+
+        private void SelectCategory(Category category)
+        {
+            if (category.Name.Equals("Todos"))
+            {
+                collectionView.ItemsSource = ListItemsProducts;
+                IsVisibleEmptyMessage = false;
+                IsVisibleProducts = true;
+                QuantityProducts = ListItemsProducts.Count();
+                CategorySelected = "General";
             }
             else
             {
-                UserName = "Usuario";
+                var searchbyCategory = ListItemsProducts.Where(item => item.Category_Id.ToString().Contains(category.CategoryID.ToString()));
+                CategorySelected = category.Name;
+                QuantityProducts = searchbyCategory.Count();
+
+                if (QuantityProducts.Equals(0))
+                {
+                    IsVisibleEmptyMessage = true;
+                    IsVisibleProducts = false;
+                } else
+                {
+                    IsVisibleEmptyMessage = false;
+                    IsVisibleProducts = true;
+                    collectionView.ItemsSource = searchbyCategory;
+                }
+
             }
 
-            UserCartItemsCount = new CartItemService().GetUserCartCount();
-            ListItemsProducts = new ObservableCollection<ProductoItem>();
-            Categories = new ObservableCollection<Category>();
-
-            ViewCartCommand = new Command(async () => await ViewCartAsync());
-            EditUserCommand = new Command(async () => await EditUserAsync());
-            LogoutCommand = new Command(async () => await LogoutAsync());
-            OrdersHistoryCommand = new Command(async () => await OrderHistoryAsync());
-            SearchViewCommand = new Command(async () => await SearchViewAsync());
-            SelectDeparmentCommand = new Command<Department>( (param) => SelectDeparment(param));
-            ConfirmDepartmentCommand = new Command(ConfirmDepartment);
-            ViewDirectionCommand = new Command(async () => await ViewDirection());
-
-            //GetCategories();
-            ConfigurationDepartment();
-            GetAllProducts();
         }
 
         private async Task ViewDirection()
@@ -158,11 +281,51 @@ namespace SuperEconomicoApp.ViewsModels
             await Application.Current.MainPage.Navigation.PushModalAsync(new ListDirectionView());
         }
 
-        private void ConfirmDepartment()
+        private async void ConfirmDepartment()
         {
-            Settings.Department = DepartamentPreview;
-            Settings.Coordinates = Coordinates;
-            PopupNavigation.Instance.PopAsync();
+            if (string.IsNullOrEmpty(DepartamentPreview))
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes seleccionar tu departamento actual.", "Ok");
+                return;
+            }
+            var statusCheck = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (statusCheck == PermissionStatus.Granted)
+            {
+                IsValidDistance();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes conceder permisos de localizacion a la aplicacion.", "Ok");
+                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            }
+        }
+
+        private async void IsValidDistance()
+        {
+            var location = await Geolocation.GetLocationAsync();
+            if (location != null)
+            {
+                string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                googleDistanceMatrix = await googleServiceApi.CalculateDistanceTwoCoordinates(Coordinates, coordinatesUser);
+
+                int meters = googleDistanceMatrix.rows[0].elements[0].distance.value;
+
+                double kilometers = meters / 1000;
+                if (kilometers > Constants.VALID_KILOMETERS)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
+                }
+                else
+                {
+                    Settings.Department = DepartamentPreview;
+                    Settings.Coordinates = Coordinates;
+                    await PopupNavigation.Instance.PopAsync();
+                }
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "No podemos obtener tu localizacion actual.", "Ok");
+            }
         }
 
         private void SelectDeparment(Department department)
@@ -171,14 +334,15 @@ namespace SuperEconomicoApp.ViewsModels
             DepartamentPreview = department.Name;
         }
 
-        private void ConfigurationDepartment()
+        private async void ConfigurationDepartment()
         {
             if (!Settings.ExistDepartment)
             {
                 var popup = new SelectDepartment();
                 popup.BindingContext = this;
                 LoadListDepartment();
-                PopupNavigation.Instance.PushAsync(popup);
+                await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                await PopupNavigation.Instance.PushAsync(popup);
             }
         }
 
@@ -203,15 +367,10 @@ namespace SuperEconomicoApp.ViewsModels
             };
         }
 
-        private async Task SearchViewAsync()
-        {
-            await Application.Current.MainPage.Navigation.PushModalAsync(
-            new SearchResultsView(SearchText));
-        }
-
         private async Task OrderHistoryAsync()
         {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new OrdersHistoryView());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedOrdersView());
+
         }
 
         private async Task ViewCartAsync()
@@ -224,37 +383,39 @@ namespace SuperEconomicoApp.ViewsModels
             await Application.Current.MainPage.Navigation.PushModalAsync(new AccountUserView());
         }
 
-        private async Task LogoutAsync()
-        {
-            await Application.Current.MainPage.Navigation.PushModalAsync(new LogoutView());
-        }
-
         private async void GetCategories()
         {
-            var data = await new CategoryDataService().GetCategoriesAsync();
-            Categories.Clear();
-            foreach (var item in data)
+            var categories = await CategoryService.GetAllCategories();
+            if (categories != null)
             {
-                Categories.Add(item);
+                ListCategories = categories;
             }
         }
 
         private async void GetAllProducts()
         {
-            //ListItemsProducts.Clear();
-            var request = new HttpRequestMessage();
-            request.RequestUri = new Uri(ApiMethods.URL_PRODUCTS);
-            request.Method = HttpMethod.Get;
-            request.Headers.Add("Accept", "application/json");
-            var client = new HttpClient();
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            var listProducts = await ProductoService.GetAllProducts();
+            if (listProducts != null)
             {
-                string content = await response.Content.ReadAsStringAsync();
-                ListItemsProducts = JsonConvert.DeserializeObject<ObservableCollection<ProductoItem>>(content);
+                ListItemsProducts = listProducts;
+                collectionView.ItemsSource = ListItemsProducts;
+                QuantityProducts = ListItemsProducts.Count();
             }
 
         }
+        #endregion
+
+        #region Comandos
+        public ICommand ViewCartCommand => new Command(async () => await ViewCartAsync());
+        public ICommand EditUserCommand => new Command(async () => await EditUserAsync());
+        public ICommand OrdersHistoryCommand => new Command(async () => await OrderHistoryAsync());
+        public ICommand SelectDeparmentCommand => new Command<Department>((param) => SelectDeparment(param));
+        public ICommand ConfirmDepartmentCommand => new Command(ConfirmDepartment);
+        public ICommand ViewDirectionCommand => new Command(async () => await ViewDirection());
+        public ICommand SearchProductCommand => new Command(SearchProduct);
+        public ICommand SelectCategoryCommand => new Command<Category>((Category) => SelectCategory(Category));
+
+        #endregion
 
     }
 }

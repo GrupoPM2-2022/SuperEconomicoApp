@@ -6,6 +6,7 @@ using Xamarin.Forms.Xaml;
 using SuperEconomicoApp.Views;
 using SuperEconomicoApp.Views.Reusable;
 using SuperEconomicoApp.Views.Ubication;
+using SuperEconomicoApp.Views.TabbedOrder;
 
 namespace SuperEconomicoApp
 {
@@ -26,7 +27,6 @@ namespace SuperEconomicoApp
             }
             else
             {
-                //MainPage = new ProductsView();
                 MainPage = new LoginView();
             }
 

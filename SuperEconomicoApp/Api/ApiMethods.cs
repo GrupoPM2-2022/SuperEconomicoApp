@@ -16,7 +16,13 @@ namespace SuperEconomicoApp.Api
         
         public static readonly string URL_DIRECTION = URL + "direction/";
         
-        public static readonly string URL_USER = URL + "userMethod/";
+        public static readonly string URL_USERMETHOD = URL + "userMethod/";
+
+        public static readonly string URL_USER = URL + "user/";
+
+        public static readonly string URL_ORDERS_USER = URL + "userOrders/?id=";
+        
+        public static readonly string URL_CATEGORY = URL + "category/";
 
     }
 }

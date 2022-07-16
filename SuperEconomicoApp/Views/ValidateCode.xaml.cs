@@ -11,6 +11,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Threading;
 using System.Windows.Input;
+using SuperEconomicoApp.Helpers;
 
 namespace SuperEconomicoApp.Views
 {
@@ -58,12 +59,12 @@ namespace SuperEconomicoApp.Views
             
         }
 
-        private void btnVerifyCode_Clicked(object sender, EventArgs e)
+        private async void btnVerifyCode_Clicked(object sender, EventArgs e)
         {
             int concatCode = int.Parse(string.Concat(number1.Text, number2.Text, number3.Text, number4.Text));
             if (concatCode != this.Code)
             {
-                DisplayAlert("Mensaje", "El codigo ingresado no es valido favor vuelva a intentarlo", "OK");
+                await DisplayAlert("Mensaje", "El codigo ingresado no es valido favor vuelva a intentarlo", "OK");
                 number1.Text = "";
                 number2.Text = "";
                 number3.Text = "";
@@ -71,16 +72,19 @@ namespace SuperEconomicoApp.Views
             }
             else
             {
-                saveUser(this.user);
-                //Thread.Sleep(3000);//RETARDO DE 3 SEGUNDOS PARA QUE GUARDE EN LA BASE DE DATOS
+                await saveUser(this.user);
+                
                 var existingPages = Navigation.NavigationStack.ToList(); foreach (var page in existingPages) { Navigation.RemovePage(page); }
-                Application.Current.MainPage.Navigation.PushModalAsync(new Views.LoginView());
+
+                Settings.UserName = user.name + " " + user.lastname;
+                Settings.IdUser = user.id.ToString();
+                await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
             }
             
 
         }
 
-        public async void saveUser(User datauser)
+        public async Task saveUser(User datauser)
         {
             try
             {
@@ -95,11 +99,11 @@ namespace SuperEconomicoApp.Views
                 HttpResponseMessage response = await client.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    await DisplayAlert("Notificación", "El Usuario agregado con éxito: ", "OK");
+                    await DisplayAlert("Notificación", "Usuario agregado exitosamente.", "OK");
                 }
                 else
                 {
-                    await DisplayAlert("Notificación", "Error al conectar", "OK");
+                    await DisplayAlert("Notificación", "Error al conectar.", "OK");
                 }
                
                 
@@ -131,7 +135,7 @@ namespace SuperEconomicoApp.Views
                 HttpResponseMessage response = await client.SendAsync(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    await DisplayAlert("Notificación", "Correo enviado con exito " + response, "OK");
+                    await DisplayAlert("Notificación", "Correo enviado con exito ", "OK");
                 }
                 else
                 {

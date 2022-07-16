@@ -7,20 +7,20 @@ using Plugin.Media;
 using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Xamarin.Essentials;
 using System.Net.Http;
-using Newtonsoft.Json;
 using SuperEconomicoApp.Services;
-using SuperEconomicoApp;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Plugin.Media.Abstractions;
 
 namespace SuperEconomicoApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddUser : ContentPage
     {
-      
+        HttpClient user = new HttpClient();
+        byte[] imageToSave;
+        string Code;
+
         public AddUser()
         {
             InitializeComponent();
@@ -30,46 +30,85 @@ namespace SuperEconomicoApp.Views
         }
 
 
-        byte[] imageToSave;
         private async void AddImg(object sender, EventArgs e)
+        {
+            bool response = await Application.Current.MainPage.DisplayAlert("Advertencia", "Seleccione el tipo de imagen que desea", "Camara", "Galeria");
+
+            if (response)
+                GetImageFromCamera();
+            else
+                GetImageFromGallery();
+        }
+
+        private async void GetImageFromGallery()
         {
             try
             {
-
-                var takepic = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                if (CrossMedia.Current.IsPickPhotoSupported)
                 {
-                    Directory = "PhotoApp",
-                    Name = DateTime.Now.ToString() + "_foto.jpg",
-                    SaveToAlbum = true
-                });
+                    var file = await CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
+                    {
+                        PhotoSize = PhotoSize.Medium,
+                    });
 
-                if (takepic != null)
+                    if (file == null)
+                        return;
+
+                    img.Source = ImageSource.FromStream(() => { return file.GetStream(); });
+                    imageToSave = File.ReadAllBytes(file.Path);
+                }
+                else
                 {
-                    imageToSave = null;
-                    MemoryStream memoryStream = new MemoryStream();
-
-                    takepic.GetStream().CopyTo(memoryStream);
-                    imageToSave = memoryStream.ToArray();
-
-                    img.Source = ImageSource.FromStream(() => { return takepic.GetStream(); });
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al seleccionar la imagen.", "Ok");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await DisplayAlert("Error", "Se ha generado el siguiente error al agregar la imagen " + ex, "Aceptar");
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al seleccionar la imagen.", "Ok");
+            }
+
+        }
+
+        private async void GetImageFromCamera()
+        {
+            try
+            {
+                var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                {
+                    PhotoSize = PhotoSize.Medium,
+                });
+
+                if (file == null)
+                    return;
+
+                img.Source = ImageSource.FromStream(() => { return file.GetStream(); });
+                imageToSave = File.ReadAllBytes(file.Path);
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al tomar la fotografia.", "Ok");
             }
         }
 
-        HttpClient user = new HttpClient();
-        string Code;
-
-
         private async void btnSave_Clicked(object sender, EventArgs e)
         {
+            UserService userService = new UserService();
+            User user = await userService.GetUserByEmail(txtemail.Text);
+
+            if (user != null)
+            {
+                if(await DisplayAlert("Notificación", "Correo igresado ya fue registrado.\n \n ¿Desea recuperar su contraseña?", "SI", "NO"))
+                {
+                    await Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
+                }
+                
+                return;
+            }
+
             if (validateData() == true)
             {
                 this.Code = Convert.ToString(numberRandom());
-                await Application.Current.MainPage.Navigation.PushModalAsync(new Views.ValidateCode(this.Code, dataUser()));
+                await Application.Current.MainPage.Navigation.PushModalAsync(new ValidateCode(this.Code, dataUser()));
 
             }
         }
@@ -96,7 +135,6 @@ namespace SuperEconomicoApp.Views
             return user;    
 
         }
-
 
         private bool validateData()
         {
@@ -156,8 +194,6 @@ namespace SuperEconomicoApp.Views
 
             return EmailRegex.IsMatch(email);
         }
-
-
 
     }
 }

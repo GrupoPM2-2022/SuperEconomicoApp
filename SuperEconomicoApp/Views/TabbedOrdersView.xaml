@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+            xmlns:local="clr-namespace:SuperEconomicoApp.Views.TabbedOrder"
+            x:Class="SuperEconomicoApp.Views.TabbedOrdersView"
+            Visual="Material"
+            BackgroundColor="Purple">
+
+    <TabbedPage.Resources>
+        <Style TargetType="TabbedPage"                
+           ApplyToDerivedTypes="True">
+
+            <Setter Property="BarBackgroundColor"
+                Value="Purple"/>
+            <Setter Property="BarTextColor"
+                Value="White"/>
+        </Style>
+    </TabbedPage.Resources>
+
+    <local:ActiveOrdersView />
+    <local:OrderHistoryView />
+
+</TabbedPage>
