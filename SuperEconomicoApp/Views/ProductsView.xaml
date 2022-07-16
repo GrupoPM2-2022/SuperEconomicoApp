@@ -160,6 +160,10 @@
                                        IsVisible="{Binding IsBusy}"
                                        HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="CenterAndExpand" />
+
+                    <!--<Image Source="process.gif" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"
+                           IsVisible="{Binding IsBusy}"
+                           IsAnimationPlaying="True" />-->
                     <CollectionView VerticalOptions="Start"
                                 VerticalScrollBarVisibility="Never"
                                 SelectionChanged="CVLatest_SelectionChanged"
@@ -233,7 +237,9 @@
             <StackLayout Orientation="Horizontal"
                      HeightRequest="28"
                      Margin="30,10, 30,10"
-                     Spacing="50">
+                     Spacing="50"
+                         Grid.Row="5"
+                         VerticalOptions="EndAndExpand">
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}">
                     <Image Source="homePurple.png" HeightRequest="28"/>
