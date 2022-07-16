@@ -20,7 +20,7 @@ namespace SuperEconomicoApp
                 });
 
             InitializeComponent();
-
+            //MainPage = new NavigationPage(new SettingsPage());
             if (Settings.ExistUser)
             {
                 MainPage = new ProductsView();

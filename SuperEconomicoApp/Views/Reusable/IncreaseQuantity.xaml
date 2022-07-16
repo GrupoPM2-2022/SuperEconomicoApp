@@ -104,8 +104,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Text="-" FontSize="25" 
-                        BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor},
-                               Dark={StaticResource DarkUpDownButtonColor}}"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor}, Dark={StaticResource DarkUpDownButtonColor}}"
                         Grid.Column="0"
                         HorizontalOptions="End"
                         Command="{Binding DecrementOrderCommand}"

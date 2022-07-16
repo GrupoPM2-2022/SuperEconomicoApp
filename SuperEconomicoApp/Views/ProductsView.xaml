@@ -243,12 +243,20 @@
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=Purple}"
                              HorizontalOptions="CenterAndExpand">
                     <Grid>
-                        <Label Text="{Binding UserCartItemsCount}" 
+                        <!--<Label Text="{Binding UserCartItemsCount}" 
                            Style="{StaticResource PrimaryLabelHeader}"
                            FontSize="15"
                            TextColor="Black"
                            HorizontalOptions="End"
-                           IsVisible="{Binding IsVisibleCounter}"/>
+                           IsVisible="{Binding IsVisibleCounter}"
+                           BackgroundColor="white"
+                           
+                               HorizontalTextAlignment="End" VerticalTextAlignment="Start"/>-->
+
+                        <Label Text="{Binding UserCartItemsCount}" FontSize="Small"
+                      
+                       
+                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Padding="-7,4,0,0" TextColor="White" />
                         <Image Source="comprasPurple.png" HeightRequest="28" Margin="0,0,8,0" />
 
                         <Grid.GestureRecognizers>
