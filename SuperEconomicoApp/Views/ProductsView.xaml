@@ -106,6 +106,8 @@
                     </SearchBar>
                 </StackLayout>
 
+             
+
                 <CollectionView ItemsSource="{Binding ListCategories}"
                                 HeightRequest="120" 
                                 VerticalOptions="FillAndExpand"
@@ -115,6 +117,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <StackLayout Padding="0,0,10,0">
+                               
                                 <Frame CornerRadius="50"
                                            HasShadow="False">
                                     <StackLayout>
@@ -139,7 +142,7 @@
                 </CollectionView>
 
                 <!--<Label Grid.Row="3" Text="Ultimos Productos" FontSize="25" FontAttributes="Bold" Style="{StaticResource PrimaryLabelHeader}"/>-->
-
+              
                 <StackLayout Grid.Row="3">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{Binding CategorySelected, StringFormat='Productos/{0:F0}'}"
@@ -151,6 +154,12 @@
                                FontSize="14"/>
 
                     </StackLayout>
+                    <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                       WidthRequest="50" HeightRequest="50"
+                                       Color="Purple"
+                                       IsVisible="{Binding IsBusy}"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand" />
                     <CollectionView VerticalOptions="Start"
                                 VerticalScrollBarVisibility="Never"
                                 SelectionChanged="CVLatest_SelectionChanged"
