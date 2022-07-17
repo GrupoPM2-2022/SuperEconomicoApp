@@ -114,9 +114,9 @@
                     </Grid>
                 </Frame>
                 <Button Text="ACTUALIZAR PERFIL" 
-                    BackgroundColor="#8873b6" 
+                    BackgroundColor="#b09ed8" 
                     TextColor="White" 
-                    Margin="60,-15,60,0"
+                    Margin="70,-35,70,0"
                     x:Name="btnEdit"
                     Command="{Binding EditUserCommand}"
                     CornerRadius="20"
@@ -145,9 +145,9 @@
                     </StackLayout>
                     <Frame.Background>
                         <LinearGradientBrush>
-                            <GradientStop Color="#1cb5e0"
+                            <GradientStop Color="#e7dff9"
                                       Offset="0.5" />
-                            <GradientStop Color="#36D1DC"
+                            <GradientStop Color="#e7dff9"
                                       Offset="1.0" />
                         </LinearGradientBrush>
                     </Frame.Background>
@@ -167,17 +167,28 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Frame BackgroundColor="#EFF0F0"
+                            <Frame  BackgroundColor="Transparent"
                                    CornerRadius="4"
                                    HasShadow="False"
-                                   Padding="15,12">
+                                   Padding="15,12"
+                                    >
                                 <StackLayout Orientation="Horizontal" Margin="0,7">
+                                    <Image Source="edificio.png" 
+                               HorizontalOptions="Start" 
+                               VerticalOptions="Center"
+                               Aspect="AspectFit"
+                               HeightRequest="20">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
                                     <Label Text="{Binding Name}"
-                                       FontSize="18"
+                                     
+                                           
+                                       FontSize="Small"
                                        VerticalOptions="Center" />
-                                    <Image Source="icon_department.png"
-                                       HeightRequest="35"
-                                       WidthRequest="35"
+                                    <Image Source="flecha.png"
+                                       HeightRequest="20"
                                        HorizontalOptions="EndAndExpand"/>
                                     
                                 </StackLayout>
@@ -190,21 +201,22 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
+               
+
                 <Button Text="ACTUALIZAR DEPARTAMENTO" 
-                    BackgroundColor="#8873b6" 
+                    BackgroundColor="#b09ed8" 
                     TextColor="White" 
+                    Margin="60,-15,60,0"
                     Command="{Binding UpdateDepartmentCommand}"
                     CornerRadius="20"
-                    Margin="0,8,0,0"
-                    WidthRequest="300" 
+                    WidthRequest="200" 
                     HeightRequest="40"
-                    HorizontalOptions="Center"
                     IsEnabled="{Binding IsEnabledUpdate}"/>
             </StackLayout>
             
             
             <StackLayout VerticalOptions="EndAndExpand">
-                <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent" Margin="20,20,20,10">
+                <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent" Margin="30,10,30,10">
                     <StackLayout Orientation="Horizontal" >
                         <Image Source="salida1" 
                                HorizontalOptions="Start" 
@@ -223,6 +235,7 @@
                             x:Name="btnExit"
                             Command="{Binding LogoutCommand}"
                             CornerRadius="20"
+                            Padding="0"
                             HorizontalOptions="Center"/>
                         <Image Source="flecha" 
                                HorizontalOptions="EndAndExpand" 
