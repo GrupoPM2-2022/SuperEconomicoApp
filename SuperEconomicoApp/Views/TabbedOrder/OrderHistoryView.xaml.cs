@@ -13,10 +13,18 @@ namespace SuperEconomicoApp.Views.TabbedOrder
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OrderHistoryView : ContentPage
     {
+        OrderHistoryViewModel orderHistoryViewModel;
         public OrderHistoryView()
         {
             InitializeComponent();
-            BindingContext = new OrderHistoryViewModel();
+            orderHistoryViewModel = new OrderHistoryViewModel();
+            BindingContext = orderHistoryViewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            orderHistoryViewModel.LoadConfiguration();
         }
     }
 }

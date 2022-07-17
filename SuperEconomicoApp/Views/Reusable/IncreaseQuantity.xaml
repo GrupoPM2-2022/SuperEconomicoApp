@@ -86,8 +86,8 @@
 
                 <Label Text="Precio: " 
                            FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
+                           TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
+                           Dark={StaticResource DarkPrimaryTextColor}}"/>
 
                 <Label Text="{Binding SelectedProductoItem.Price}"
                            FontSize="Subtitle" 

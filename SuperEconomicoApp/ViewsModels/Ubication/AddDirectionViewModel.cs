@@ -48,7 +48,7 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             googleServiceApi = new GoogleServiceApi();
             googleDistanceMatrix = new GoogleDistanceMatrix();
             directionService = new DirectionService();
-            LoadConfiguration();
+            //LoadConfiguration();
             map.PinDragEnd += Map_PinDragEnd;
             map.MapClicked += Map_MapClicked;    
         }
