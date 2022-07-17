@@ -5,6 +5,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.CartView"
              xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
+               xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              Visual="Material"
              BackgroundColor="#394BA7"
              x:Name="CurrentPage"
@@ -17,13 +18,11 @@
 
         </ResourceDictionary>
     </ContentPage.Resources>
-
-
-
     <ContentPage.BindingContext>
         <vm:CartViewModel/>
     </ContentPage.BindingContext>
-    <Grid BackgroundColor="#394BA7">
+
+    <Grid BackgroundColor="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
@@ -31,10 +30,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <BoxView Grid.Row="0"/>
+      
 
         <Label  Text="El Economico" FontFamily="{StaticResource CabinSketch-Bold}"
-                   TextColor="White" FontAttributes="Bold"
+                   TextColor="Black" FontAttributes="Bold"
                    FontSize="55" HorizontalOptions="Center"/>
 
         <Label x:Name="LabelName" FontSize="Subtitle" TextColor="WhiteSmoke" 
@@ -44,7 +43,7 @@
                          BackgroundColor="Transparent"
                          HorizontalOptions="Start" Margin="10,30" Clicked="ImageButton_Clicked"/>
 
-        <pancake:PancakeView Grid.Row="1" BackgroundColor="WhiteSmoke"
+        <!--<pancake:PancakeView Grid.Row="1" BackgroundColor="WhiteSmoke"
                                  CornerRadius="60,60,0,0">
             <ListView x:Name="ListViewCartItems" Margin="20"
                            SeparatorVisibility="None" BackgroundColor="WhiteSmoke"
@@ -123,13 +122,89 @@
                 </ListView.ItemTemplate>
 
             </ListView>
-        </pancake:PancakeView>
+        </pancake:PancakeView>-->
 
+        <pancake:PancakeView Grid.Row="1" CornerRadius="30,30,0,0"
+                                 BackgroundColor="#ccccce"
+                                 Margin="0,-40">
+            <Grid Padding="25,-560,25,0">
+
+
+                <CollectionView ItemsSource="{Binding CartItems}"
+                                    VerticalOptions="Start"
+                                    VerticalScrollBarVisibility="Never"
+                                    Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                    >
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <Frame HasShadow="False" BackgroundColor="White" HeightRequest="70"
+                                           CornerRadius="20" Margin="0,5" Padding="10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <pancake:PancakeView Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                                                                 CornerRadius="12" Margin="0,0,10,0">
+
+
+                                            <controls:CircleImage 
+                                                Source="{Binding ImageProduct,  Converter={StaticResource Base64ToImage}}"
+                                                HeightRequest="35"
+                                                HorizontalOptions="Center"
+                                                BorderColor="Purple"  
+                                                BorderThickness="1"/>
+
+                                        </pancake:PancakeView>
+
+                                        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                                                   Text="{Binding ProductName}" FontSize="15" FontAttributes="Bold" TextColor="#8873b6"/>
+                                        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                                   Text="{Binding Price}" FontSize="15"
+                                                   TextColor="#8873b6" />
+
+                                        <Image Source="eliminar_producto_carrito.png" 
+                                               HeightRequest="20"
+                                               HorizontalOptions="Start"
+                                               Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2">
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteProductCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                            </Image.GestureRecognizers>
+                                        </Image>
+
+                                        <Label Padding="25,0,0,0" Text="Eliminar" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" TextColor="#8873b6">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer  Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteProductCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                            </Label.GestureRecognizers>
+                                        </Label>
+
+                                    </Grid>
+                                </Frame>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+
+            </Grid>
+
+        </pancake:PancakeView>
         <Label Text="{Binding TotalCost, StringFormat='Total : L{0}'}"
                    Grid.Row="2" HorizontalTextAlignment="End" FontSize="Title"
-                   TextColor="WhiteSmoke"/>
+                   TextColor="Black"
+                    Margin="40"
+               BackgroundColor="White"/>
 
-        <StackLayout Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,10">
+        <StackLayout Orientation="Horizontal" Grid.Row="3" Margin="0,0,0,20"  HorizontalOptions="CenterAndExpand">
             <Button Text="Realizar Pedido"  
                     TextColor="White"
                     Command="{Binding PlaceOrdersCommand}"
@@ -141,6 +216,8 @@
                     HorizontalOptions="Center" 
                     CornerRadius="20"/>
         </StackLayout>
+
+
     </Grid>
 
 </ContentPage>
