@@ -85,11 +85,61 @@ namespace SuperEconomicoApp.Services
             return null;
         }
 
+        public async Task<OrdersDelivery> GetOrdersDeliveryByMethod(string method)
+        {
+            try
+            {
+                OrdersDelivery ordersByDelivery = new OrdersDelivery();
+                var uri = new Uri(ApiMethods.URL_ORDERS_USER + Settings.IdUser + "&method=" + method);
+                var response = await client.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    ordersByDelivery = JsonConvert.DeserializeObject<OrdersDelivery>(content);
+
+                    return ordersByDelivery;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
         public async Task<bool> UpdateOrder(Order order)
         {
             try
             {
                 Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?id=" + order.order_id);
+                var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+                var jsonObject = JsonConvert.SerializeObject(order, settings);
+                var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+                var response = await client.PutAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        public async Task<bool> UpdateOrderDelivery(ContentOrderDelivery order)
+        {
+            try
+            {
+                Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?id=" + order.OrderId);
                 var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
                 var jsonObject = JsonConvert.SerializeObject(order, settings);
                 var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");

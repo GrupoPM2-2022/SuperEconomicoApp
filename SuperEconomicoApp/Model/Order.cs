@@ -12,7 +12,7 @@ namespace SuperEconomicoApp.Model
         public int client_user_id { get; set; }
         public int delivery_user_id { get; set; }
         public DateTime order_date { get; set; }
-        public string deliver_date { get; set; }
+        public DateTime deliver_date { get; set; }
         public string score { get; set; }
         public string comment { get; set; }
         public double total { get; set; }

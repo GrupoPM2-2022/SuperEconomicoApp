@@ -7,6 +7,7 @@ using SuperEconomicoApp.Views;
 using SuperEconomicoApp.Views.Reusable;
 using SuperEconomicoApp.Views.Ubication;
 using SuperEconomicoApp.Views.TabbedOrder;
+using SuperEconomicoApp.Views.Delivery;
 
 namespace SuperEconomicoApp
 {
@@ -23,7 +24,14 @@ namespace SuperEconomicoApp
             //MainPage = new NavigationPage(new SettingsPage());
             if (Settings.ExistUser)
             {
-                MainPage = new ProductsView();
+                if (Settings.TypeUser.Equals("repartidor"))
+                {
+                    MainPage = new TabbedDeliveryView();
+                }
+                else
+                {
+                    MainPage = new ProductsView();
+                }
             }
             else
             {

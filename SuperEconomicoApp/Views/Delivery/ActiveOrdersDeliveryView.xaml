@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Delivery.ActiveOrdersDeliveryView"
+             Title="Activos"
+             x:Name="CurrentPage"
+             BackgroundColor="#EFF0F0">
+
+    <ContentPage.Resources>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="1" />
+            <Setter Property="BackgroundColor"
+                    Value="#7A7A7A" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid Padding="8">
+        <StackLayout IsVisible="{Binding ExistOrders}">
+            <CollectionView ItemsSource="{Binding ListOrders}"
+                        VerticalOptions="CenterAndExpand">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="White"
+                               CornerRadius="4"
+                               HasShadow="False"
+                               Padding="15,12">
+                            <StackLayout>
+                                <Label Text="ENTREGANDO MOMENTÁNEAMENTE"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="#76448A"
+                                       IsVisible="{Binding IsVisibleStatus}"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="order_delivery_active.png"
+                                           WidthRequest="45"
+                                           HeightRequest="45"/>
+                                    <StackLayout Margin="15,0,0,0">
+                                        <Label FontSize="18"
+                                               FontAttributes="Bold">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="ClientName" />
+                                                    <Binding Path="ClientLastname" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                            <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding OrderDate}"
+                                               FontSize="14"
+                                               FontAttributes="Italic"/>
+                                            <Label Text="{Binding PaymentType, StringFormat='- {0:F0}'}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"/>
+                                        </StackLayout>
+
+                                    </StackLayout>
+
+                                </StackLayout>
+                                <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               HorizontalTextAlignment="End"/>
+
+                                <StackLayout>
+                                    <BoxView Style="{StaticResource SeparadorBoxview}" Margin="0,0,0,5" />
+
+                                    <Button Text="{Binding TextButton}"
+                                        FontSize="12"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="CenterAndExpand"
+                                        CornerRadius="8"
+                                        BackgroundColor="#76448A" 
+                                        TextColor="White" 
+                                        TextTransform="None"
+                                        FontAttributes="Bold"
+                                        WidthRequest="230"
+                                        Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.ProceedWithDeliveryCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                </StackLayout>
+                                
+
+                            </StackLayout>
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.OrderDetailCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout>
+                <Button Text="Cerrar"
+                    Command="{Binding CerrarCommand}"/>
+            </StackLayout>
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
+            <Image Source="list_empty.png"
+                   WidthRequest="100"/>
+            <Label Text="No tienes ningún pedido asignado" 
+                   HorizontalTextAlignment="Center"
+                   FontSize="23"
+                   TextColor="#212F3D"
+                   FontAttributes="Bold"/>
+
+            <StackLayout>
+                <Button Text="Cerrar"
+                    Command="{Binding CerrarCommand}"/>
+            </StackLayout>
+        </StackLayout>
+
+    </Grid>
+
+
+
+    
+    
+</ContentPage>

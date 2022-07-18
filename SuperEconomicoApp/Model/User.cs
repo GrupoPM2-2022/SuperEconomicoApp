@@ -35,7 +35,7 @@ namespace SuperEconomicoApp
 
         public string state { get; set; }
 
-        public int cod_temp { get; set; }
+        public string cod_temp { get; set; }
 
         public string phone { get; set; }
 

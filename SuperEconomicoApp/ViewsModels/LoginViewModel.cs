@@ -1,5 +1,8 @@
-﻿using SuperEconomicoApp.Helpers;
+﻿using Plugin.CloudFirestore;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Services;
+using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Delivery;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -110,6 +113,11 @@ namespace SuperEconomicoApp.ViewsModels
             try
             {
                 IsBusy = true;
+                if (!Util.CheckConnectionInternet())
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "No tienes conexion a internet.", "OK");
+                    return;
+                }
                 if (!Regex.IsMatch(Email, ER_EMAIL))
                 {
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "El correo electrónico no es valido.", "OK");
@@ -127,9 +135,20 @@ namespace SuperEconomicoApp.ViewsModels
 
                 if (Email.Equals(user.email) && Password.Equals(user.password))
                 {
-                    Settings.UserName = user.name + " " + user.lastname;
-                    Settings.IdUser = user.id.ToString();
-                    await Application.Current.MainPage.Navigation.PushModalAsync(new Views.ProductsView());
+                    if (user.typeuser.Equals("repartidor"))
+                    {
+                        bool response = await CheckExistUserFirebase(user);
+                        if (response) 
+                            await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedDeliveryView());
+                    }
+                    else
+                    {
+                        Settings.UserName = user.name + " " + user.lastname;
+                        Settings.IdUser = user.id.ToString();
+                        Settings.TypeUser = user.typeuser;
+                        await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+                    }
+
                 }
                 else
                 {
@@ -146,5 +165,50 @@ namespace SuperEconomicoApp.ViewsModels
                 IsBusy = false;
             }
         }
+
+        private async Task<bool> CheckExistUserFirebase(User user)
+        {
+            string idUser = user.id.ToString();
+            var document = await CrossCloudFirestore.Current
+                                        .Instance
+                                        .Collection("Ubication")
+                                        .Document(idUser)
+                                        .GetAsync();
+
+            if (!document.Exists)
+            {
+                var statusCheck = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+                if (statusCheck == PermissionStatus.Granted)
+                {
+                    if (!await UserService.SaveUserFirebase(idUser))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error con tu cuenta, contactate con soporte.", "Ok");
+                        return false;
+                    } else {
+                        Settings.UserName = user.name + " " + user.lastname;
+                        Settings.IdUser = idUser;
+                        Settings.TypeUser = user.typeuser;
+                        return true;
+                    }
+                    
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes conceder permisos de localizacion a la aplicacion.", "Ok");
+                    await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+                    return false;
+                }
+
+            }
+            else
+            {
+                Settings.UserName = user.name + " " + user.lastname;
+                Settings.IdUser = idUser;
+                Settings.TypeUser = user.typeuser;
+                return true;
+            }
+        }
+
+
     }
 }

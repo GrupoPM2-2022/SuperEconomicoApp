@@ -158,9 +158,9 @@
                     </StackLayout>
                     <Frame.Background>
                         <LinearGradientBrush>
-                            <GradientStop Color="#1cb5e0"
+                            <GradientStop Color="#76448A"
                                       Offset="0.5" />
-                            <GradientStop Color="#36D1DC"
+                            <GradientStop Color="#2a0845"
                                       Offset="1.0" />
                         </LinearGradientBrush>
                     </Frame.Background>

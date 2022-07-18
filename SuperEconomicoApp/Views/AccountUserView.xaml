@@ -114,12 +114,12 @@
                     </Grid>
                 </Frame>
                 <Button Text="ACTUALIZAR PERFIL" 
-                    BackgroundColor="#b09ed8" 
+                    BackgroundColor="#76448A" 
                     TextColor="White" 
                     Margin="70,-35,70,0"
                     x:Name="btnEdit"
                     Command="{Binding EditUserCommand}"
-                    CornerRadius="20"
+                    CornerRadius="10"
                     WidthRequest="200" 
                     HeightRequest="40"/>
             </StackLayout>
@@ -145,9 +145,9 @@
                     </StackLayout>
                     <Frame.Background>
                         <LinearGradientBrush>
-                            <GradientStop Color="#e7dff9"
+                            <GradientStop Color="#76448A"
                                       Offset="0.5" />
-                            <GradientStop Color="#e7dff9"
+                            <GradientStop Color="#2a0845"
                                       Offset="1.0" />
                         </LinearGradientBrush>
                     </Frame.Background>
@@ -204,12 +204,13 @@
                
 
                 <Button Text="ACTUALIZAR DEPARTAMENTO" 
-                    BackgroundColor="#b09ed8" 
+                    BackgroundColor="#76448A" 
                     TextColor="White" 
-                    Margin="60,-15,60,0"
+                    Margin="0,-15,0,0"
                     Command="{Binding UpdateDepartmentCommand}"
-                    CornerRadius="20"
-                    WidthRequest="200" 
+                    CornerRadius="10"
+                    HorizontalOptions="Center"
+                    WidthRequest="285"
                     HeightRequest="40"
                     IsEnabled="{Binding IsEnabledUpdate}"/>
             </StackLayout>
