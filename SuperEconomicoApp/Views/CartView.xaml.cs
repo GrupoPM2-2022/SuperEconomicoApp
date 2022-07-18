@@ -16,7 +16,7 @@ namespace SuperEconomicoApp.Views
         public CartView()
         {
             InitializeComponent();
-            LabelName.Text = "Bienvenido" + Preferences.Get("Username", "Guest") + ",";
+            //LabelName.Text = "Bienvenido" + Preferences.Get("Username", "Guest") + ",";
         }
 
         async void ImageButton_Clicked(object sender, EventArgs e)
@@ -28,5 +28,17 @@ namespace SuperEconomicoApp.Views
         {
 
         }
+
+        private void mapa_Invoked(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Editar_Invoked(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.CloudFirestore;
 using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
@@ -85,6 +86,35 @@ namespace SuperEconomicoApp.Services
             return null;
         }
 
+        public async Task<OrdersDelivery> GetOrdersDeliveryByMethod(string method)
+        {
+            try
+            {
+                OrdersDelivery ordersByDelivery = new OrdersDelivery();
+                var uri = new Uri(ApiMethods.URL_ORDERS_USER + Settings.IdUser + "&method=" + method);
+                var response = await client.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    ordersByDelivery = JsonConvert.DeserializeObject<OrdersDelivery>(content);
+
+                    return ordersByDelivery;
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
         public async Task<bool> UpdateOrder(Order order)
         {
             try
@@ -103,6 +133,57 @@ namespace SuperEconomicoApp.Services
             {
                 Console.WriteLine(ex.Message);
             }
+            return false;
+        }
+
+        public async Task<bool> UpdateOrderDelivery(ContentOrderDelivery order)
+        {
+            try
+            {
+                Uri requestUri = new Uri(ApiMethods.URL_ORDERS + "?id=" + order.OrderId);
+                var settings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+                var jsonObject = JsonConvert.SerializeObject(order, settings);
+                var content = new StringContent(jsonObject, Encoding.UTF8, "application/json");
+                var response = await client.PutAsync(requestUri, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    bool confirm = await UpdateStatusDeliveryFirebase(order.Status, order.DeliveryUserId.ToString());
+                    if (confirm)
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        private async Task<bool> UpdateStatusDeliveryFirebase(string status, string idDocument)
+        {
+            try
+            {
+                var location = await Geolocation.GetLocationAsync();
+                if (location != null)
+                {
+                    string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                    string statusPrincipal = status.Equals("CERRADO") ? "ACTIVO" : "ENTREGA";
+                    await CrossCloudFirestore.Current
+                             .Instance
+                             .Collection("Ubication")
+                             .Document(idDocument)
+                             .UpdateAsync(new Ubication { status = statusPrincipal, ubication = coordinatesUser });
+
+                    Settings.StatusDelivery = statusPrincipal;
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
             return false;
         }
     }

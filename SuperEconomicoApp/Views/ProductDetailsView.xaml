@@ -30,14 +30,19 @@
                    Source="{Binding SelectedProductoItem.Image,  Converter={StaticResource Base64ToImage}}"
                    Aspect="AspectFit"
                    VerticalOptions="Start"
-                   BackgroundColor="Gold"/>
+                   BackgroundColor="White"
+                    HeightRequest="300"
+                   />
 
             <Label Grid.Row="1" 
                    Text="{Binding SelectedProductoItem.Name}"
-                   TextColor="White"
+                   
                    FontAttributes="Bold" 
                    FontSize="35" 
-                   Margin="25,-85,0,0"/>
+                   FontFamily="{StaticResource CabinSketch-Bold}"
+                   TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
+                               Dark={StaticResource DarkPrimaryTextColor}}"
+                   Margin="25,-50,0,0"/>
 
             <Label Text="&#xf060;" FontFamily="{StaticResource FontAwesome6Free-Solid-900}" FontSize="30" Grid.Row="0" HorizontalOptions="Start"
                    VerticalOptions="Start" Margin="10,30" BackgroundColor="Transparent" x:Name="lblIcono"/>
@@ -140,27 +145,40 @@
             <StackLayout Orientation="Horizontal"
                          Grid.Row="4">
 
-                <pancake:PancakeView CornerRadius="0,20,60,0"
-                                     HorizontalOptions="Center">
-                    <Button Text="Agregar al Carrito" 
+                <pancake:PancakeView CornerRadius="60,0,0,60"
+                                     HorizontalOptions="CenterAndExpand">
+                    <StackLayout>
+                        <Button Text="Add al Carrito" 
                             BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
                                Dark={StaticResource DarkDefaultButtonColor}}"
+                            TextColor="White"
                             WidthRequest="200" 
                             HorizontalOptions="Center"
                             Command="{Binding AddToCartCommand}"
-                            HeightRequest="50"/>
+                            HeightRequest="50"
+                                
+                            />
+                    </StackLayout>
+                  
                 </pancake:PancakeView>
 
-                <pancake:PancakeView CornerRadius="0,20,60,0"
-                                     HorizontalOptions="Center">
-
-                    <Button Text="Ver Carrito" 
+                <pancake:PancakeView CornerRadius="0,60,60,0"
+                                     HorizontalOptions="CenterAndExpand"
+                                >
+                    <StackLayout>
+                        <Button Text="Ver Carrito" 
                             BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
                                Dark={StaticResource DarkDefaultButtonColor}}"
                             WidthRequest="200" 
                             HorizontalOptions="Center"
                             Command="{Binding ViewCartCommand}"
-                            HeightRequest="50"/>
+                            HeightRequest="50"
+                                   TextColor="White"
+                            
+                             />
+                    </StackLayout>
+
+                 
                 </pancake:PancakeView>
 
             </StackLayout>
@@ -168,12 +186,19 @@
             <pancake:PancakeView Grid.Row="6" 
                                  CornerRadius="60,60,0,0">
 
-                <Button Text="Inicio" 
+                <StackLayout>
+                    <Button Text="Inicio" 
+                        TextColor="White"
                         BackgroundColor="{AppThemeBinding Light={StaticResource LightInfoButtonColor},
                                Dark={StaticResource DarkInfoButtonColor}}"
                         HeightRequest="50"
-                        Command="{Binding HomeCommand}"/>
+                        Command="{Binding HomeCommand}"
+                       
+                         />
+                </StackLayout>
+            
             </pancake:PancakeView>
+
 
         </Grid>
     </ContentPage.Content>

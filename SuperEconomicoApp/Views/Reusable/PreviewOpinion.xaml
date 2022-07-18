@@ -40,7 +40,7 @@
 
             <BoxView Style="{StaticResource SeparadorBoxview}"/>
 
-            <StackLayout Padding="15" IsVisible="{Binding IsVisiblePreview}">
+            <StackLayout Padding="15">
                 <Image Source="{Binding ImageScore}"
                         WidthRequest="90"
                         IsVisible="{Binding IsVisibleScore}"
@@ -58,78 +58,6 @@
             </StackLayout>
 
 
-
-            <StackLayout IsVisible="{Binding IsVisibleSaveScore}"
-                         Padding="15">
-
-                <StackLayout Orientation="Horizontal"
-                             HorizontalOptions="Center" Margin="0,0,0,10">
-
-                    <Image Source="{Binding Star1}"
-                           WidthRequest="35"
-                           HeightRequest="35">
-
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
-                                                  CommandParameter="1"/>
-                        </Image.GestureRecognizers>
-
-                    </Image>
-
-                    <Image Source="{Binding Star2}"
-                           WidthRequest="35"
-                           HeightRequest="30">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
-                                                  CommandParameter="2"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                    <Image Source="{Binding Star3}"
-                           WidthRequest="35"
-                           HeightRequest="35">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
-                                                  CommandParameter="3"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                    <Image Source="{Binding Star4}"
-                           WidthRequest="35"
-                           HeightRequest="35">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
-                                                  CommandParameter="4"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                    <Image Source="{Binding Star5}"
-                           WidthRequest="35"
-                           HeightRequest="35">
-                        <Image.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding SelectStarCommand}"
-                                                  CommandParameter="5"/>
-                        </Image.GestureRecognizers>
-                    </Image>
-
-                </StackLayout>
-
-                <Editor Text="{Binding Comment}" 
-                        Placeholder="Comentario" 
-                        HeightRequest="150"
-                        PlaceholderColor="Black"/>
-
-                <Button Text="Guardar Calificación"
-                        FontSize="12"
-                        CornerRadius="8"
-                        BackgroundColor="Purple" 
-                        TextColor="White" 
-                        FontAttributes="Bold"
-                        VerticalOptions="FillAndExpand"
-                        WidthRequest="200"
-                        Command="{Binding SaveScoreCommand}"/>
-
-            </StackLayout>
 
         </StackLayout>
 

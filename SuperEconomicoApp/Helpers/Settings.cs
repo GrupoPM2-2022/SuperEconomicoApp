@@ -40,6 +40,16 @@ namespace SuperEconomicoApp.Helpers
             get => AppSettings.GetValueOrDefault(nameof(Coordinates), string.Empty);
             set => AppSettings.AddOrUpdateValue(nameof(Coordinates), value);
         }
+        public static string TypeUser
+        {
+            get => AppSettings.GetValueOrDefault(nameof(TypeUser), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(TypeUser), value);
+        }
+        public static string StatusDelivery
+        {
+            get => AppSettings.GetValueOrDefault(nameof(StatusDelivery), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(StatusDelivery), value);
+        }
 
         public static void ClearAllData()
         {

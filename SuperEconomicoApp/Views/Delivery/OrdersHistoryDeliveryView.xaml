@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SuperEconomicoApp.Views.Delivery.OrdersHistoryDeliveryView"
+             Title="Historial"
+             x:Name="CurrentPage"
+             BackgroundColor="#EFF0F0">
+
+    <Grid Padding="8">
+        <StackLayout IsVisible="{Binding ExistOrders}">
+            <CollectionView ItemsSource="{Binding ListOrders}"
+                        VerticalOptions="CenterAndExpand">
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="White"
+                           CornerRadius="4"
+                               HasShadow="False"
+                               Padding="15,13,15,13">
+                            <StackLayout>
+                                <StackLayout Orientation="Horizontal">
+
+                                    <Label Text="{Binding Status}"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="#CB4335"/>
+
+                                    <Label Text="{Binding OrderDate}"
+                                               FontSize="14"
+                                               FontAttributes="Italic"
+                                               HorizontalOptions="EndAndExpand"/>
+
+                                </StackLayout>
+
+
+                                <StackLayout Orientation="Horizontal">
+                                    <Image Source="order_history_delivery.png"
+                                           WidthRequest="45"
+                                           HeightRequest="45"/>
+                                    <StackLayout Margin="15,0,0,0">
+                                        <Label FontSize="18"
+                                               FontAttributes="Bold">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="ClientName" />
+                                                    <Binding Path="ClientLastname" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+                                               FontSize="16"
+                                               FontAttributes="Italic"/>
+                                            <Label Text="{Binding PaymentType, StringFormat='- {0:F0}'}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"/>
+                                        </StackLayout>
+
+                                    </StackLayout>
+                                </StackLayout>
+
+                            </StackLayout>
+
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.OrderDetailCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                            </Frame.GestureRecognizers>
+
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
+            <Image Source="list_empty_history.png"
+                   WidthRequest="100"/>
+            <Label Text="No tienes historial de pedidos" 
+                   HorizontalTextAlignment="Center"
+                   FontSize="23"
+                   TextColor="#212F3D"
+                   FontAttributes="Bold"/>
+        </StackLayout>
+    </Grid>
+
+</ContentPage>

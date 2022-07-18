@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SuperEconomicoApp.Model
 {
+    
     public class Category
     {
         [JsonProperty("category_id")]

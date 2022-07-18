@@ -131,7 +131,7 @@ namespace SuperEconomicoApp.Views
             user.image = imageToSave;
             user.state = "activo";
             user.typeuser = "cliente";
-            user.cod_temp = int.Parse(this.Code);
+            user.cod_temp = this.Code;
             return user;    
 
         }

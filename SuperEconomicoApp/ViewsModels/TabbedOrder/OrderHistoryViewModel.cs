@@ -21,22 +21,10 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
         private List<Order> _ListOrders;
         private bool _ExistOrders;
         private bool _NotExistOrders;
-        private bool _IsVisiblePreview;
-        private bool _IsVisibleSaveScore;
         private string _ImageScore;
         private string _NameUser;
         private string _Comment;
-        private string _Star5 = "estrella_sin_relleno";
-        private string _Star4 = "estrella_sin_relleno";
-        private string _Star3 = "estrella_sin_relleno";
-        private string _Star2 = "estrella_sin_relleno";
-        private string _Star1 = "estrella_sin_relleno";
-        private string Score;
-        private string OrderId;
-        private int DeliveryId;
-        private int ClientUserId;
-        private double Total = 0.00;
-        private DateTime DateOrder;
+
         #endregion
 
         #region CONSTRUCTOR
@@ -80,27 +68,6 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             }
         }
 
-        public bool IsVisiblePreview
-        {
-            get { return _IsVisiblePreview; }
-            set
-            {
-                _IsVisiblePreview = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsVisibleSaveScore
-        {
-            get { return _IsVisibleSaveScore; }
-            set
-            {
-                _IsVisibleSaveScore = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         public string ImageScore
         {
             get { return _ImageScore; }
@@ -119,6 +86,7 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 OnPropertyChanged();
             }
         }
+
         public string Comment
         {
             get { return _Comment; }
@@ -129,61 +97,10 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             }
         }
 
-        public string Star1
-        {
-            get { return _Star1; }
-            set
-            {
-                _Star1 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Star2
-        {
-            get { return _Star2; }
-            set
-            {
-                _Star2 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Star3
-        {
-            get { return _Star3; }
-            set
-            {
-                _Star3 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Star4
-        {
-            get { return _Star4; }
-            set
-            {
-                _Star4 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string Star5
-        {
-            get { return _Star5; }
-            set
-            {
-                _Star5 = value;
-                OnPropertyChanged();
-            }
-        }
-
-
         #endregion
 
         #region PROCESOS
-        private async void LoadConfiguration()
+        public async void LoadConfiguration()
         {
             ordersActiveByUsers = await orderService.GetOrdersUserByMethod("getUserOrderForId");
             if (ordersActiveByUsers == null)
@@ -206,7 +123,6 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             }
 
         }
-
         private void GetAllOrdersActiveByUser()
         {
             ListOrders = GetOrdersByUser((List<Order>)ordersActiveByUsers.orders);
@@ -239,30 +155,18 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
         {
             if (string.IsNullOrEmpty(order.score) || order.score.Equals("0"))
             {
-                CleanStars();
-                OrderId = order.order_id;
-                DeliveryId = order.delivery_user_id;
-                ClientUserId = order.client_user_id;
-                Total = order.total;
-                DateOrder = order.order_date;
-
-                IsVisiblePreview = false;
-                IsVisibleSaveScore = true;
+                await Application.Current.MainPage.Navigation.PushModalAsync(new AddCommentView(order));
             }
             else
             {
                 ImageScore = SelectImageRating(order.score);
+                Comment = order.comment;
+                NameUser = Settings.UserName;
 
-                IsVisiblePreview = true;
-                IsVisibleSaveScore = false;
+                var popup = new PreviewOpinion();
+                popup.BindingContext = this;
+                await PopupNavigation.Instance.PushAsync(popup);
             }
-
-            Comment = order.comment;
-            NameUser = Settings.UserName;
-
-            var popup = new PreviewOpinion();
-            popup.BindingContext = this;
-            await PopupNavigation.Instance.PushAsync(popup);
         }
 
         private string SelectImageRating(string score)
@@ -293,102 +197,11 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
             }
         }
 
-        private void SelectStar(string star)
-        {
-            Score = star;
-            
-            if (star.Equals("1"))
-            {
-                Star1 = "estrella_con_relleno";
-            }
-            else if (star.Equals("2"))
-            {
-                Star1 = "estrella_con_relleno";
-                Star2 = "estrella_con_relleno";
-            }
-            else if (star.Equals("3"))
-            {
-                Star1 = "estrella_con_relleno";
-                Star2 = "estrella_con_relleno";
-                Star3 = "estrella_con_relleno";
-            }
-            else if (star.Equals("4"))
-            {
-                Star1 = "estrella_con_relleno";
-                Star2 = "estrella_con_relleno";
-                Star3 = "estrella_con_relleno";
-                Star4 = "estrella_con_relleno";
-            }
-            else if (star.Equals("5"))
-            {
-                Star1 = "estrella_con_relleno";
-                Star2 = "estrella_con_relleno";
-                Star3 = "estrella_con_relleno";
-                Star4 = "estrella_con_relleno";
-                Star5 = "estrella_con_relleno";
-            }
-        }
-
-        private async Task SaveScore()
-        {
-            if (Score.Equals(""))
-            {
-                await Application.Current.MainPage.DisplayAlert("Ok", "Selecciona la calificación para poder guardarla", "Ok");
-                return;
-            }
-
-            Order order = new Order
-            {
-                comment = Comment,
-                score = Score,
-                order_id = OrderId,
-                client_user_id = ClientUserId,
-                delivery_user_id = DeliveryId,
-                total = Total,
-                order_date = DateOrder
-            };
-
-            //bool response = await orderService.UpdateOrder(order);
-            //if (response)
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Confirmación", "Calificación guardada correctamente.", "Ok");
-            //    CleanAfterUpdate();
-            //    await PopupNavigation.Instance.PopAsync();
-            //}
-            //else
-            //{
-            //    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al guardar su calificación.", "Ok");
-            //}
-
-        }
-
-        private void CleanStars()
-        {
-            Star1 = "estrella_sin_relleno";
-            Star2 = "estrella_sin_relleno";
-            Star3 = "estrella_sin_relleno";
-            Star4 = "estrella_sin_relleno";
-            Star5 = "estrella_sin_relleno";
-        }
-
-        private void CleanAfterUpdate()
-        {
-            CleanStars();
-            Comment = "";
-            Score = "";
-            OrderId = "";
-            DeliveryId = 0;
-            ClientUserId = 0;
-            ListOrders.Clear();
-            GetAllOrdersActiveByUser();
-        }
         #endregion
 
         #region COMANDOS
         public ICommand OrderDetailCommand => new Command<Order>(async (Order) => await ShowOrderDetail(Order));
         public ICommand ShowCommentCommand => new Command<Order>(async (Order) => await ShowComment(Order));
-        public ICommand SelectStarCommand => new Command<string>((args) => SelectStar(args));
-        public ICommand SaveScoreCommand => new Command(async () => await SaveScore());
 
         #endregion
     }

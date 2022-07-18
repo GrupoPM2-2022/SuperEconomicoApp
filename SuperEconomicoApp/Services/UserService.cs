@@ -8,6 +8,8 @@ using System.Net.Http;
 using SuperEconomicoApp.Api;
 using Newtonsoft.Json;
 using SuperEconomicoApp.Helpers;
+using Plugin.CloudFirestore;
+using Xamarin.Essentials;
 
 namespace SuperEconomicoApp.Services
 {
@@ -72,7 +74,7 @@ namespace SuperEconomicoApp.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("ERROR_USER ",ex.Message);
+                Console.WriteLine("ERROR_USER ", ex.Message);
             }
 
             return null;
@@ -96,6 +98,33 @@ namespace SuperEconomicoApp.Services
                 Console.WriteLine(ex.Message);
             }
 
+            return false;
+        }
+
+        public async static Task<bool> SaveUserFirebase(String idDocument)
+        {
+            try
+            {
+                var location = await Geolocation.GetLocationAsync();
+                if (location != null)
+                {
+                    string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                    await CrossCloudFirestore.Current
+                             .Instance
+                             .Collection("Ubication")
+                             .Document(idDocument)
+                             .SetAsync(new Ubication
+                             {
+                                 status = "ACTIVO",
+                                 ubication = coordinatesUser,
+                             });
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return false;
         }
 

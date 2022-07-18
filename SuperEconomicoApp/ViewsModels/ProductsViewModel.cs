@@ -214,7 +214,22 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         #endregion
+        public ObservableCollection<ProductoItem> productos { get; set; }
 
+        private bool _IsBusy;
+        public bool IsBusy
+        {
+            set
+            {
+                _IsBusy = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsBusy;
+            }
+        }
         public ProductsViewModel(CollectionView collectionViewReceived)
         {
             ListItemsProducts = new ObservableCollection<ProductoItem>();
@@ -394,13 +409,27 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void GetAllProducts()
         {
-            var listProducts = await ProductoService.GetAllProducts();
-            if (listProducts != null)
+            try
             {
-                ListItemsProducts = listProducts;
-                collectionView.ItemsSource = ListItemsProducts;
-                QuantityProducts = ListItemsProducts.Count();
+                IsBusy = true;
+                //productos.Clear();
+                var listProducts = await ProductoService.GetAllProducts();
+                if (listProducts != null)
+                {
+                    ListItemsProducts = listProducts;
+                    collectionView.ItemsSource = ListItemsProducts;
+                    QuantityProducts = ListItemsProducts.Count();
+                }
             }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
 
         }
         #endregion
