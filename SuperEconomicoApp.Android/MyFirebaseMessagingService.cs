@@ -37,7 +37,8 @@ namespace SuperEconomicoApp.Droid
             androidNotification.CrearNotificacionLocal(title, body);
         }
         public override void OnNewToken(string token)
-        {
+        {   
+            //117.6.0.1
             base.OnNewToken(token);
             Preferences.Set("TokenFirebase", token);
             sedRegisterToken(token);
