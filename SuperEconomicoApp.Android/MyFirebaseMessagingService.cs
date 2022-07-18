@@ -41,6 +41,7 @@ namespace SuperEconomicoApp.Droid
             //117.6.0.1
             base.OnNewToken(token);
             Preferences.Set("TokenFirebase", token);
+
             sedRegisterToken(token);
         }
 

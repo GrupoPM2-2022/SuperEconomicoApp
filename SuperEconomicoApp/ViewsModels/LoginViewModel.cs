@@ -99,8 +99,6 @@ namespace SuperEconomicoApp.ViewsModels
 
             LoginCommand = new Command(async () => await LoginCommandAsync());
             RegisterCommand = new Command(async () => await RegisterCommandAsync());
-
-            var value = Preferences.Get("TokenFirebase", "No existe");
         }
 
         private async Task RegisterCommandAsync()

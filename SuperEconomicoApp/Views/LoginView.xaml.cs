@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -28,9 +28,18 @@ namespace SuperEconomicoApp.Views
 
         }
 
-        private void btnRecoveryPass(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
+            base.OnAppearing();
+        }
+
+        private async void btnRecoveryPass(object sender, EventArgs e)
+        {
+            //Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
+
+            var value = Preferences.Get("TokenFirebase", "No existe");
+
+            await DisplayAlert("", value, "OK");
         }
     }
 }
