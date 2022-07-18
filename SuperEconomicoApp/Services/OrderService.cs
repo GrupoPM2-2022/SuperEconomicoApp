@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.CloudFirestore;
 using SuperEconomicoApp.Api;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
@@ -146,6 +147,35 @@ namespace SuperEconomicoApp.Services
                 var response = await client.PutAsync(requestUri, content);
                 if (response.IsSuccessStatusCode)
                 {
+                    bool confirm = await UpdateStatusDeliveryFirebase(order.Status, order.DeliveryUserId.ToString());
+                    if (confirm)
+                        return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        private async Task<bool> UpdateStatusDeliveryFirebase(string status, string idDocument)
+        {
+            try
+            {
+                var location = await Geolocation.GetLocationAsync();
+                if (location != null)
+                {
+                    string coordinatesUser = location.Latitude.ToString() + "," + location.Longitude.ToString();
+                    string statusPrincipal = status.Equals("CERRADO") ? "ACTIVO" : "ENTREGA";
+                    await CrossCloudFirestore.Current
+                             .Instance
+                             .Collection("Ubication")
+                             .Document(idDocument)
+                             .UpdateAsync(new Ubication { status = statusPrincipal, ubication = coordinatesUser });
+
+                    Settings.StatusDelivery = statusPrincipal;
+
                     return true;
                 }
             }
@@ -153,6 +183,7 @@ namespace SuperEconomicoApp.Services
             {
                 Console.WriteLine(ex.Message);
             }
+
             return false;
         }
     }

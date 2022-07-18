@@ -11,9 +11,6 @@ using Xamarin.Forms;
 
 namespace SuperEconomicoApp.ViewsModels.Delivery
 {
-
-
-
     public class ActiveOrdersDeliveryViewModel : BaseViewModel
     {
         #region VARIABLES
@@ -118,20 +115,25 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             return orders;
         }
 
-        private void ProceedWithDelivery(ContentOrderDelivery order)
+        private async Task ProceedWithDelivery(ContentOrderDelivery order)
         {
-            if (order.Status.Equals("ACTIVO"))
+            string message = order.Status.Equals("ACTIVO") ? "¿Está seguro de proceder con la entrega?" : "¿Está seguro de cerrar el pedido?";
+            bool response = await Application.Current.MainPage.DisplayAlert("Aviso", message, "Si", "No");
+            if (response)
             {
-                // CAMBIAR STADO ORDEN A ENTREGA
-                order.Status = "ENTREGA";
-                UpdateStatusOrder(order);
-            }
-            else if (order.Status.Equals("ENTREGA"))
-            {
-                // CAMBIAR STADO ORDEN A CERRADO
-                order.Status = "CERRADO";
-                order.DeliveryDate = DateTime.Now;
-                UpdateStatusOrder(order);
+                if (order.Status.Equals("ACTIVO"))
+                {
+                    // CAMBIAR STADO ORDEN A ENTREGA
+                    order.Status = "ENTREGA";
+                    UpdateStatusOrder(order);
+                }
+                else if (order.Status.Equals("ENTREGA"))
+                {
+                    // CAMBIAR STADO ORDEN A CERRADO
+                    order.Status = "CERRADO";
+                    order.DeliveryDate = DateTime.Now;
+                    UpdateStatusOrder(order);
+                }
             }
 
         }
@@ -155,11 +157,6 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
         }
 
-        private void UpdateStatusFirebase()
-        {
-            throw new NotImplementedException();
-        }
-
         private ContentOrderDelivery ExcludeUnnecessaryFields(ContentOrderDelivery order)
         {
             order.ClientName = null;
@@ -173,7 +170,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         #endregion
 
         #region COMANDOS
-        public ICommand ProceedWithDeliveryCommand => new Command<ContentOrderDelivery>((param) => ProceedWithDelivery(param));
+        public ICommand ProceedWithDeliveryCommand => new Command<ContentOrderDelivery>(async (param) => await ProceedWithDelivery(param));
         public ICommand CerrarCommand => new Command(async () => await Cerrar());
 
         private async Task Cerrar()

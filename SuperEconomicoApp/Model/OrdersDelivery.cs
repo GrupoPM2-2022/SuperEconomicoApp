@@ -36,6 +36,9 @@ namespace SuperEconomicoApp.Model
 
         [JsonProperty("client_location")]
         public string ClientLocation { get; set; }
+        
+        [JsonProperty("name_ubication")]
+        public string NameUbication { get; set; }
 
         [JsonProperty("payment_type")]
         public string PaymentType { get; set; }
