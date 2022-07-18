@@ -64,8 +64,7 @@ namespace SuperEconomicoApp.ViewsModels
         {
             var cis = new CartItemService();
             cis.RemoveItemsFromCart();
-            //Settings.RemoveIdUser();
-            //Settings.RemoveUserName();
+            //Preferences.Remove("TokenFirebase");
             Settings.ClearAllData();
             await Application.Current.MainPage.Navigation.PushModalAsync(new LoginView());
 

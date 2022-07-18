@@ -6,11 +6,15 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Firebase.Messaging;
+using Plugin.Settings;
+using Plugin.Settings.Abstractions;
+using SuperEconomicoApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace SuperEconomicoApp.Droid
 {

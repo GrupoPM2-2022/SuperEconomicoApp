@@ -107,6 +107,12 @@ namespace SuperEconomicoApp.Model
         [JsonProperty("conf_phone")]
         public string ConfPhone { get; set; }
 
+        [JsonProperty("dni")]
+        public string Dni { get; set; }
+
+        [JsonProperty("cod_firebase")]
+        public string CodFirebase { get; set; }
+
         public IList<ContentOrderDelivery> orders { get; set; }
 
     }

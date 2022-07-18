@@ -97,11 +97,11 @@ namespace SuperEconomicoApp.Views
 
             if (user != null)
             {
-                if(await DisplayAlert("Notificación", "Correo igresado ya fue registrado.\n \n ¿Desea recuperar su contraseña?", "SI", "NO"))
+                if (await DisplayAlert("Notificación", "Correo igresado ya fue registrado.\n \n ¿Desea recuperar su contraseña?", "SI", "NO"))
                 {
                     await Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
                 }
-                
+
                 return;
             }
 
@@ -132,7 +132,8 @@ namespace SuperEconomicoApp.Views
             user.state = "activo";
             user.typeuser = "cliente";
             user.cod_temp = this.Code;
-            return user;    
+            user.dni = txtdni.Text;
+            return user;
 
         }
 
@@ -146,7 +147,12 @@ namespace SuperEconomicoApp.Views
             else if (string.IsNullOrEmpty(txtlastname.Text))
             {
                 DisplayAlert("Campo obligatorio", "Favor ingresar su apellido ", "OK");
-                txtlastname.Focus();    
+                txtlastname.Focus();
+            }
+            else if (string.IsNullOrEmpty(txtdni.Text))
+            {
+                DisplayAlert("Campo obligatorio", "Favor ingresar su DNI", "OK");
+                txtlastname.Focus();
             }
             else if (string.IsNullOrEmpty(txtphone.Text))
             {
@@ -157,21 +163,23 @@ namespace SuperEconomicoApp.Views
             {
                 DisplayAlert("Campo obligatorio", "Favor ingresar su correo electronico ", "OK");
                 txtemail.Focus();
-            }else if (!ValidarCorreo(txtemail.Text))
+            }
+            else if (!ValidarCorreo(txtemail.Text))
             {
                 DisplayAlert("Advertencia", "Formato de correo invalido ", "OK");
                 txtemail.Focus();
             }
             else if (string.IsNullOrEmpty(txtpassword.Text))
             {
-                DisplayAlert("Campo obligatorio", "Favor ingresar una contraseña para su cuenta " , "OK");
+                DisplayAlert("Campo obligatorio", "Favor ingresar una contraseña para su cuenta ", "OK");
                 txtpassword.Focus();
-            } else if (txtpassword.Text.Length <= 5)
+            }
+            else if (txtpassword.Text.Length <= 5)
             {
                 DisplayAlert("Advertencia", "La contraseña debe contener al menos 6 caracteres", "OK");
                 txtpassword.Focus();
-            }      
-            else if(txtpassword.Text != txtpassword2.Text)
+            }
+            else if (txtpassword.Text != txtpassword2.Text)
             {
                 DisplayAlert("Advertencia", "La contraseña ingresada no coinciden, favor volver a ingresar", "OK");
                 txtpassword.Text = "";
@@ -182,7 +190,7 @@ namespace SuperEconomicoApp.Views
             {
                 return true;
             }
-            return false;   
+            return false;
 
         }
 

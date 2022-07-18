@@ -18,6 +18,7 @@ namespace SuperEconomicoApp.Helpers
 
         public static bool ExistUser => AppSettings.Contains(nameof(UserName));
         public static bool ExistDepartment => AppSettings.Contains(nameof(Department));
+        public static bool ExistTokenFirebase => AppSettings.Contains(nameof(TokenFirebase));
 
         public static string UserName
         {
@@ -50,6 +51,12 @@ namespace SuperEconomicoApp.Helpers
             get => AppSettings.GetValueOrDefault(nameof(StatusDelivery), string.Empty);
             set => AppSettings.AddOrUpdateValue(nameof(StatusDelivery), value);
         }
+        
+        public static string TokenFirebase
+        {
+            get => AppSettings.GetValueOrDefault(nameof(TokenFirebase), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(TokenFirebase), value);
+        }
 
         public static void ClearAllData()
         {
@@ -59,8 +66,11 @@ namespace SuperEconomicoApp.Helpers
         // DELETE KEYS
         public static void RemoveUserName() => AppSettings.Remove(nameof(UserName));
         public static void RemoveIdUser() => AppSettings.Remove(nameof(IdUser));
-        public static void RemoveCoordinates() => AppSettings.Remove(nameof(Coordinates));
         public static void RemoveDepartment() => AppSettings.Remove(nameof(Department));
+        public static void RemoveCoordinates() => AppSettings.Remove(nameof(Coordinates));
+        public static void RemoveTypeUser() => AppSettings.Remove(nameof(TypeUser));
+        public static void RemoveStatusDelivery() => AppSettings.Remove(nameof(StatusDelivery));
+        public static void RemoveTokenFirebase() => AppSettings.Remove(nameof(TokenFirebase));
 
     }
 }

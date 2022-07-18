@@ -295,6 +295,7 @@ namespace SuperEconomicoApp.ViewsModels
             SelectedOrder.sucursal = Settings.Coordinates;
             SelectedOrder.order_date = DateTime.Now;
             SelectedOrder.deliver_date = DateTime.Now;
+            SelectedOrder.name_ubication = UbicationPreview;
         }
 
         private void LoadConfiguration()

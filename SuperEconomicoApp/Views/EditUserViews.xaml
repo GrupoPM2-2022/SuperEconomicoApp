@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -82,9 +83,23 @@
             Text="{Binding Lastname}"
             Keyboard="Text"
             />
-        <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
+        
+        <Label Text="DNI" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
         <controls:StandardEntry
             Grid.Row="6"
+            Padding="13"
+             BackgroundColor="White"
+            TextColor="Black"
+            FontSize="Small"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa tu DNI sin guiones o espacios" 
+            Text="{Binding Dni}"
+            Keyboard="Text"/>
+        
+        <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
+        <controls:StandardEntry
+            Grid.Row="8"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -95,9 +110,9 @@
              Keyboard="Telephone"
             FontSize="Small"
             />
-        <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
+        <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
         <controls:StandardEntry
-            Grid.Row="8"
+            Grid.Row="10"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -107,8 +122,8 @@
             Text="{Binding EmailNew}"
             Keyboard="Email"
             FontSize="Small"/>
-        <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
-        <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20">
+        <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
+        <Frame Grid.Row="12" Padding="13,0,13,0" CornerRadius="20">
             <DatePicker MinimumDate="01/01/1900" 
                         TextColor="Black" 
                         BackgroundColor="white"  
@@ -118,12 +133,13 @@
         </Frame>
 
         <Button 
-            Grid.Row="15"
+            Grid.Row="13"
             Text="ACTUALIZAR PERFIL" 
             BackgroundColor="#8873b6" 
             TextColor="White" 
             WidthRequest="300" 
             HeightRequest="50"
+            VerticalOptions="EndAndExpand"
             Command="{Binding UpdateUserCommand}"
             CornerRadius="20"/>
 

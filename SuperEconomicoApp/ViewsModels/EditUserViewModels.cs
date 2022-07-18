@@ -24,6 +24,7 @@ namespace SuperEconomicoApp.ViewsModels
         private string _Telephone;
         private string _Email;
         private string EmailCurrent;
+        private string _Dni;
         private byte[] _Image;
         private bool _IsImageBD;
         private CircleImage circleImage;
@@ -69,6 +70,17 @@ namespace SuperEconomicoApp.ViewsModels
                 OnPropertyChanged();
             }
         }
+
+        public string Dni
+        {
+            get { return _Dni; }
+            set
+            {
+                _Dni = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public string Telephone
         {
@@ -217,6 +229,7 @@ namespace SuperEconomicoApp.ViewsModels
             userSelected.image = Image;
             userSelected.email = EmailNew;
             userSelected.birthdate = BirthDate;
+            userSelected.dni = Dni;
 
             bool confirmationUpdate = await userService.UpdateUser(userSelected);
 
@@ -243,6 +256,10 @@ namespace SuperEconomicoApp.ViewsModels
             else if (string.IsNullOrEmpty(Lastname))
             {
                 return "Debes ingresar tu apellido.";
+            }
+            else if (string.IsNullOrEmpty(Dni))
+            {
+                return "Debes ingresar tu DNI.";
             }
             else if (string.IsNullOrEmpty(Telephone))
             {
@@ -275,6 +292,7 @@ namespace SuperEconomicoApp.ViewsModels
             EmailCurrent = userSelected.email;
             EmailNew = userSelected.email;
             Telephone = userSelected.phone;
+            Dni = userSelected.dni;
 
             if (userSelected.image == null || userSelected.image.Length == 0)
             {

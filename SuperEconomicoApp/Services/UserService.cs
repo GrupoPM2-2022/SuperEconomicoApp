@@ -118,6 +118,7 @@ namespace SuperEconomicoApp.Services
                                  status = "ACTIVO",
                                  ubication = coordinatesUser,
                              });
+                    Settings.StatusDelivery = "ACTIVO";
                     return true;
                 }
             }

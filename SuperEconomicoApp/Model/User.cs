@@ -41,9 +41,11 @@ namespace SuperEconomicoApp
 
         public string typeuser { get; set; }
 
-        public string conf_phone { get; set; }
+        //public string conf_phone { get; set; }
 
+        public string dni { get; set; }
 
+        public string cod_firebase { get; set; }
 
     }
 }

@@ -92,10 +92,12 @@ namespace SuperEconomicoApp.ViewsModels
 
         public Command LoginCommand { get; set; }
         public Command RegisterCommand { get; set; }
+        UserService userService;
 
         public LoginViewModel()
         {
             Disable = false;
+            userService = new UserService();
 
             LoginCommand = new Command(async () => await LoginCommandAsync());
             RegisterCommand = new Command(async () => await RegisterCommandAsync());
@@ -124,7 +126,6 @@ namespace SuperEconomicoApp.ViewsModels
                     return;
                 }
 
-                var userService = new UserService();
                 User user = new User();
                 user = await userService.GetUserByEmail(Email);
                 if (user == null)
@@ -135,10 +136,17 @@ namespace SuperEconomicoApp.ViewsModels
 
                 if (Email.Equals(user.email) && Password.Equals(user.password))
                 {
+                    bool resp = await UpdateTokenFirebase(user);
+                    if (!resp)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
+                        return;
+                    }
+
                     if (user.typeuser.Equals("repartidor"))
                     {
                         bool response = await CheckExistUserFirebase(user);
-                        if (response) 
+                        if (response)
                             await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedDeliveryView());
                     }
                     else
@@ -166,6 +174,14 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
+        private async Task<bool> UpdateTokenFirebase(User user)
+        {
+            var value = Preferences.Get("TokenFirebase", "No existe");
+            user.cod_firebase = value;
+            bool response = await userService.UpdateUser(user);
+            return response;
+        }
+
         private async Task<bool> CheckExistUserFirebase(User user)
         {
             string idUser = user.id.ToString();
@@ -184,13 +200,15 @@ namespace SuperEconomicoApp.ViewsModels
                     {
                         await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error con tu cuenta, contactate con soporte.", "Ok");
                         return false;
-                    } else {
+                    }
+                    else
+                    {
                         Settings.UserName = user.name + " " + user.lastname;
                         Settings.IdUser = idUser;
                         Settings.TypeUser = user.typeuser;
                         return true;
                     }
-                    
+
                 }
                 else
                 {
@@ -202,9 +220,11 @@ namespace SuperEconomicoApp.ViewsModels
             }
             else
             {
+                Model.Ubication ubication = document.ToObject<Model.Ubication>();
                 Settings.UserName = user.name + " " + user.lastname;
                 Settings.IdUser = idUser;
                 Settings.TypeUser = user.typeuser;
+                Settings.StatusDelivery = ubication.status;
                 return true;
             }
         }

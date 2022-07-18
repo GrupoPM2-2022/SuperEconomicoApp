@@ -35,11 +35,11 @@ namespace SuperEconomicoApp.Views
 
         private async void btnRecoveryPass(object sender, EventArgs e)
         {
-            //Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
+            await Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
 
-            var value = Preferences.Get("TokenFirebase", "No existe");
+            //var value = Preferences.Get("TokenFirebase", "No existe");
 
-            await DisplayAlert("", value, "OK");
+            //await DisplayAlert("", value, "OK");
         }
     }
 }

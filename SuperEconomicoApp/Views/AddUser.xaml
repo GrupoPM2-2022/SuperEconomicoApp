@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -65,9 +66,25 @@
             x:Name="txtlastname"
             Keyboard="Text"
             />
-        <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
+        
+        <Label Text="DNI" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="5"/>
         <controls:StandardEntry
             Grid.Row="6"
+            Padding="13"
+             BackgroundColor="White"
+            TextColor="Black"
+            FontSize="Small"
+            BorderThickness="1"
+            CornerRadius="20"
+            Placeholder="Ingresa su DNI" 
+            x:Name="txtdni"
+            Keyboard="Text"
+            />
+        
+        
+        <Label Text="TELEFONO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
+        <controls:StandardEntry
+            Grid.Row="8"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -78,9 +95,9 @@
              Keyboard="Telephone"
             FontSize="Small"
             />
-        <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="7"/>
+        <Label Text="CORREO ELECTRONICO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
         <controls:StandardEntry
-            Grid.Row="8"
+            Grid.Row="10"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -91,16 +108,16 @@
             Keyboard="Email"
             FontSize="Small"
             />
-        <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="9"/>
-        <Frame Grid.Row="10" Padding="13,0,13,0" CornerRadius="20" >
+        <Label Text="FECHA DE NACIMIENTO" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
+        <Frame Grid.Row="12" Padding="13,0,13,0" CornerRadius="20" >
             <DatePicker MinimumDate="01/01/1900" TextColor="#B4B4B4"  BackgroundColor="white"  x:Name="txtbirthdate" FontSize="Small" />
 
         </Frame>
 
-        <Label Text="PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="11"/>
+        <Label Text="PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="13"/>
 
         <controls:StandardEntry
-            Grid.Row="12"
+            Grid.Row="14"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -112,9 +129,9 @@
             Keyboard="Text"
             IsPassword="True"
             />
-        <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="13"/>
+        <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="15"/>
         <controls:StandardEntry
-            Grid.Row="14"
+            Grid.Row="16"
             Padding="13"
              BackgroundColor="White"
             TextColor="Black"
@@ -129,7 +146,7 @@
             />
 
             <Button 
-            Grid.Row="15"
+            Grid.Row="17"
             Text="GUARDAR" 
             BackgroundColor="#8873b6" 
             TextColor="White" 

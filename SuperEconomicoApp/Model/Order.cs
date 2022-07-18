@@ -18,6 +18,7 @@ namespace SuperEconomicoApp.Model
         public double total { get; set; }
         public double full_discount { get; set; }
         public string client_location { get; set; }
+        public string name_ubication { get; set; }
         public string payment_type { get; set; }
         public string status { get; set; }
         public string delivery_name { get; set; }
@@ -47,6 +48,8 @@ namespace SuperEconomicoApp.Model
         public string birthdate { get; set; }
         public string phone { get; set; }
         public string conf_phone { get; set; }
+        public string dni { get; set; }
+        public string cod_firebase { get; set; }
         public IList<Order> orders { get; set; }
     }
 }
