@@ -57,8 +57,12 @@
                                            FontSize="15"
                                            FontAttributes="Bold"
                                            Margin="10,0,0,0" />
+                                    <Label Text="{Binding NameUbication}"
+                                               FontSize="15"
+                                               FontAttributes="Italic"
+                                               Margin="10,-3,0,0"/>
                                     <Label Text="{Binding NumberPhoneClient}"
-                                       Margin="10,0,0,0"
+                                       Margin="10,-3,0,0"
                                        FontSize="14"
                                        FontAttributes="Italic"/>
 
@@ -81,7 +85,7 @@
                                TextColor="Purple"/>
 
                             <Grid RowDefinitions ="*,*">
-                                <Grid Grid.Row="0" ColumnDefinitions="100,*" Margin="0,2,0,0" HorizontalOptions="Center">
+                                <Grid Grid.Row="0" ColumnDefinitions="100,*" Margin="-3,2,0,0" HorizontalOptions="Center">
                                     <Label Text="Solicitado: "
                                         FontSize="15"
                                         FontAttributes="Bold"
@@ -91,7 +95,7 @@
                                         FontAttributes="Italic"
                                         Grid.Column="1"/>
                                 </Grid>
-                                <Grid Grid.Row="1" ColumnDefinitions="100,*" Margin="0,2,0,0" HorizontalOptions="Center">
+                                <Grid Grid.Row="1" ColumnDefinitions="100,*" Margin="-3,0,0,0" HorizontalOptions="Center">
                                     <Label Text="Entregado: "
                                         FontSize="15"
                                         FontAttributes="Bold"

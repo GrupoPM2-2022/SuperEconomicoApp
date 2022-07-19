@@ -17,6 +17,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         private List<OrderDetails> _ListOrderDetails;
         private string _Total;
         private string _NameClient;
+        private string _NameUbication;
         private string _NumberPhoneClient;
         private byte[] _ImageClient;
         private string _DateOrder;
@@ -75,6 +76,16 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             set
             {
                 _NameClient = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string NameUbication
+        {
+            get { return _NameUbication; }
+            set
+            {
+                _NameUbication = value;
                 OnPropertyChanged();
             }
         }
@@ -164,6 +175,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             NumberPhoneClient = order.PhoneClient;
             DateOrder = order.OrderDate.ToString();
             DateDelivery = order.DeliveryDate.ToString();
+            NameUbication = order.NameUbication;
 
             if (order.PaymentType.Equals("Efectivo"))
             {

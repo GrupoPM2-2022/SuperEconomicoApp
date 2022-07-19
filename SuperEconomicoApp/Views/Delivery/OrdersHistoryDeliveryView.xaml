@@ -45,7 +45,8 @@
                                            HeightRequest="45"/>
                                     <StackLayout Margin="15,0,0,0">
                                         <Label FontSize="18"
-                                               FontAttributes="Bold">
+                                               FontAttributes="Bold"
+                                               TextColor="#76448A">
                                             <Label.Text>
                                                 <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="ClientName" />
@@ -53,6 +54,10 @@
                                                 </MultiBinding>
                                             </Label.Text>
                                         </Label>
+                                        <Label Text="{Binding NameUbication}"
+                                               FontSize="15"
+                                               FontAttributes="Bold"
+                                               Margin="0,-7,0,0"/>
                                         <StackLayout Orientation="Horizontal">
                                             <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
                                                FontSize="16"
