@@ -97,9 +97,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidLocationService.cs" />
     <Compile Include="AndroidNotificationManager.cs" />
+    <Compile Include="BootBroadcastReceiver.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="MyFirebaseMessagingService.cs" />
+    <Compile Include="NotificationHelper.cs" />
     <Compile Include="Renderers\StandardEntryRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -409,6 +411,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\order_history_delivery.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon_notification.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Helpers;
+﻿using Plugin.CloudFirestore;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace SuperEconomicoApp.ViewsModels.Delivery
@@ -19,6 +21,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         private List<ContentOrderDelivery> _ListOrders;
         private bool _ExistOrders;
         private bool _NotExistOrders;
+        private string _LocationLabel;
         #endregion
 
         #region CONSTRUCTOR
@@ -27,7 +30,42 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             ordersDelivery = new OrdersDelivery();
             orderService = new OrderService();
 
-            LoadConfiguration();
+            //LoadConfiguration();
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                MessagingCenter.Subscribe<LocationMessage>(this, "Location", message =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        UpdateUbicationDistributor(message.Latitude.ToString() + "," + message.Longitude.ToString());
+
+                        LocationLabel += $"{Environment.NewLine}{message.Latitude}, {message.Longitude}, {DateTime.Now.ToLongTimeString()}";
+                        Console.WriteLine($"{message.Latitude}, {message.Longitude}, {DateTime.Now.ToLongTimeString()}");
+                    });
+                });
+
+                MessagingCenter.Subscribe<StopServiceMessage>(this, "ServiceStopped", message =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        LocationLabel = "Entrega Finalizada Exitoxamente!";
+                    });
+                });
+
+                MessagingCenter.Subscribe<LocationErrorMessage>(this, "LocationError", message =>
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        LocationLabel = "Hubo un error al actualizar la ubicación!";
+                    });
+                });
+
+                if (Preferences.Get("LocationServiceRunning", false) == true)
+                {
+                    Console.WriteLine("ENTRANDO A LA EJECUCION EN CASO DE REINICIO DEL DISPOSITIVO");
+                    StartService();
+                }
+            }
         }
 
         private async void LoadConfiguration()
@@ -84,6 +122,16 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             set
             {
                 _ExistOrders = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string LocationLabel
+        {
+            get { return _LocationLabel; }
+            set
+            {
+                _LocationLabel = value;
                 OnPropertyChanged();
             }
         }
@@ -167,11 +215,58 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             return order;
 
         }
+
+        private async void UpdateUbicationDistributor(string ubication)
+        {
+            await CrossCloudFirestore.Current
+                         .Instance
+                         .Collection("Ubication")
+                         .Document(Settings.IdUser)
+                         .UpdateAsync(new Model.Ubication { 
+                            ubication = ubication,
+                            status = Settings.StatusDelivery
+                         });
+        }
+
         #endregion
 
         #region COMANDOS
         public ICommand ProceedWithDeliveryCommand => new Command<ContentOrderDelivery>(async (param) => await ProceedWithDelivery(param));
         public ICommand CerrarCommand => new Command(async () => await Cerrar());
+        public ICommand ComenzarEntregaCommand => new Command(async () => await ComenzarEntrega());
+        public ICommand TerminarEntregaCommand => new Command(TerminarEntrega);
+
+        private void TerminarEntrega()
+        {
+            StopService();
+        }
+
+        private async Task ComenzarEntrega()
+        {
+            var permission = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            if (permission != PermissionStatus.Granted)
+            {
+                return;
+            }
+
+            StartService();
+        }
+
+        private void StartService()
+        {
+            var startServiceMessage = new StartServiceMessage();
+            MessagingCenter.Send(startServiceMessage, "ServiceStarted");
+            Preferences.Set("LocationServiceRunning", true);
+            LocationLabel = "Se ha iniciado el servicio de ubicación!";
+        }
+
+        private void StopService()
+        {
+            var stopServiceMessage = new StopServiceMessage();
+            MessagingCenter.Send(stopServiceMessage, "ServiceStopped");
+            Preferences.Set("LocationServiceRunning", false);
+        }
+
 
         private async Task Cerrar()
         {
