@@ -136,12 +136,12 @@ namespace SuperEconomicoApp.ViewsModels
 
                 if (Email.Equals(user.email) && Password.Equals(user.password))
                 {
-                    bool resp = await UpdateTokenFirebase(user);
-                    if (!resp)
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
-                        return;
-                    }
+                    //bool resp = await UpdateTokenFirebase(user);
+                    //if (!resp)
+                    //{
+                    //    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
+                    //    return;
+                    //}
 
                     if (user.typeuser.Equals("repartidor"))
                     {
