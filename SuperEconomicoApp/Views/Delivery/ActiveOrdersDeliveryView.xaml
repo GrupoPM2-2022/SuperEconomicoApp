@@ -19,22 +19,23 @@
     </ContentPage.Resources>
 
     <Grid Padding="8">
-        <StackLayout Orientation="Horizontal" VerticalOptions="Start">
-            <Label Text="{Binding NameUser}"
+        
+        <StackLayout IsVisible="{Binding ExistOrders}">
+            <StackLayout Orientation="Horizontal" VerticalOptions="Start">
+                <Label Text="{Binding NameUser}"
                    FontAttributes="Bold"
                    FontSize="17"/>
-            <Image  Source="salida1" 
+                <Image  Source="salida1" 
                     HorizontalOptions="EndAndExpand"
                     Margin="0,0,5,0"
                     VerticalOptions="Center"
                     Aspect="AspectFit"
                     HeightRequest="25">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
-                </Image.GestureRecognizers>
-            </Image>
-        </StackLayout>
-        <StackLayout IsVisible="{Binding ExistOrders}">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
             <CollectionView ItemsSource="{Binding ListOrders}"
                         VerticalOptions="CenterAndExpand">
 
@@ -123,14 +124,33 @@
             </CollectionView>
         </StackLayout>
 
-        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
-            <Image Source="list_empty.png"
+        <StackLayout IsVisible="{Binding NotExistOrders}" >
+            <StackLayout Orientation="Horizontal" VerticalOptions="Start">
+                <Label Text="{Binding NameUser}"
+                   FontAttributes="Bold"
+                   FontSize="17"/>
+                <Image  Source="salida1" 
+                    HorizontalOptions="EndAndExpand"
+                    Margin="0,0,5,0"
+                    VerticalOptions="Center"
+                    Aspect="AspectFit"
+                    HeightRequest="25">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+
+            <StackLayout VerticalOptions="Center">
+                <Image Source="list_empty.png"
                    WidthRequest="100"/>
-            <Label Text="No tienes ningún pedido asignado" 
+                <Label Text="No tienes ningún pedido asignado" 
                    HorizontalTextAlignment="Center"
                    FontSize="23"
                    TextColor="#212F3D"
                    FontAttributes="Bold"/>
+            </StackLayout>
+
         </StackLayout>
 
     </Grid>

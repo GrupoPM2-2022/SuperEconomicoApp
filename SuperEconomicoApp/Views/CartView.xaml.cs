@@ -1,4 +1,5 @@
 ﻿using SuperEconomicoApp.Model;
+using SuperEconomicoApp.ViewsModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace SuperEconomicoApp.Views
         public CartView()
         {
             InitializeComponent();
-            //LabelName.Text = "Bienvenido" + Preferences.Get("Username", "Guest") + ",";
+            BindingContext = new CartViewModel();
         }
 
         async void ImageButton_Clicked(object sender, EventArgs e)

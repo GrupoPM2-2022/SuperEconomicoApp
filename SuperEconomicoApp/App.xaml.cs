@@ -22,6 +22,7 @@ namespace SuperEconomicoApp
 
             InitializeComponent();
             //MainPage = new NavigationPage(new SettingsPage());
+
             if (Settings.ExistUser)
             {
                 if (Settings.TypeUser.Equals("repartidor"))

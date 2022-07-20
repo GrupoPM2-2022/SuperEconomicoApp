@@ -238,12 +238,13 @@
                                VerticalOptions="Center"
                                Aspect="AspectFit"
                                HeightRequest="20"/>
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                        </StackLayout.GestureRecognizers>
 
                     </StackLayout>
                 </Frame>
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
-                </StackLayout.GestureRecognizers>
+                
             </StackLayout>
         </StackLayout>
 

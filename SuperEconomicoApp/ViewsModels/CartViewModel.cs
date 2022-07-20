@@ -20,6 +20,8 @@ namespace SuperEconomicoApp.ViewsModels
         private UserCartItem _SelectedProductoItem;
         private double _TotalCost;
         private int _TotalQuantity;
+        private bool _IsEmptyShoppingCar;
+        private bool _ExistDataShoppingCar;
 
         private ObservableCollection<UserCartItem> _CartItems;
         CartItemService cartItemService;
@@ -55,6 +57,33 @@ namespace SuperEconomicoApp.ViewsModels
             get
             {
                 return _TotalCost;
+            }
+        }
+        
+        public bool IsEmptyShoppingCar
+        {
+            set
+            {
+                _IsEmptyShoppingCar = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _IsEmptyShoppingCar;
+            }
+        }
+        public bool ExistDataShoppingCar
+        {
+            set
+            {
+                _ExistDataShoppingCar = value;
+                OnPropertyChanged();
+            }
+
+            get
+            {
+                return _ExistDataShoppingCar;
             }
         }
 
@@ -174,6 +203,9 @@ namespace SuperEconomicoApp.ViewsModels
                 var cis = new CartItemService();
                 cis.RemoveItemsFromCart();
                 CartItems.Clear();
+                TotalCost = 0;
+                IsEmptyShoppingCar = false;
+                ExistDataShoppingCar = true;
             }
         }
 
@@ -181,25 +213,40 @@ namespace SuperEconomicoApp.ViewsModels
         {
             var cn = DependencyService.Get<ISQLite>().GetConnection();
             var items = cn.Table<CartItem>().ToList();
-            CartItems.Clear();
-            TotalCost = 0;
-            foreach (var item in items)
+
+            if (items.Count == 0)
             {
-                CartItems.Add(new UserCartItem()
-                {
-                    CartItemId = item.CartItemId,
-                    ImageProduct = item.ImageProduct,
-                    ProductId = item.ProductId,
-                    ProductName = item.ProductName,
-                    Description = item.Description,
-                    Price = Math.Round(item.Price, 2),
-                    Quantity = item.Quantity,
-                    Cost = item.Price * item.Quantity,
-                    Stock = item.Stock
-                });
-                TotalCost += (item.Price * item.Quantity);
+                IsEmptyShoppingCar = false;
+                ExistDataShoppingCar = true;
             }
-            TotalCost = Math.Round(TotalCost, 2);
+            else {
+                CartItems.Clear();
+                TotalCost = 0;
+                foreach (var item in items)
+                {
+                    CartItems.Add(new UserCartItem()
+                    {
+                        CartItemId = item.CartItemId,
+                        ImageProduct = item.ImageProduct,
+                        ProductId = item.ProductId,
+                        ProductName = item.ProductName,
+                        Description = item.Description,
+                        Price = Math.Round(item.Price, 2),
+                        Quantity = item.Quantity,
+                        Cost = item.Price * item.Quantity,
+                        Stock = item.Stock
+                    });
+                    TotalCost += (item.Price * item.Quantity);
+                }
+                TotalCost = Math.Round(TotalCost, 2);
+
+                IsEmptyShoppingCar = true;
+                ExistDataShoppingCar = false;
+
+            }
+
+
+            
         }
 
         private void DecrementOrder()

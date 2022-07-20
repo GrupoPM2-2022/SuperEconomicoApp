@@ -79,6 +79,8 @@
         <Button Text="{Binding TextButton}" 
                 VerticalOptions="End" 
                 CornerRadius="10"
+                BackgroundColor="#76448A" 
+                TextColor="White"
                 Command="{Binding ConfirmOrderCommand}"/>
 
     </Grid>

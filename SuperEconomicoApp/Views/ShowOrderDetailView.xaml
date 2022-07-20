@@ -74,9 +74,9 @@
                     </Frame>
 
                     <Frame BackgroundColor="White"
-                   CornerRadius="3"
-                   HasShadow="False"
-                   Padding="20">
+                           CornerRadius="3"
+                           HasShadow="False"
+                           Padding="20">
                         <StackLayout Orientation="Horizontal">
 
                             <Label Text="Total:"
