@@ -261,7 +261,8 @@ namespace SuperEconomicoApp.ViewsModels
                 if (response)
                 {
                     await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
-                    await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+                    //await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+                    Application.Current.MainPage = new ProductsView();
                 }
                 else
                 {

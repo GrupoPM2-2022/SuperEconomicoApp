@@ -28,18 +28,9 @@ namespace SuperEconomicoApp.Views
 
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
-
         private async void btnRecoveryPass(object sender, EventArgs e)
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new SendRecoveryPass());
-
-            //var value = Preferences.Get("TokenFirebase", "No existe");
-
-            //await DisplayAlert("", value, "OK");
         }
     }
 }

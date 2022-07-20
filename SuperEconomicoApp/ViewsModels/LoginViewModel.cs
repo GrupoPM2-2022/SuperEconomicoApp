@@ -158,14 +158,17 @@ namespace SuperEconomicoApp.ViewsModels
                     {
                         bool response = await CheckExistUserFirebase(user);
                         if (response)
-                            await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedDeliveryView());
+                            Application.Current.MainPage = new TabbedDeliveryView();
+                            //await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedDeliveryView());
                     }
                     else
                     {
                         Settings.UserName = user.name + " " + user.lastname;
                         Settings.IdUser = user.id.ToString();
                         Settings.TypeUser = user.typeuser;
-                        await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+                        Application.Current.MainPage = new ProductsView();
+                        //await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+
                     }
 
                 }
@@ -237,6 +240,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return true;
             }
         }
+
         #endregion
 
     }

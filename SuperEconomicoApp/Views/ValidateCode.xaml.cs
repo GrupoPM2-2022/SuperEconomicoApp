@@ -78,7 +78,8 @@ namespace SuperEconomicoApp.Views
 
                 Settings.UserName = user.name + " " + user.lastname;
                 Settings.IdUser = user.id.ToString();
-                await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
+                //await Application.Current.MainPage.Navigation.PushModalAsync(new LoginView());
+                Application.Current.MainPage = new LoginView();
             }
             
 
