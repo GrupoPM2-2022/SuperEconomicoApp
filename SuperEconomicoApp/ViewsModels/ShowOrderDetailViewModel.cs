@@ -194,8 +194,9 @@ namespace SuperEconomicoApp.ViewsModels
 
                                if (documentChange.Document.Id.Equals(idUserDelivery))
                                {
-                                   Dictionary<string, object> element = (Dictionary<string, object>) documentChange.Document.Data;
+                                   Dictionary<string, object> element = (Dictionary<string, object>)documentChange.Document.Data;
                                    string[] ubication = { };
+                                   string statusReceived = "";
 
                                    foreach (KeyValuePair<string, object> pair in element)
                                    {
@@ -203,10 +204,17 @@ namespace SuperEconomicoApp.ViewsModels
                                        {
                                            ubication = pair.Value.ToString().Split(',');
                                        }
+                                       if (pair.Key.Equals("status"))
+                                       {
+                                           statusReceived = pair.Value.ToString();
+                                       }
                                    }
 
-                                   TraceRoute(ubication, 350);
-                                   pinDelivery.Position = new Position(Convert.ToDouble(ubication[0]), Convert.ToDouble(ubication[1]));
+                                   if (statusReceived.Equals("ENTREGA"))
+                                   {
+                                       TraceRoute(ubication, 350);
+                                       pinDelivery.Position = new Position(Convert.ToDouble(ubication[0]), Convert.ToDouble(ubication[1]));
+                                   }
                                }
 
                            }
@@ -215,7 +223,8 @@ namespace SuperEconomicoApp.ViewsModels
                });
         }
 
-        private async void TraceRoute(string[] coordinatesOrigin, double meters) {
+        private async void TraceRoute(string[] coordinatesOrigin, double meters)
+        {
             var pathContent = await LoadRoute(coordinatesOrigin);
             map.Polylines.Clear();
 
@@ -233,7 +242,8 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
 
-        private async Task<List<Position>> LoadRoute(string[] coordinatesOrigin) {
+        private async Task<List<Position>> LoadRoute(string[] coordinatesOrigin)
+        {
             try
             {
                 var googleDirection = await ApiServices.ServiceClientInstance.GetDirections(coordinatesOrigin[0], coordinatesOrigin[1], coordinatesUser[0], coordinatesUser[1]);
