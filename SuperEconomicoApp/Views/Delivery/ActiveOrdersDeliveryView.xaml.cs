@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.ViewsModels.Delivery;
+﻿using SuperEconomicoApp.Helpers;
+using SuperEconomicoApp.ViewsModels.Delivery;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,5 +20,10 @@ namespace SuperEconomicoApp.Views.Delivery
             BindingContext = new ActiveOrdersDeliveryViewModel();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Settings.CurrentPage = "Delivery";
+        }
     }
 }

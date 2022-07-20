@@ -56,6 +56,9 @@
     <EmbeddedResource Update="Views\Delivery\ActiveOrdersDeliveryView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Delivery\ActiveOrdersDetailDeliveryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Delivery\OrdersDetailHistoryByDeliveryView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

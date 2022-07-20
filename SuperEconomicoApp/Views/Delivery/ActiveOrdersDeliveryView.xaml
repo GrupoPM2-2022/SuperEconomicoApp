@@ -19,8 +19,22 @@
     </ContentPage.Resources>
 
     <Grid Padding="8">
-        <StackLayout IsVisible="false">
-        <!--<StackLayout IsVisible="{Binding ExistOrders}">-->
+        <StackLayout Orientation="Horizontal" VerticalOptions="Start">
+            <Label Text="{Binding NameUser}"
+                   FontAttributes="Bold"
+                   FontSize="17"/>
+            <Image  Source="salida1" 
+                    HorizontalOptions="EndAndExpand"
+                    Margin="0,0,5,0"
+                    VerticalOptions="Center"
+                    Aspect="AspectFit"
+                    HeightRequest="25">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                </Image.GestureRecognizers>
+            </Image>
+        </StackLayout>
+        <StackLayout IsVisible="{Binding ExistOrders}">
             <CollectionView ItemsSource="{Binding ListOrders}"
                         VerticalOptions="CenterAndExpand">
 
@@ -107,15 +121,9 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
-            <StackLayout>
-                <Button Text="Cerrar"
-                    Command="{Binding CerrarCommand}"/>
-            </StackLayout>
         </StackLayout>
 
-        <StackLayout IsVisible="false" VerticalOptions="Center">
-        <!--<StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">-->
+        <StackLayout IsVisible="{Binding NotExistOrders}" VerticalOptions="Center">
             <Image Source="list_empty.png"
                    WidthRequest="100"/>
             <Label Text="No tienes ningún pedido asignado" 
@@ -123,25 +131,6 @@
                    FontSize="23"
                    TextColor="#212F3D"
                    FontAttributes="Bold"/>
-
-            <StackLayout>
-                <Button Text="Cerrar"
-                    Command="{Binding CerrarCommand}"/>
-            </StackLayout>
-        </StackLayout>
-
-        <StackLayout>
-
-            <Button Text="Comenzar Entrega"
-                    Command="{Binding ComenzarEntregaCommand}"/>
-
-            <Button Text="Pedido Entregado" 
-                    Command="{Binding TerminarEntregaCommand}"/>
-            <Label Text="{Binding LocationLabel}" />
-
-            <Button Text="Cerrar"
-                    Command="{Binding CerrarCommand}"/>
-
         </StackLayout>
 
     </Grid>

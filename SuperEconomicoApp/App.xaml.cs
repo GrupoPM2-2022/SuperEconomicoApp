@@ -46,6 +46,7 @@ namespace SuperEconomicoApp
 
         protected override void OnSleep()
         {
+            Settings.CurrentPage = "Delivery";
         }
 
         protected override void OnResume()

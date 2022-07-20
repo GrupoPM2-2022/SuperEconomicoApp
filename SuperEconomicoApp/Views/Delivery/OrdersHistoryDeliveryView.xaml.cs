@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.ViewsModels.Delivery;
+﻿using SuperEconomicoApp.Helpers;
+using SuperEconomicoApp.ViewsModels.Delivery;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,18 @@ namespace SuperEconomicoApp.Views.Delivery
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class OrdersHistoryDeliveryView : ContentPage
     {
+        OrdersHistoryDeliveryViewModel ordersHistoryViewModel;
         public OrdersHistoryDeliveryView()
         {
             InitializeComponent();
-            BindingContext = new OrdersHistoryDeliveryViewModel();
+            ordersHistoryViewModel = new OrdersHistoryDeliveryViewModel();
+            BindingContext = ordersHistoryViewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ordersHistoryViewModel.LoadConfiguration();
         }
     }
 }

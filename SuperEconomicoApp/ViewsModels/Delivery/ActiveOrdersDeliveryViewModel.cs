@@ -3,6 +3,7 @@ using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
+using SuperEconomicoApp.Views.Delivery;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,26 +22,37 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         private List<ContentOrderDelivery> _ListOrders;
         private bool _ExistOrders;
         private bool _NotExistOrders;
-        private string _LocationLabel;
+        private string _NameUser;
+
+        ActiveOrdersDetailDeliveryView activeOrdersView;
+
         #endregion
 
         #region CONSTRUCTOR
         public ActiveOrdersDeliveryViewModel()
         {
+            NameUser = Settings.UserName;
             ordersDelivery = new OrdersDelivery();
             orderService = new OrderService();
+            string[] coordinatesOrigin = { };
 
-            //LoadConfiguration();
+            GetPermissionsLocation();
+            LoadConfiguration();
+
             if (Device.RuntimePlatform == Device.Android)
             {
                 MessagingCenter.Subscribe<LocationMessage>(this, "Location", message =>
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        UpdateUbicationDistributor(message.Latitude.ToString() + "," + message.Longitude.ToString());
-
-                        LocationLabel += $"{Environment.NewLine}{message.Latitude}, {message.Longitude}, {DateTime.Now.ToLongTimeString()}";
+                        coordinatesOrigin = string.Concat(message.Latitude.ToString(), ",", message.Longitude.ToString()).Split(',');
+                        if (Settings.CurrentPage.Equals("Mapa"))
+                        {
+                            // ACTUALIZANDO MAPA
+                            activeOrdersView.TraceRoute(coordinatesOrigin, Settings.CoordinatesUser.Split(','));
+                        }
                         Console.WriteLine($"{message.Latitude}, {message.Longitude}, {DateTime.Now.ToLongTimeString()}");
+                        UpdateUbicationDistributor(coordinatesOrigin);
                     });
                 });
 
@@ -48,7 +60,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        LocationLabel = "Entrega Finalizada Exitoxamente!";
+                        //LocationLabel = "Entrega Finalizada Exitoxamente!";
                     });
                 });
 
@@ -56,41 +68,10 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        LocationLabel = "Hubo un error al actualizar la ubicación!";
+                        //LocationLabel = "Hubo un error al actualizar la ubicación!";
                     });
                 });
-
-                //if (Preferences.Get("LocationServiceRunning", false) == true)
-                //{
-                //    Console.WriteLine("ENTRANDO A LA EJECUCION EN CASO DE REINICIO DEL DISPOSITIVO");
-                //    StartService();
-                //}
             }
-        }
-
-        private async void LoadConfiguration()
-        {
-            ordersDelivery = await orderService.GetOrdersDeliveryByMethod("getDeliveryOrderActive");
-
-            if (ordersDelivery == null)
-            {
-                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener el historico de ordenes", "Ok");
-                return;
-            }
-
-            if (ordersDelivery.orders.Count == 0)
-            {
-                NotExistOrders = true;
-                ExistOrders = false;
-            }
-            else
-            {
-                NotExistOrders = false;
-                ExistOrders = true;
-
-                ListOrders = GetOrdersActiveByUser((List<ContentOrderDelivery>)ordersDelivery.orders);
-            }
-
         }
 
         #endregion
@@ -125,13 +106,13 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
                 OnPropertyChanged();
             }
         }
-        
-        public string LocationLabel
+
+        public string NameUser
         {
-            get { return _LocationLabel; }
+            get { return _NameUser; }
             set
             {
-                _LocationLabel = value;
+                _NameUser = value;
                 OnPropertyChanged();
             }
         }
@@ -139,6 +120,43 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         #endregion
 
         #region PROCESOS
+        public async void LoadConfiguration()
+        {
+            ordersDelivery = await orderService.GetOrdersDeliveryByMethod("getDeliveryOrderActive");
+
+            if (ordersDelivery == null)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener el historico de ordenes", "Ok");
+                return;
+            }
+
+            if (ordersDelivery.orders.Count == 0)
+            {
+                NotExistOrders = true;
+                ExistOrders = false;
+            }
+            else
+            {
+                NotExistOrders = false;
+                ExistOrders = true;
+
+                ListOrders = GetOrdersActiveByUser((List<ContentOrderDelivery>)ordersDelivery.orders);
+            }
+
+        }
+
+        private async void GetPermissionsLocation()
+        {
+            var permissions = await Permissions.RequestAsync<Permissions.LocationAlways>();
+            if (permissions != PermissionStatus.Granted)
+            {
+                System.Environment.Exit(0);
+            }
+            else
+            {
+                TrackingLocation.StartService();
+            }
+        }
 
         private List<ContentOrderDelivery> GetOrdersActiveByUser(List<ContentOrderDelivery> orders)
         {
@@ -192,7 +210,6 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
             bool response = await orderService.UpdateOrderDelivery(order);
             if (response)
             {
-                //UpdateStatusFirebase();
                 string messageSuccess = order.Status.Equals("CERRADO") ? "Orden Cerrada Correctamente." : "Orden cambio a entregando de forma correcta";
                 await Application.Current.MainPage.DisplayAlert("Confirmacion", messageSuccess, "Ok");
                 LoadConfiguration();
@@ -216,67 +233,46 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
         }
 
-        private async void UpdateUbicationDistributor(string ubication)
+        private async void UpdateUbicationDistributor(string[] ubication)
         {
             await CrossCloudFirestore.Current
                          .Instance
                          .Collection("Ubication")
                          .Document(Settings.IdUser)
-                         .UpdateAsync(new Model.Ubication { 
-                            ubication = ubication,
-                            status = Settings.StatusDelivery
+                         .UpdateAsync(new Model.Ubication
+                         {
+                             ubication = ubication[0] + "," + ubication[1],
+                             status = Settings.StatusDelivery
                          });
+        }
+
+        private async Task ShowOrderDetail(ContentOrderDelivery orderParam)
+        {
+            Settings.CoordinatesUser = orderParam.ClientLocation;
+            Settings.Coordinates = orderParam.Sucursal;
+            activeOrdersView = new ActiveOrdersDetailDeliveryView(orderParam);
+
+            await Application.Current.MainPage.Navigation.PushModalAsync(activeOrdersView);
+        }
+
+
+        private async Task Logout()
+        {
+            bool confirmation = await Application.Current.MainPage.DisplayAlert("Aviso", "¿Está seguro de salir de la aplicación?", "Si", "No");
+            if (confirmation)
+            {
+                TrackingLocation.StopService();
+                Settings.ClearAllData();
+                Application.Current.MainPage = new LoginView();
+            }
         }
 
         #endregion
 
         #region COMANDOS
         public ICommand ProceedWithDeliveryCommand => new Command<ContentOrderDelivery>(async (param) => await ProceedWithDelivery(param));
-        public ICommand CerrarCommand => new Command(async () => await Cerrar());
-        public ICommand ComenzarEntregaCommand => new Command(async () => await ComenzarEntrega());
-        public ICommand TerminarEntregaCommand => new Command(TerminarEntrega);
-
-        private void TerminarEntrega()
-        {
-            StopService();
-        }
-
-        private async Task ComenzarEntrega()
-        {
-            var permission = await Permissions.RequestAsync<Permissions.LocationAlways>();
-            if (permission != PermissionStatus.Granted)
-            {
-                return;
-            }
-
-            StartService();
-        }
-
-        private void StartService()
-        {
-            var startServiceMessage = new StartServiceMessage();
-            MessagingCenter.Send(startServiceMessage, "ServiceStarted");
-            Preferences.Set("LocationServiceRunning", true);
-            LocationLabel = "Se ha iniciado el servicio de ubicación!";
-        }
-
-        private void StopService()
-        {
-            var stopServiceMessage = new StopServiceMessage();
-            MessagingCenter.Send(stopServiceMessage, "ServiceStopped");
-            Preferences.Set("LocationServiceRunning", false);
-        }
-
-
-        private async Task Cerrar()
-        {
-            var cis = new CartItemService();
-            cis.RemoveItemsFromCart();
-            Settings.ClearAllData();
-            Application.Current.MainPage = new LoginView();
-            //await Application.Current.MainPage.Navigation.PushModalAsync(new LoginView());
-        }
-
+        public ICommand OrderDetailCommand => new Command<ContentOrderDelivery>(async (param) => await ShowOrderDetail(param));
+        public ICommand LogoutCommand => new Command(async () => await Logout());
         #endregion
     }
 }

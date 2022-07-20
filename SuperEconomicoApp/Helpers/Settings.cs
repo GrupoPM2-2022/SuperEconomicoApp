@@ -57,6 +57,17 @@ namespace SuperEconomicoApp.Helpers
             get => AppSettings.GetValueOrDefault(nameof(TokenFirebase), string.Empty);
             set => AppSettings.AddOrUpdateValue(nameof(TokenFirebase), value);
         }
+        
+        public static string CoordinatesUser
+        {
+            get => AppSettings.GetValueOrDefault(nameof(CoordinatesUser), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(CoordinatesUser), value);
+        }
+        public static string CurrentPage
+        {
+            get => AppSettings.GetValueOrDefault(nameof(CurrentPage), string.Empty);
+            set => AppSettings.AddOrUpdateValue(nameof(CurrentPage), value);
+        }
 
         public static void ClearAllData()
         {

@@ -26,9 +26,10 @@ namespace SuperEconomicoApp
 					token.ThrowIfCancellationRequested();
 					try
 					{
-						//int seconds = Settings.StatusDelivery.Equals("ENTREGA") ? 28 : 50;
+						int seconds = Settings.StatusDelivery.Equals("ENTREGA") ? 50 : 58;
+						await Task.Delay(TimeSpan.FromSeconds(seconds));
 
-						var request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(5));
+						var request = new GeolocationRequest(GeolocationAccuracy.High);
 						var location = await Geolocation.GetLocationAsync(request);
 						if (location != null)
 						{

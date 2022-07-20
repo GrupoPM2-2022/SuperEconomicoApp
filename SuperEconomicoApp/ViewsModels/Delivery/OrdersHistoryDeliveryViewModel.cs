@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Model;
+﻿using SuperEconomicoApp.Helpers;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views.Delivery;
 using System;
@@ -29,8 +30,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         {
             ordersDelivery = new OrdersDelivery();
             orderService = new OrderService();
-
-            LoadConfiguration();
+            //LoadConfiguration();
         }
         #endregion
 
@@ -116,15 +116,10 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
                 NotExistOrders = false;
                 ExistOrders = true;
 
-                GetAllOrdersActiveByUser();
+                ListOrders = (List<ContentOrderDelivery>)ordersDelivery.orders;
             }
 
         }
-        private void GetAllOrdersActiveByUser()
-        {
-            ListOrders = (List<ContentOrderDelivery>)ordersDelivery.orders;
-        }
-
 
         private async Task ShowOrderDetail(ContentOrderDelivery order)
         {
