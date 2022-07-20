@@ -60,11 +60,11 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
                     });
                 });
 
-                if (Preferences.Get("LocationServiceRunning", false) == true)
-                {
-                    Console.WriteLine("ENTRANDO A LA EJECUCION EN CASO DE REINICIO DEL DISPOSITIVO");
-                    StartService();
-                }
+                //if (Preferences.Get("LocationServiceRunning", false) == true)
+                //{
+                //    Console.WriteLine("ENTRANDO A LA EJECUCION EN CASO DE REINICIO DEL DISPOSITIVO");
+                //    StartService();
+                //}
             }
         }
 
@@ -243,7 +243,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
         private async Task ComenzarEntrega()
         {
-            var permission = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            var permission = await Permissions.RequestAsync<Permissions.LocationAlways>();
             if (permission != PermissionStatus.Granted)
             {
                 return;

@@ -154,18 +154,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             map.MoveToRegion(MapSpan.FromCenterAndRadius(positionMap, Xamarin.Forms.GoogleMaps.Distance.FromMeters(800)));
         }
 
-        private void ApplyMapTheme()
-        {
-            var assambly = typeof(MainPage).GetTypeInfo().Assembly;
-            var stream = assambly.GetManifestResourceStream($"SuperEconomicoApp.MapResources.MapTheme.json");
-            string themeFile;
-            using (var reader = new System.IO.StreamReader(stream))
-            {
-                themeFile = reader.ReadToEnd();
-                map.MapStyle = MapStyle.FromJson(themeFile); //Leer hasta el final y aplicar el estilo
-            }
-        }
-
         public async Task ConfirmUbication()
         {
             if (string.IsNullOrEmpty(Description))

@@ -27,9 +27,8 @@ namespace SuperEconomicoApp
 					try
 					{
 						//int seconds = Settings.StatusDelivery.Equals("ENTREGA") ? 28 : 50;
-						await Task.Delay(TimeSpan.FromSeconds(50)); 
 
-						var request = new GeolocationRequest(GeolocationAccuracy.High);
+						var request = new GeolocationRequest(GeolocationAccuracy.High, TimeSpan.FromSeconds(5));
 						var location = await Geolocation.GetLocationAsync(request);
 						if (location != null)
 						{

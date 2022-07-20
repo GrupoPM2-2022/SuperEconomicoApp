@@ -15,7 +15,6 @@ namespace SuperEconomicoApp.Droid
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         Intent serviceIntent; // INTENCION PARA TRABAJAR EL SERVICIO EN SEGUNDO PLANO YA CONFIGURADO
-        private const int REQUEST_CODE = 5469;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,13 +29,6 @@ namespace SuperEconomicoApp.Droid
 
             serviceIntent = new Intent(this, typeof(AndroidLocationService));
             SetServiceMethods(); // INVOCAMOS NUESTRO SERVICIO PARA QUE LOS MESSAGES SE SUSCRIBAN A SU CENTRAL DE MESSAGES
-            
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.M && !Android.Provider.Settings.CanDrawOverlays(this))
-            {
-                var intent = new Intent(Android.Provider.Settings.ActionManageOverlayPermission);
-                intent.SetFlags(ActivityFlags.NewTask);
-                this.StartActivity(intent);
-            }
 
             LoadApplication(new App());
            
@@ -86,18 +78,5 @@ namespace SuperEconomicoApp.Droid
             return false;
         }
 
-        // ESTE METODO ES PARA LA CON DE PERMISOS CUANDO LA APP SE REINICIA
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            // SI LOS PERMISOS DE CODIGO COINCIDEN HACEMOS LA SUPERPOSICION DE LA APP
-            if (requestCode == REQUEST_CODE)
-            {
-                if (Android.Provider.Settings.CanDrawOverlays(this))
-                {
-
-                }
-            }
-            base.OnActivityResult(requestCode, resultCode, data);
-        }
     }
 }

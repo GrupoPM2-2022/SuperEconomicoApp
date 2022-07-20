@@ -99,8 +99,9 @@
   <ItemGroup>
     <Compile Include="AndroidLocationService.cs" />
     <Compile Include="AndroidNotificationManager.cs" />
-    <Compile Include="BootBroadcastReceiver.cs" />
+    <Compile Include="FileService.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="MyFirebaseMessagingService.cs" />
     <Compile Include="NotificationHelper.cs" />
     <Compile Include="Renderers\StandardEntryRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

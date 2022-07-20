@@ -63,10 +63,10 @@ namespace SuperEconomicoApp.Droid
                 .SetContentTitle(pTitle)
                 .SetContentText(pBody)
                 .SetAutoCancel(true)
-                .SetLargeIcon(BitmapFactory.DecodeResource(AndroidApp.Context.Resources, Resource.Drawable.abc_btn_check_material))
-                .SetSmallIcon(Resource.Drawable.abc_btn_check_material)
-                .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate);
-                //.SetPriority((int)NotificationPriority.Max);
+                .SetLargeIcon(BitmapFactory.DecodeResource(AndroidApp.Context.Resources, Resource.Drawable.icon_notification))
+                .SetSmallIcon(Resource.Drawable.icon_notification)
+                .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
+                .SetPriority((int)NotificationPriority.Max);
 
             var notification = builder.Build();
             manager.Notify(messageId, notification);

@@ -11,14 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MapResources\MapTheme.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="MapResources\MapTheme.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Plugin.CloudFirestore" Version="4.1.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="2.1.0" />

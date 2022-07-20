@@ -15,8 +15,18 @@ namespace SuperEconomicoApp.ViewsModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        #region Variables
         const string ER_EMAIL = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
         private string _Email;
+        private string _Password;
+        private bool _IsBusy;
+        private bool _Result;
+        private bool _Disable;
+        User user;
+        UserService userService;
+        #endregion
+
+        #region Objetos
         public string Email
         {
             set
@@ -30,7 +40,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private string _Password;
         public string Password
         {
             set
@@ -44,8 +53,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-
-        private bool _IsBusy;
         public bool IsBusy
         {
             set
@@ -59,7 +66,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private bool _Result;
         public bool Result
         {
             set
@@ -73,9 +79,6 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-
-
-        private bool _Disable;
         public bool Disable
         {
             set
@@ -89,10 +92,12 @@ namespace SuperEconomicoApp.ViewsModels
                 return _Disable;
             }
         }
+        #endregion
 
+        #region Comandos
         public Command LoginCommand { get; set; }
         public Command RegisterCommand { get; set; }
-        UserService userService;
+        #endregion
 
         public LoginViewModel()
         {
@@ -101,8 +106,10 @@ namespace SuperEconomicoApp.ViewsModels
 
             LoginCommand = new Command(async () => await LoginCommandAsync());
             RegisterCommand = new Command(async () => await RegisterCommandAsync());
+            user = new User();
         }
 
+        #region PROCESOS
         private async Task RegisterCommandAsync()
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new Views.AddUser());
@@ -110,6 +117,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async Task LoginCommandAsync()
         {
+
             if (IsBusy)
                 return;
             try
@@ -126,7 +134,6 @@ namespace SuperEconomicoApp.ViewsModels
                     return;
                 }
 
-                User user = new User();
                 user = await userService.GetUserByEmail(Email);
                 if (user == null)
                 {
@@ -136,12 +143,16 @@ namespace SuperEconomicoApp.ViewsModels
 
                 if (Email.Equals(user.email) && Password.Equals(user.password))
                 {
-                    //bool resp = await UpdateTokenFirebase(user);
-                    //if (!resp)
-                    //{
-                    //    await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
-                    //    return;
-                    //}
+                    var value = DependencyService.Get<Model.IFileService>().GetTextFile();
+                    if (!value.Equals(user.cod_firebase) || string.IsNullOrEmpty(user.cod_firebase))
+                    {
+                        bool resp = await UpdateTokenFirebase(user, value);
+                        if (!resp)
+                        {
+                            await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
+                            return;
+                        }
+                    }
 
                     if (user.typeuser.Equals("repartidor"))
                     {
@@ -174,9 +185,8 @@ namespace SuperEconomicoApp.ViewsModels
             }
         }
 
-        private async Task<bool> UpdateTokenFirebase(User user)
+        private async Task<bool> UpdateTokenFirebase(User user, string value)
         {
-            var value = Preferences.Get("TokenFirebase", "No existe");
             user.cod_firebase = value;
             bool response = await userService.UpdateUser(user);
             return response;
@@ -216,7 +226,6 @@ namespace SuperEconomicoApp.ViewsModels
                     await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
                     return false;
                 }
-
             }
             else
             {
@@ -228,7 +237,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return true;
             }
         }
-
+        #endregion
 
     }
 }

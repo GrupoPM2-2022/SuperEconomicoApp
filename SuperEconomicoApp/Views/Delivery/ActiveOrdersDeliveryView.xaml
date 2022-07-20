@@ -132,20 +132,15 @@
 
         <StackLayout>
 
-            <!--<Button Text="Comenzar Entrega"
+            <Button Text="Comenzar Entrega"
                     Command="{Binding ComenzarEntregaCommand}"/>
 
             <Button Text="Pedido Entregado" 
                     Command="{Binding TerminarEntregaCommand}"/>
-            <Label Text="{Binding LocationLabel}" />-->
+            <Label Text="{Binding LocationLabel}" />
 
-            <Button Text="Comenzar Entrega"
-                    Clicked="Button_Clicked"/>
-
-            <Button Text="Pedido Entregado" 
-                    x:Name="BtnOrderDelivered"
-                    Clicked="BtnOrderDelivered_Clicked"/>
-            <Label x:Name="locationLabel" />
+            <Button Text="Cerrar"
+                    Command="{Binding CerrarCommand}"/>
 
         </StackLayout>
 
