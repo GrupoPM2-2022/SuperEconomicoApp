@@ -41,7 +41,7 @@
                                FontSize="17"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
-                               TextColor="Purple"/>
+                               TextColor="#5E0F8D"/>
 
                             <StackLayout Orientation="Horizontal"
                                      Margin="10,0,0,8">
@@ -49,7 +49,7 @@
                                     Source="{Binding ImageDelivery,  Converter={StaticResource ByteToImage}}"
                                     HeightRequest="45"
                                     HorizontalOptions="Center"
-                                    BorderColor="Purple"  
+                                    BorderColor="#5E0F8D"  
                                     BorderThickness="1"/>
 
                                 <StackLayout>
@@ -78,7 +78,7 @@
                                FontSize="17"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
-                               TextColor="Purple"/>
+                               TextColor="#5E0F8D"/>
 
                             <Grid RowDefinitions ="*,*">
                                 <Grid Grid.Row="0" ColumnDefinitions="100,*" Margin="0,2,0,0" HorizontalOptions="Center">
@@ -203,7 +203,7 @@
                                                  HorizontalOptions="EndAndExpand">
                                             <Frame CornerRadius="50"
                                                Padding="18,8"
-                                               BackgroundColor="Purple">
+                                               BackgroundColor="#5E0F8D">
                                                 <Label Text="{Binding quantity}"
                                                VerticalOptions="Center"
                                                FontSize="18"

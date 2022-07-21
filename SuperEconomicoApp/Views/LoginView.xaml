@@ -101,7 +101,7 @@
                 </Frame>
                 <Button 
                     Text="Login" 
-                    BackgroundColor="Purple" 
+                    BackgroundColor="#5E0F8D" 
                     TextColor="White" 
                     WidthRequest="400" 
                     HeightRequest="60"
@@ -127,7 +127,7 @@
 
                 <Button 
                     Text="REGISTRAR" 
-                    BackgroundColor="Purple" 
+                    BackgroundColor="#5E0F8D" 
                     TextColor="White" 
                     WidthRequest="400" 
                     HeightRequest="60"

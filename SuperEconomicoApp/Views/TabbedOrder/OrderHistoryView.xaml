@@ -78,7 +78,7 @@
                                         VerticalOptions="Center"
                                         HorizontalOptions="CenterAndExpand"
                                         CornerRadius="8"
-                                        BackgroundColor="#8873b6" 
+                                        BackgroundColor="#5E0F8D" 
                                         TextColor="White" 
                                         TextTransform="None"
                                         FontAttributes="Bold"

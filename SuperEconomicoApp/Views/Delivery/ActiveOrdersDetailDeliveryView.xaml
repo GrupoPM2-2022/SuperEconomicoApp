@@ -32,7 +32,7 @@
                                FontSize="17"
                                FontAttributes="Bold"
                                HorizontalTextAlignment="Center"
-                               TextColor="Purple"/>
+                               TextColor="#5E0F8D"/>
 
                             <StackLayout Orientation="Horizontal"
                                      Margin="10,0,0,8">
@@ -40,7 +40,7 @@
                                     Source="{Binding ImageDelivery,  Converter={StaticResource ByteToImage}}"
                                     HeightRequest="60"
                                     HorizontalOptions="Center"
-                                    BorderColor="Purple"  
+                                    BorderColor="#5E0F8D"  
                                     BorderThickness="1"/>
 
                                 <StackLayout Margin="5,0,0,0">
@@ -57,7 +57,7 @@
 
                             <Button 
                                 Text="LLAMAR AL CLIENTE" 
-                                BackgroundColor="#76448A" 
+                                BackgroundColor="#5E0F8D" 
                                 TextColor="White" 
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
@@ -129,7 +129,7 @@
                                                  HorizontalOptions="EndAndExpand">
                                             <Frame CornerRadius="50"
                                                Padding="18,8"
-                                               BackgroundColor="Purple">
+                                               BackgroundColor="#5E0F8D">
                                                 <Label Text="{Binding quantity}"
                                                VerticalOptions="Center"
                                                FontSize="18"

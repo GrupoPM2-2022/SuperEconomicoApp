@@ -55,7 +55,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return _UserName;
             }
         }
-        
+
         public int QuantityProducts
         {
             set
@@ -69,7 +69,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return _QuantityProducts;
             }
         }
-        
+
         public string CategorySelected
         {
             set
@@ -97,7 +97,7 @@ namespace SuperEconomicoApp.ViewsModels
                 return _IsVisibleProducts;
             }
         }
-        
+
         public bool IsVisibleEmptyMessage
         {
             set
@@ -244,20 +244,31 @@ namespace SuperEconomicoApp.ViewsModels
         }
 
         #region Procesos
-        public void GetQuantityProductsCart() {
+        public void GetQuantityProductsCart()
+        {
             UserCartItemsCount = new CartItemService().GetUserCartCount();
             if (UserCartItemsCount.Equals(0))
             {
                 IsVisibleCounter = false;
                 return;
-            } 
+            }
             IsVisibleCounter = true;
         }
 
         private void SearchProduct()
         {
             var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
-            collectionView.ItemsSource = searchResult;
+            if (searchResult.Count() == 0)
+            {
+                IsVisibleEmptyMessage = false;
+                IsVisibleProducts = true;
+            }
+            else {
+                IsVisibleEmptyMessage = false;
+                IsVisibleProducts = true;
+                QuantityProducts = searchResult.Count();
+                collectionView.ItemsSource = searchResult;
+            }
         }
 
         private void SelectCategory(Category category)
@@ -280,7 +291,8 @@ namespace SuperEconomicoApp.ViewsModels
                 {
                     IsVisibleEmptyMessage = true;
                     IsVisibleProducts = false;
-                } else
+                }
+                else
                 {
                     IsVisibleEmptyMessage = false;
                     IsVisibleProducts = true;
@@ -432,6 +444,11 @@ namespace SuperEconomicoApp.ViewsModels
 
 
         }
+
+        private async Task ClosePage()
+        {
+            await Application.Current.MainPage.Navigation.PopModalAsync();
+        }
         #endregion
 
         #region Comandos
@@ -441,6 +458,8 @@ namespace SuperEconomicoApp.ViewsModels
         public ICommand SelectDeparmentCommand => new Command<Department>((param) => SelectDeparment(param));
         public ICommand ConfirmDepartmentCommand => new Command(ConfirmDepartment);
         public ICommand ViewDirectionCommand => new Command(async () => await ViewDirection());
+        public ICommand CloseCommand => new Command(async () => await ClosePage());
+
         public ICommand SearchProductCommand => new Command(SearchProduct);
         public ICommand SelectCategoryCommand => new Command<Category>((Category) => SelectCategory(Category));
 

@@ -33,7 +33,7 @@
         <control:CircleImage  Grid.Row="0" 
                 Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1"
+                HorizontalOptions="Center" BorderColor="#5E0F8D"  BorderThickness="1"
                 IsVisible="{Binding IsImageBD}"
                 HeightRequest="90"
                 WidthRequest="90">
@@ -135,7 +135,7 @@
         <Button 
             Grid.Row="13"
             Text="ACTUALIZAR PERFIL" 
-            BackgroundColor="#8873b6" 
+            BackgroundColor="#5E0F8D" 
             TextColor="White" 
             WidthRequest="300" 
             HeightRequest="50"

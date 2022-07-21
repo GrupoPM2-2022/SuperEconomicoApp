@@ -4,14 +4,14 @@
             xmlns:local="clr-namespace:SuperEconomicoApp.Views.TabbedOrder"
             x:Class="SuperEconomicoApp.Views.TabbedOrdersView"
             Visual="Material"
-            BackgroundColor="Purple">
+            BackgroundColor="#5E0F8D">
 
     <TabbedPage.Resources>
         <Style TargetType="TabbedPage"                
            ApplyToDerivedTypes="True">
 
             <Setter Property="BarBackgroundColor"
-                Value="Purple"/>
+                Value="#5E0F8D"/>
             <Setter Property="BarTextColor"
                 Value="White"/>
         </Style>

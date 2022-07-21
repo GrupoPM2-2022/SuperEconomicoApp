@@ -31,7 +31,7 @@
                 x:Name="img"  
                 Source="person2"
                 VerticalOptions="Center"
-                HorizontalOptions="Center" BorderColor="Purple"  BorderThickness="1" HeightRequest="200">
+                HorizontalOptions="Center" BorderColor="#5E0F8D"  BorderThickness="1" HeightRequest="200">
             <Image.GestureRecognizers>
                 <TapGestureRecognizer Tapped="AddImg" NumberOfTapsRequired="1"/>
             </Image.GestureRecognizers>
@@ -148,7 +148,7 @@
             <Button 
             Grid.Row="17"
             Text="GUARDAR" 
-            BackgroundColor="#8873b6" 
+            BackgroundColor="#5E0F8D" 
             TextColor="White" 
             WidthRequest="300" 
             HeightRequest="50"

@@ -19,7 +19,7 @@
             <Setter Property="HeightRequest"
                     Value="4" />
             <Setter Property="BackgroundColor"
-                    Value="Purple" />
+                    Value="#5E0F8D" />
             <Setter Property="Opacity"
                     Value="0.1" />
         </Style>
@@ -28,14 +28,15 @@
 
     <StackLayout>
         <Grid VerticalOptions="Center">
-            <BoxView BackgroundColor="Purple"
-                 CornerRadius="0,0,15,15"/>
+            <BoxView BackgroundColor="#5E0F8D"
+                 CornerRadius="0,0,18,18"/>
             <StackLayout >
                 <Label Text="Carrito de compras"
+                       FontSize="18"
                        TextColor="White"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
-                       Margin="0,15,0,20"/>
+                       Margin="0,15,0,35"/>
             </StackLayout>
         </Grid>
 
@@ -97,7 +98,7 @@
                                                  HorizontalOptions="EndAndExpand">
                                     <Frame CornerRadius="50"
                                                Padding="17,8"
-                                               BackgroundColor="Purple">
+                                               BackgroundColor="#5E0F8D">
                                         <Label Text="{Binding Quantity}"
                                                VerticalOptions="Center"
                                                FontSize="18"
@@ -128,23 +129,21 @@
         </Grid>
 
 
-        <StackLayout Padding="10"
+        <StackLayout Padding="10,15"
                      VerticalOptions="EndAndExpand"
                      IsVisible="{Binding IsEmptyShoppingCar}">
-            <Button Text="Realizar Pedido" 
+            <Button Text="Realizar Pedido"
+                    HeightRequest="43"
                     TextColor="White"
-                    WidthRequest="250"
-                    BackgroundColor="#76448A" 
+                    BackgroundColor="#5E0F8D" 
                     Command="{Binding PlaceOrdersCommand}"
-                    HorizontalOptions="Center" 
-                    CornerRadius="12"/>
+                    CornerRadius="15"/>
             <Button Text="Cancelar Pedido" 
                     TextColor="White"
-                    WidthRequest="250"
+                    HeightRequest="43"
                     Command="{Binding DeleteAllProductCommand}"
-                    HorizontalOptions="Center" 
-                    CornerRadius="12"
-                    BackgroundColor="#76448A" />
+                    CornerRadius="15"
+                    BackgroundColor="#5E0F8D" />
 
         </StackLayout>
 

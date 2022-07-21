@@ -56,14 +56,14 @@
             Margin="20,10,20,0"
             />
 
-            <Button Margin="20,10,20,0" CornerRadius="8" Text="Cambiar contraseña" BackgroundColor="#8873b6" TextColor="White" x:Name="changePass" Clicked="changePass_Clicked"/>
+            <Button Margin="20,10,20,0" CornerRadius="8" Text="Cambiar contraseña" BackgroundColor="#5E0F8D" TextColor="White" x:Name="changePass" Clicked="changePass_Clicked"/>
 
-            
+
 
         </StackLayout>
-        
-        
-        
+
+
+
     </ContentPage.Content>
 </ContentPage>
     

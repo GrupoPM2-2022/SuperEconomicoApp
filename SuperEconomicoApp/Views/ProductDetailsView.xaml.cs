@@ -15,22 +15,6 @@ namespace SuperEconomicoApp.Views
             InitializeComponent();
             pvm = new ProductDetailsViewModel(productoItem);
             this.BindingContext = pvm;
-            clickIcono();
-        }
-
-      
-
-       //evento click en label
-        void clickIcono()
-        {
-             lblIcono.GestureRecognizers.Add(new TapGestureRecognizer()
-            {
-                 Command = new Command(async () =>
-                {
-                    await Navigation.PopModalAsync();
-                })
-
-            });
         }
     }
 }

@@ -9,7 +9,7 @@
             <Setter Property="HeightRequest"
                     Value="4" />
             <Setter Property="BackgroundColor"
-                    Value="Purple" />
+                    Value="#5E0F8D" />
             <Setter Property="Opacity"
                     Value="0.1" />
         </Style>
@@ -17,7 +17,7 @@
     
     <StackLayout>
         <Grid VerticalOptions="Center">
-            <BoxView BackgroundColor="Purple"
+            <BoxView BackgroundColor="#5E0F8D"
                  CornerRadius="0,0,12,12"/>
             <StackLayout >
                 <Label Text="Ayudanos con un comentario"
@@ -87,7 +87,7 @@
 
             <Button 
                 Text="GUARDAR COMENTARIO" 
-                BackgroundColor="#8873b6" 
+                BackgroundColor="#5E0F8D" 
                 TextColor="White" 
                 WidthRequest="300" 
                 HeightRequest="50"

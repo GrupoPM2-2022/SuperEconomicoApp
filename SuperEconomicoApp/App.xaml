@@ -11,7 +11,7 @@
         <Color x:Key="LightInnerBackgroundColor">#f1f1f3</Color>
         <Color x:Key="LightCounterBackgroundColor">LightGray</Color>
         <Color x:Key="LightPrimaryTextColor">Black</Color>
-        <Color x:Key="LightSecondaryTextColor">Gray</Color>
+        <Color x:Key="LightSecondaryTextColor">#797D7F</Color>
         <Color x:Key="LightContextTextColor">Black</Color>
         <Color x:Key="LightFooterTextColor">#E84275</Color>
         <Color x:Key="LightDefaultButtonColor">#455A64</Color>
@@ -19,7 +19,7 @@
         <Color x:Key="LightUpDownButtonColor">#0AE596</Color>
 
         <Color x:Key="LightTitleTextColor">#E84275</Color>
-        <Color x:Key="LightContentTextColor">#0AE596</Color>
+        <Color x:Key="LightContentTextColor">#5E0F8D</Color>
 
         <!-- Dark colors -->
         <Color x:Key="DarkPageBackgroundColor">#212540</Color>

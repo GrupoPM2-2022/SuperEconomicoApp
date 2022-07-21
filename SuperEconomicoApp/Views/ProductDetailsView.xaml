@@ -12,194 +12,93 @@
             <Converter:Base64ToImageSource x:Key="Base64ToImage" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="200"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
 
-            <Image Grid.Row="0" 
-                   Source="{Binding SelectedProductoItem.Image,  Converter={StaticResource Base64ToImage}}"
-                   Aspect="AspectFit"
-                   VerticalOptions="Start"
-                   BackgroundColor="White"
-                    HeightRequest="300"
+    <StackLayout BackgroundColor="White">
+        <Image Source="flecha_izquierda.png"
+               HeightRequest="20"
+               Margin="20"
+               HorizontalOptions="Start">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding CloseCommand}"/>
+            </Image.GestureRecognizers>
+        </Image>
+        <StackLayout Padding="36,15"
+                     Spacing="20">
+            <Image Source="{Binding SelectedProductoItem.Image,  Converter={StaticResource Base64ToImage}}"
+                   Margin="0,0,0,30"
+                   HeightRequest="220"/>
+            <Label Text="{Binding SelectedProductoItem.Name}"
+                   FontAttributes="Bold"
+                   FontSize="36"
+                   TextColor="Black"
                    />
+            <StackLayout Orientation="Horizontal">
+                <Grid HorizontalOptions="StartAndExpand"
+                      VerticalOptions="Center">
+                    <Frame Padding="0"
+                           BackgroundColor="#EEEEFF"
+                           CornerRadius="20"
+                           HasShadow="False"
+                           HeightRequest="40"
+                           VerticalOptions="Center"
+                           WidthRequest="100">
+                    </Frame>
+                    
+                    <Label Text="-"
+                           FontSize="36"
+                           HorizontalOptions="Start"
+                           TextColor="Black"
+                           Margin="16,-2,0,6">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DecrementOrderCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-            <Label Grid.Row="1" 
-                   Text="{Binding SelectedProductoItem.Name}"
-                   
-                   FontAttributes="Bold" 
-                   FontSize="35" 
-                   FontFamily="{StaticResource CabinSketch-Bold}"
-                   TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"
-                   Margin="25,-50,0,0"/>
+                    <Label Text="{Binding TotalQuantity}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           />
+                    <Label Text="+"
+                           FontSize="21"
+                           HorizontalOptions="End"
+                           TextColor="Black"
+                           Margin="0,-4,16,0"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IncrementOrderCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-            <Label Text="&#xf060;" FontFamily="{StaticResource FontAwesome6Free-Solid-900}" FontSize="30" Grid.Row="0" HorizontalOptions="Start"
-                   VerticalOptions="Start" Margin="10,30" BackgroundColor="Transparent" x:Name="lblIcono"/>
-
-            <StackLayout Grid.Row="2" 
-                         Spacing="10" 
-                         Padding="10"
-                         VerticalOptions="Start">
-
-                <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                    <Label Text="Producto Nombre: " 
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
-
-                    <Label Text="{Binding SelectedProductoItem.Name}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                    <Label Text="Descripcion: "
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
-                    <Label Text="{Binding SelectedProductoItem.Description}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
-                </StackLayout>
-
-                <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                    <Label Text="Puntuacion: " 
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
-
-                    <Label Text="{Binding SelectedProductoItem.Rating}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                    <Label Text="Precio: " 
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
-
-                    <Label Text="{Binding SelectedProductoItem.Price}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
-                </StackLayout>
+                </Grid>
+                <Label Text="{Binding SelectedProductoItem.Price, StringFormat='L. {0:F0}'}"
+                       FontAttributes="Bold"
+                       FontSize="36"
+                       TextColor="Black"/>
             </StackLayout>
+            <Label Text="Descripción del producto"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="Black"
+                   Margin="0,14,0,0"/>
+            <Label Text="{Binding SelectedProductoItem.Description}"
+                   TextColor="Gray"
+                   FontSize="15"
+                   Margin="0,-10,0,0"/>
 
-            <Grid Grid.Row="3" HorizontalOptions="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        </StackLayout>
+        <StackLayout Margin="10,10,10,15"
+                     VerticalOptions="EndAndExpand">
+            <Button Text="Agregar al carrito"
+                    BackgroundColor="#5E0F8D"
+                    TextColor="White"
+                    CornerRadius="40"
+                    HeightRequest="50"
+                    WidthRequest="230"
+                    Command="{Binding AddToCartCommand}"/>
+        </StackLayout>
+    </StackLayout>
 
-                <Button Text="-" FontSize="25" 
-                        BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor},
-                               Dark={StaticResource DarkUpDownButtonColor}}"
-                        Grid.Column="0"
-                        HorizontalOptions="End"
-                        Command="{Binding DecrementOrderCommand}"
-                        />
-
-                <Entry Text="{Binding TotalQuantity}"
-                       HorizontalTextAlignment="Center" 
-                       FontSize="20"
-                       Grid.Column="1"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightCounterBackgroundColor},
-                               Dark={StaticResource DarkCounterBackgroundColor}}" />
-
-                <Button Text="+" FontSize="25" 
-                         BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor},
-                               Dark={StaticResource DarkUpDownButtonColor}}" 
-                        Grid.Column="2"
-                        HorizontalOptions="End"
-                        Command="{Binding IncrementOrderCommand}"/>
-            </Grid>
-
-            <StackLayout Orientation="Horizontal"
-                         Grid.Row="4">
-
-                <pancake:PancakeView CornerRadius="60,0,0,60"
-                                     HorizontalOptions="CenterAndExpand">
-                    <StackLayout>
-                        <Button Text="Add al Carrito" 
-                            BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
-                               Dark={StaticResource DarkDefaultButtonColor}}"
-                            TextColor="White"
-                            WidthRequest="200" 
-                            HorizontalOptions="Center"
-                            Command="{Binding AddToCartCommand}"
-                            HeightRequest="50"
-                                
-                            />
-                    </StackLayout>
-                  
-                </pancake:PancakeView>
-
-                <pancake:PancakeView CornerRadius="0,60,60,0"
-                                     HorizontalOptions="CenterAndExpand"
-                                >
-                    <StackLayout>
-                        <Button Text="Ver Carrito" 
-                            BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
-                               Dark={StaticResource DarkDefaultButtonColor}}"
-                            WidthRequest="200" 
-                            HorizontalOptions="Center"
-                            Command="{Binding ViewCartCommand}"
-                            HeightRequest="50"
-                                   TextColor="White"
-                            
-                             />
-                    </StackLayout>
-
-                 
-                </pancake:PancakeView>
-
-            </StackLayout>
-
-            <pancake:PancakeView Grid.Row="6" 
-                                 CornerRadius="60,60,0,0">
-
-                <StackLayout>
-                    <Button Text="Inicio" 
-                        TextColor="White"
-                        BackgroundColor="{AppThemeBinding Light={StaticResource LightInfoButtonColor},
-                               Dark={StaticResource DarkInfoButtonColor}}"
-                        HeightRequest="50"
-                        Command="{Binding HomeCommand}"
-                       
-                         />
-                </StackLayout>
-            
-            </pancake:PancakeView>
-
-
-        </Grid>
-    </ContentPage.Content>
 </ContentPage>

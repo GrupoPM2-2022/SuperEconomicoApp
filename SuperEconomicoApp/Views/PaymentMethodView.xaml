@@ -14,15 +14,31 @@
             <Setter Property="Opacity"
                     Value="0.1" />
         </Style>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview2">
+            <Setter Property="HeightRequest"
+                    Value="4" />
+            <Setter Property="BackgroundColor"
+                    Value="#5E0F8D" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
     </ContentPage.Resources>
 
-    <Grid Padding="15">
-        <StackLayout>
-            <Label Text="METODOS DE PAGO"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   Margin="0,0,0,8"/>
-            <BoxView Style="{StaticResource SeparadorBoxview}" />
+    <StackLayout>
+        <Grid VerticalOptions="Center">
+            <BoxView BackgroundColor="#5E0F8D"
+                 CornerRadius="0,0,18,18"/>
+            <StackLayout >
+                <Label Text="Métodos de pago"
+                       TextColor="White"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,15,0,19"/>
+            </StackLayout>
+        </Grid>
+        <StackLayout Padding="15">
             <Label Text="Selecionado"
                    FontSize="16"
                    Margin="0,0,0,7"
@@ -77,11 +93,12 @@
         </StackLayout>
 
         <Button Text="{Binding TextButton}" 
-                VerticalOptions="End" 
+                VerticalOptions="EndAndExpand" 
                 CornerRadius="10"
-                BackgroundColor="#76448A" 
+                BackgroundColor="#5E0F8D" 
                 TextColor="White"
+                Margin="10"
                 Command="{Binding ConfirmOrderCommand}"/>
 
-    </Grid>
+    </StackLayout>
 </ContentPage>

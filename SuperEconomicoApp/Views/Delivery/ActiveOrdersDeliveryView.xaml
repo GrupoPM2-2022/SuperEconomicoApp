@@ -55,7 +55,7 @@
                                 <Label Text="ENTREGANDO MOMENTÁNEAMENTE"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="#76448A"
+                                       TextColor="#5E0F8D"
                                        IsVisible="{Binding IsVisibleStatus}"/>
                                 <StackLayout Orientation="Horizontal">
                                     <Image Source="order_delivery_active.png"
@@ -64,7 +64,7 @@
                                     <StackLayout Margin="15,0,0,0">
                                         <Label FontSize="18"
                                                FontAttributes="Bold"
-                                               TextColor="#76448A">
+                                               TextColor="#5E0F8D">
                                             <Label.Text>
                                                 <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="ClientName" />
@@ -101,7 +101,7 @@
                                         VerticalOptions="Center"
                                         HorizontalOptions="CenterAndExpand"
                                         CornerRadius="8"
-                                        BackgroundColor="#76448A" 
+                                        BackgroundColor="#5E0F8D" 
                                         TextColor="White" 
                                         TextTransform="None"
                                         FontAttributes="Bold"
