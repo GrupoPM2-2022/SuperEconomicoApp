@@ -3,8 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.Reusable.IncreaseQuantity"
              xmlns:Converter="clr-namespace:SuperEconomicoApp.Converters"
-             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             Visual="Material"
              NavigationPage.HasNavigationBar="False"
              xmlns:pop="http://rotorgames.com">
 
@@ -19,128 +17,103 @@
         <ResourceDictionary>
             <Converter:Base64ToImageSource x:Key="Base64ToImage" />
         </ResourceDictionary>
+        <Style TargetType="BoxView"
+                   x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                        Value="2"/>
+            <Setter Property="BackgroundColor"
+                        Value="#979797" />
+            <Setter Property="Opacity"
+                        Value="0.1" />
+        </Style>
     </pop:PopupPage.Resources>
 
-    <Grid Margin="0,200,0,0" 
-          BackgroundColor="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid Margin="0,200,0,0">
+        <BoxView BackgroundColor="White"
+                 CornerRadius="15, 15, 0, 0 "/>
 
-        <Image Grid.Row="0" 
-                   Source="{Binding SelectedProductoItem.ImageProduct,  Converter={StaticResource Base64ToImage}}"
-                   Aspect="AspectFit"
-                   VerticalOptions="Start"
-                   BackgroundColor="Gold"/>
-
-        <Label Grid.Row="1" 
-                   Text="{Binding SelectedProductoItem.ProductName}"
-                   TextColor="White"
-                   FontAttributes="Bold" 
-                   FontSize="35" 
-                   Margin="25,-85,0,0"/>
-
-        <StackLayout Grid.Row="2" 
-                         Spacing="10" 
-                         Padding="10"
-                         VerticalOptions="Start">
-
-            <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-            </StackLayout>
-
-            <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                <Label Text="Producto Nombre: " 
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
-
+        <StackLayout Padding="16">
+            <StackLayout Padding="36,15"
+                     Spacing="20">
+                <Image Source="{Binding SelectedProductoItem.ImageProduct,  Converter={StaticResource Base64ToImage}}"
+                   Margin="0,0,0,15"
+                   HeightRequest="150"/>
                 <Label Text="{Binding SelectedProductoItem.ProductName}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
-            </StackLayout>
+                   FontAttributes="Bold"
+                   FontSize="32"
+                   TextColor="Black"
+                   />
+                <StackLayout Orientation="Horizontal">
+                    <Grid HorizontalOptions="StartAndExpand"
+                      VerticalOptions="Center">
+                        <Frame Padding="0"
+                           BackgroundColor="#EEEEFF"
+                           CornerRadius="20"
+                           HasShadow="False"
+                           HeightRequest="40"
+                           VerticalOptions="Center"
+                           WidthRequest="100">
+                        </Frame>
 
-            <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
+                        <Label Text="-"
+                           FontSize="32"
+                           HorizontalOptions="Start"
+                           TextColor="Black"
+                           Margin="16,-2,0,6">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DecrementOrderCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
 
-                <Label Text="Descripcion: "
-                           FontSize="Subtitle"
-                            TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                               Dark={StaticResource DarkPrimaryTextColor}}"/>
+                        <Label Text="{Binding TotalQuantity}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           />
+                        <Label Text="+"
+                           FontSize="21"
+                           HorizontalOptions="End"
+                           TextColor="Black"
+                           Margin="0,-4,16,0"
+                           VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding IncrementOrderCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                    </Grid>
+                    <Label Text="{Binding SelectedProductoItem.Price, StringFormat='L. {0:F0}'}"
+                       FontAttributes="Bold"
+                       FontSize="36"
+                       TextColor="Black"/>
+                </StackLayout>
+                <Label Text="Descripción del producto"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                   TextColor="Black"
+                   Margin="0,14,0,0"/>
                 <Label Text="{Binding SelectedProductoItem.Description}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
+                   TextColor="Gray"
+                   FontSize="15"
+                   Margin="0,-10,0,0"/>
+
             </StackLayout>
-
-            <StackLayout Orientation="Horizontal" 
-                             Spacing="10">
-
-                <Label Text="Precio: " 
-                           FontSize="Subtitle"
-                           TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
-                           Dark={StaticResource DarkPrimaryTextColor}}"/>
-
-                <Label Text="{Binding SelectedProductoItem.Price}"
-                           FontSize="Subtitle" 
-                           TextColor="{AppThemeBinding Light={StaticResource LightSecondaryTextColor},
-                               Dark={StaticResource DarkSecondaryTextColor}}"/>
+            <StackLayout Margin="10,10,10,15"
+                     VerticalOptions="EndAndExpand">
+                <Button Text="CONFIRMAR"
+                    BackgroundColor="#5E0F8D"
+                    TextColor="White"
+                    CornerRadius="40"
+                    HeightRequest="50"
+                    WidthRequest="230"
+                    Command="{Binding AddToCartCommand}"/>
             </StackLayout>
         </StackLayout>
 
-        <Grid Grid.Row="3" HorizontalOptions="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Text="-" FontSize="25" 
-                        BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor}, Dark={StaticResource DarkUpDownButtonColor}}"
-                        Grid.Column="0"
-                        HorizontalOptions="End"
-                        Command="{Binding DecrementOrderCommand}"
-                        />
-
-            <Entry Text="{Binding TotalQuantity}"
-                       HorizontalTextAlignment="Center" 
-                       FontSize="20"
-                       Grid.Column="1"
-                       BackgroundColor="{AppThemeBinding Light={StaticResource LightCounterBackgroundColor},
-                               Dark={StaticResource DarkCounterBackgroundColor}}" />
-
-            <Button Text="+" FontSize="25" 
-                         BackgroundColor="{AppThemeBinding Light={StaticResource LightUpDownButtonColor},
-                               Dark={StaticResource DarkUpDownButtonColor}}" 
-                        Grid.Column="2"
-                        HorizontalOptions="End"
-                        Command="{Binding IncrementOrderCommand}"/>
-        </Grid>
-
-        <StackLayout Orientation="Vertical"
-                         Grid.Row="4">
-
-            <pancake:PancakeView CornerRadius="0,20,60,0"
-                                     HorizontalOptions="Center">
-                <Button Text="Confirmar" 
-                            BackgroundColor="{AppThemeBinding Light={StaticResource LightDefaultButtonColor},
-                               Dark={StaticResource DarkDefaultButtonColor}}"
-                            WidthRequest="200" 
-                            VerticalOptions="Center"
-                            Command="{Binding AddToCartCommand}"
-                            HeightRequest="50"/>
-            </pancake:PancakeView>
-
-        </StackLayout>
+        
 
     </Grid>
-    
+
 </pop:PopupPage>

@@ -8,8 +8,7 @@
              xmlns:behaviors="clr-namespace:SuperEconomicoApp.Behavior"
              x:Class="SuperEconomicoApp.Views.LoginView"
              Visual="Material"
-             BackgroundImageSource="rojo_negro"
-             >
+             BackgroundImageSource="rojo_negro">
     <ContentPage.Resources>
         <ResourceDictionary>
             <converter:TextToBoolCOnverter x:Key="dataConverter"/>

@@ -25,98 +25,50 @@
     <ContentPage.Content>
 
         <StackLayout>
-            <StackLayout>
-                <Frame 
-                    HasShadow="False" 
-                    BackgroundColor="White" 
-                    HeightRequest="170"
-                    CornerRadius="20" 
-                    Margin="0,10"
-                    Padding="20,20,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="*" />
-
-                        </Grid.RowDefinitions>
-                        <pancake:PancakeView 
-                                Grid.Column="0" 
-                                Grid.Row="0" Grid.RowSpan="3"
-                                CornerRadius="12"
-                                Margin="0,0,10,0">
-                            <StackLayout>
-                                <controls:CircleImage Source="person2" IsVisible="{Binding IsImageDefault}"/>
-                                <controls:CircleImage 
+            <StackLayout Padding="15">
+                <StackLayout Orientation="Horizontal">
+                    <pancake:PancakeView CornerRadius="12"
+                                         Margin="0,0,0,0">
+                        <StackLayout>
+                            <controls:CircleImage Source="person2" IsVisible="{Binding IsImageDefault}"/>
+                            <controls:CircleImage 
                                 Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
                                 IsVisible="{Binding IsImageBD}"
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
-                                HeightRequest="100"
-                                />
-                            </StackLayout>
+                                HeightRequest="80"/>
+                        </StackLayout>
 
-                        </pancake:PancakeView>
-
-                        <Label  Grid.Row="0"
-                            Grid.Column="1" 
-                            Text="Nombre: " 
-                            FontSize="Subtitle"
-                            TextColor="#8873b6"
-                            FontAttributes="Bold"/>
-
-                        <Label 
-                            Grid.Row="0"
-                            Grid.Column="2"
-                            Grid.ColumnSpan="2"
-                            Text="{Binding Name}"
-                            FontSize="15"
-                            TextColor="#a4a7b6"/>
-
-                        <Label  Grid.Row="1"
-                            Grid.Column="1" 
-                            Text="Apellido: " 
-                            FontSize="Subtitle"
-                            TextColor="#8873b6"
-                            FontAttributes="Bold"/>
-
-                        <Label 
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Grid.ColumnSpan="2"
-                            Text="{Binding Lastname}" 
-                            FontSize="15"
-                            TextColor="#a4a7b6"/>
-
-                        <Label  Grid.Row="2"
-                            Grid.Column="1" 
-                            Text="Correo: "
-                            FontAttributes="Bold"
-                            FontSize="Subtitle"
-                            TextColor="#8873b6"/>
-
-                        <Label 
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Grid.ColumnSpan="2"
+                    </pancake:PancakeView>
+                    <StackLayout VerticalOptions="Center">
+                        <Label FontSize="16"
+                                TextColor="#8873b6"
+                                FontAttributes="Italic">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="Name" />
+                                    <Binding Path="Lastname" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        <Label
+                            Margin="0,-5,0,0"
                             Text="{Binding Email}" 
-                            FontSize="15"
-                            TextColor="#a4a7b6"/>
+                            FontSize="16"
+                            TextColor="#8873b6"
+                            FontAttributes="Italic"/>
+                        <Label Margin="0,-5,0,0"
+                                Text="{Binding Phone}" 
+                                FontSize="16"
+                                TextColor="#8873b6"
+                                FontAttributes="Italic"/>
+                    </StackLayout>
+                </StackLayout>
 
-                    </Grid>
-                </Frame>
                 <Button Text="ACTUALIZAR PERFIL" 
                     BackgroundColor="#5E0F8D" 
                     TextColor="White" 
-                    Margin="70,-35,70,0"
+                    Margin="10"
                     x:Name="btnEdit"
                     Command="{Binding EditUserCommand}"
                     CornerRadius="10"
@@ -190,7 +142,7 @@
                                     <Image Source="flecha.png"
                                        HeightRequest="20"
                                        HorizontalOptions="EndAndExpand"/>
-                                    
+
                                 </StackLayout>
                                 <Frame.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectDeparmentCommand, Source={x:Reference listDepartmentCollection}}"
@@ -201,7 +153,7 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-               
+
 
                 <Button Text="ACTUALIZAR DEPARTAMENTO" 
                     BackgroundColor="#5E0F8D" 
@@ -214,8 +166,8 @@
                     HeightRequest="40"
                     IsEnabled="{Binding IsEnabledUpdate}"/>
             </StackLayout>
-            
-            
+
+
             <StackLayout VerticalOptions="EndAndExpand">
                 <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent" Margin="30,10,30,10">
                     <StackLayout Orientation="Horizontal" >
@@ -244,7 +196,7 @@
 
                     </StackLayout>
                 </Frame>
-                
+
             </StackLayout>
         </StackLayout>
 

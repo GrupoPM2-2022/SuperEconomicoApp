@@ -24,6 +24,7 @@ namespace SuperEconomicoApp.ViewsModels
         private string _Lastname;
         private string _DepartamentPreview;
         private string _Email;
+        private string _Phone;
         private byte[] _Image;
         private bool _ImageDefault;
         private bool _ImageBD;
@@ -57,6 +58,16 @@ namespace SuperEconomicoApp.ViewsModels
             set
             {
                 _DepartamentPreview = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public string Phone
+        {
+            get { return _Phone; }
+            set
+            {
+                _Phone = value;
                 OnPropertyChanged();
             }
         }
@@ -147,6 +158,7 @@ namespace SuperEconomicoApp.ViewsModels
                 Name = user.name;
                 Lastname = user.lastname;
                 Email = user.email;
+                Phone = "+504 "+user.phone;
 
                 if (user.image == null || user.image.Length == 0)
                 {

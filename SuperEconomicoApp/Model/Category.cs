@@ -15,7 +15,7 @@ namespace SuperEconomicoApp.Model
         public string Name { get; set; }
 
         [JsonProperty("image")]
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }

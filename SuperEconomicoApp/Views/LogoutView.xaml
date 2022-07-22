@@ -1,70 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             xmlns:helpers="clr-namespace:DemoApp.Helpers"
              xmlns:vm="clr-namespace:SuperEconomicoApp.ViewsModels"
-             x:Class="SuperEconomicoApp.Views.LogoutView"
-             BackgroundColor="#394BA7"
-             Visual="Material">
+             x:Class="SuperEconomicoApp.Views.LogoutView">
 
     <ContentPage.BindingContext>
         <vm:LogoutViewModel/>
     </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="100"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <ImageButton 
-                Source="{FontImage FontFamily=FontAwesome,
-                Glyph={x:Static helpers:IconFont.ArrowLeft}, 
-                Size=30,Color=White}"
-                Grid.Row="0" 
-                HorizontalOptions="Start" 
-                Aspect="AspectFit" 
-                VerticalOptions="Start" 
-                Margin="10,30" 
-                Clicked="ImageButton_Clicked"/>
 
-            <Label 
-                Text="El Economico" 
-                FontSize="40" 
-                TextColor="WhiteSmoke"
-                FontFamily="CabinSketch"
-                HorizontalOptions="Center" 
-                VerticalOptions="Start"/>
+    <ContentPage.Resources>
+        <Style TargetType="BoxView"
+               x:Key="SeparadorBoxview">
+            <Setter Property="HeightRequest"
+                    Value="4" />
+            <Setter Property="BackgroundColor"
+                    Value="#5E0F8D" />
+            <Setter Property="Opacity"
+                    Value="0.1" />
+        </Style>
+    </ContentPage.Resources>
 
-            <Label 
-                x:Name="LabelName" 
-                FontSize="Subtitle" 
-                Margin="20,0" 
-                TextColor="WhiteSmoke"
-                HorizontalOptions="Center" 
-                VerticalOptions="End"/>
-
-            <pancake:PancakeView BackgroundColor="WhiteSmoke" CornerRadius="60,60,0,0"
-                                 Grid.Row="1">
-                <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                    <StackLayout IsVisible="{Binding IsCartExists}">
-                        <Label Text="El carrito contiene productos" TextColor="Black"></Label>
-                        <Label Text="{Binding UserCartItemsCount, StringFormat='Su carrito contiene {0} productos'}" TextColor="Black"/>
-                    </StackLayout>
-                    <StackLayout>
-                        <Label Text="¿Desea cerrar sesión?"/>
-                        <StackLayout Orientation="Horizontal" Spacing="10">
-                            <Button Text="Sí, cerrar sesión" HorizontalOptions="Center"
-                                    BackgroundColor="Red" CornerRadius="20"
-                                    Command="{Binding LogoutCommand}"/>
-                            <Button Text="No, ir al carrito" HorizontalOptions="Center"
-                                    BackgroundColor="LightGreen" CornerRadius="20"
-                                    Command="{Binding GotoCartCommand}"/>
-                        </StackLayout>
-                    </StackLayout>
-                </StackLayout>
-            </pancake:PancakeView>
-
+    <StackLayout>
+        <Grid VerticalOptions="Center">
+            <BoxView BackgroundColor="#5E0F8D"
+                 CornerRadius="0,0,12,12"/>
+            <StackLayout >
+                <Label Text="Cerrar Sesión"
+                       FontSize="18"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,13,0,18"/>
+            </StackLayout>
         </Grid>
-    </ContentPage.Content>
+
+        <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+            <StackLayout IsVisible="{Binding IsCartExists}">
+                <Label Text="Tienes productos en tu carrito de compras" 
+                           FontAttributes="Bold"
+                           HorizontalTextAlignment="Center"
+                           FontSize="20"
+                           TextColor="Black"/>
+                <Label Text="{Binding UserCartItemsCount, StringFormat='Su carrito contiene {0} productos'}" 
+                           TextColor="#5E0F8D"
+                           FontAttributes="Italic"
+                           HorizontalTextAlignment="Center"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             Margin="0,20,0,0">
+
+                <Button Text="Cerrar sesión" 
+                            HorizontalOptions="Center"
+                            BackgroundColor="#5E0F8D" 
+                            CornerRadius="15"
+                            Command="{Binding LogoutCommand}"
+                            TextColor="White"
+                            WidthRequest="180"/>
+                <Button Text="Ir al carrito" 
+                            HorizontalOptions="Center"
+                            BackgroundColor="#5E0F8D" 
+                            CornerRadius="15"
+                            TextColor="White"
+                            WidthRequest="180"
+                            Command="{Binding GotoCartCommand}"/>
+
+            </StackLayout>
+        </StackLayout>
+
+    </StackLayout>
+
 </ContentPage>

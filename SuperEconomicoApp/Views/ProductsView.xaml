@@ -111,15 +111,13 @@
                                        WidthRequest="100"
                                        HasShadow="False">
                                         <StackLayout>
-                                            <sombras:Shadows CornerRadius="50"
-                                                     Shades="{sombras:SingleShade   Offset='0,12' ,Opacity=0.8,Color=#8873b6,BlurRadius=10}">
-                                                <Image Source="{Binding Image,  Converter={StaticResource ByteToImage}}"
+                                            <Image Source="{Binding Image,  Converter={StaticResource Base64ToImage}}"
                                                 HeightRequest="60" />
-                                            </sombras:Shadows>
+
                                             <Label Text="{Binding Name}" 
                                                    HorizontalTextAlignment="Center"
                                                    FontAttributes="Bold"
-                                                   TextColor="Gray"
+                                                   TextColor="#1C2833"
                                                    FontSize="14"/>
                                         </StackLayout>
                                     </Frame>
@@ -246,19 +244,21 @@
 
             <StackLayout Orientation="Horizontal"
                     HeightRequest="28"
-                    Margin="30,10,30,10"
-                    Spacing="50"
+                    Margin="25,7,25,10"
+                    Spacing="48"
                     Grid.Row="5"
                     VerticalOptions="EndAndExpand"
                     BackgroundColor="Transparent">
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=#5E0F8D}">
-                    <Image Source="homePurple.png" HeightRequest="28"/>
+                    <Image Source="homePurple.png" 
+                           HeightRequest="32"
+                           WidthRequest="32"/>
                 </sombras:Shadows>
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=#5E0F8D}"
                              HorizontalOptions="CenterAndExpand">
-                    <Image Source="gpsPurple.png" HeightRequest="28">
+                    <Image Source="gpsPurple.png" HeightRequest="32" WidthRequest="32">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ViewDirectionCommand}"/>
                         </Image.GestureRecognizers>
@@ -269,7 +269,7 @@
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=#5E0F8D}"
                              HorizontalOptions="CenterAndExpand">
 
-                    <Image Source="comprasPurple.png" HeightRequest="28">
+                    <Image Source="comprasPurple.png" HeightRequest="32" WidthRequest="32">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ViewCartCommand}"/>
                         </Image.GestureRecognizers>
@@ -279,7 +279,7 @@
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=#5E0F8D}"
                              HorizontalOptions="CenterAndExpand">
-                    <Image Source="listaPurple.png" HeightRequest="28">
+                    <Image Source="listaPurple.png" HeightRequest="32" WidthRequest="32">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding OrdersHistoryCommand}"/>
                         </Image.GestureRecognizers>
@@ -290,7 +290,7 @@
 
                 <sombras:Shadows CornerRadius="10"
                              Shades="{sombras:SingleShade Offset='0,0' ,Opacity=0.6,Color=#5E0F8D}">
-                    <Image Source="userPurple.png" >
+                    <Image Source="userPurple.png" HeightRequest="32">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding EditUserCommand}"/>
                         </Image.GestureRecognizers>

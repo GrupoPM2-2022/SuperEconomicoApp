@@ -29,7 +29,7 @@
                  CornerRadius="15,15,0,0" />
         <StackLayout Padding="16">
             <StackLayout Orientation="Horizontal">
-                <Label Text="Selecciona Tu Departamento"
+                <Label Text="Selecciona tu Departamento"
                        FontSize="17"
                        FontAttributes="Bold"
                        VerticalTextAlignment="Center"
@@ -38,6 +38,7 @@
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
                         CornerRadius="10"
+                        BackgroundColor="#5E0F8D"
                         Command="{Binding ConfirmDepartmentCommand}"/>
             </StackLayout>
             <Label Text="Elige uno de los departamentos disponibles para mostrarte el supermercado"/>
