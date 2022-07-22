@@ -29,7 +29,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         DirectionService directionService;
         Direction directionReference;
 
-        private bool _IsEnabledButton = false;
         private string _TextButton;
 
 
@@ -81,15 +80,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
                 OnPropertyChanged();
             }
         }
-        public bool IsEnabledButton
-        {
-            get { return _IsEnabledButton; }
-            set
-            {
-                _IsEnabledButton = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         #region PROCESOS
@@ -112,7 +102,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             if (kilometers > Constants.VALID_KILOMETERS)
             {
                 await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual, trabajaremos en eso pronto", "Ok");
-                IsEnabledButton = false;
             }
             else
             {
@@ -121,7 +110,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
                     pinUser.Position = position;
                 }
                 Description = googleDistanceMatrix.destination_addresses[0];
-                IsEnabledButton = true;
             }
         }
 

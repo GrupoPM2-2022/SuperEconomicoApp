@@ -25,7 +25,7 @@ namespace SuperEconomicoApp
 
             if (Settings.ExistUser)
             {
-                if (Settings.TypeUser.Equals("repartidor"))
+                if (Settings.TypeUser.ToLower().Equals("repartidor"))
                 {
                     MainPage = new TabbedDeliveryView();
                 }

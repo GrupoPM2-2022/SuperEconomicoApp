@@ -51,7 +51,7 @@ namespace SuperEconomicoApp.ViewsModels
 
             IsCartExists = (UserCartItemsCount > 0) ? true : false;
 
-            LogoutCommand = new Command(async () => await LogoutUserAsync());
+            LogoutCommand = new Command(LogoutUserAsync);
             GotoCartCommand = new Command(async () => await GotoCartAsync());
         }
 
@@ -60,7 +60,7 @@ namespace SuperEconomicoApp.ViewsModels
             await Application.Current.MainPage.Navigation.PushModalAsync(new CartView());
         }
 
-        private async Task LogoutUserAsync()
+        private void LogoutUserAsync()
         {
             var cis = new CartItemService();
             cis.RemoveItemsFromCart();

@@ -52,6 +52,7 @@ namespace SuperEconomicoApp.ViewsModels
         public Command AddToCartCommand { get; set; }
         public Command ViewCartCommand { get; set; }
         public Command HomeCommand { get; set; }
+        public Command CloseCommand { get; set; }
 
         public ProductDetailsViewModel(ProductoItem productoItem)
         {
@@ -63,6 +64,12 @@ namespace SuperEconomicoApp.ViewsModels
             AddToCartCommand = new Command(() => AddToCart());
             ViewCartCommand = new Command(async () => await ViewCartAsync());
             HomeCommand = new Command(async () => await GotoHomeAsync());
+            CloseCommand = new Command(async () => await ClosePage());
+        }
+
+        private async Task ClosePage()
+        {
+            await Application.Current.MainPage.Navigation.PopModalAsync();
         }
 
         private async Task GotoHomeAsync()
@@ -101,7 +108,7 @@ namespace SuperEconomicoApp.ViewsModels
                 }
                 cn.Commit();
                 cn.Close();
-                Application.Current.MainPage.DisplayAlert("Cart", "Producto agregado al carrito", "OK");
+                Application.Current.MainPage.Navigation.PopModalAsync();
             }
             catch (Exception ex)
             {

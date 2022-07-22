@@ -29,9 +29,9 @@
                                     <Label Text="{Binding Status}"
                                        FontSize="13"
                                        FontAttributes="Bold"
-                                       TextColor="#CB4335"/>
+                                       TextColor="#E12236"/>
 
-                                    <Label Text="{Binding OrderDate}"
+                                    <Label Text="{Binding DeliveryDate}"
                                                FontSize="14"
                                                FontAttributes="Italic"
                                                HorizontalOptions="EndAndExpand"/>

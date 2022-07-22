@@ -257,6 +257,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private void SearchProduct()
         {
+            CategorySelected = "General";
             var searchResult = ListItemsProducts.Where(item => item.Name.ToUpper().Contains(SearchText.ToUpper()));
             if (searchResult.Count() == 0)
             {

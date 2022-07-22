@@ -21,7 +21,6 @@ namespace SuperEconomicoApp.ViewsModels
         private string _Password;
         private bool _IsBusy;
         private bool _Result;
-        private bool _Disable;
         User user;
         UserService userService;
         #endregion
@@ -78,20 +77,6 @@ namespace SuperEconomicoApp.ViewsModels
                 return this._Result;
             }
         }
-
-        public bool Disable
-        {
-            set
-            {
-                _Disable = value;
-                OnPropertyChanged();
-            }
-
-            get
-            {
-                return _Disable;
-            }
-        }
         #endregion
 
         #region Comandos
@@ -101,7 +86,6 @@ namespace SuperEconomicoApp.ViewsModels
 
         public LoginViewModel()
         {
-            Disable = false;
             userService = new UserService();
 
             LoginCommand = new Command(async () => await LoginCommandAsync());
@@ -126,6 +110,16 @@ namespace SuperEconomicoApp.ViewsModels
                 if (!Util.CheckConnectionInternet())
                 {
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "No tienes conexion a internet.", "OK");
+                    return;
+                }
+                if (string.IsNullOrEmpty(Email))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes ingresar el correo electrónico", "OK");
+                    return;
+                }
+                if (string.IsNullOrEmpty(Password))
+                {
+                    await Application.Current.MainPage.DisplayAlert("Advertencia", "Debes ingresar la contraseña.", "OK");
                     return;
                 }
                 if (!Regex.IsMatch(Email, ER_EMAIL))
@@ -154,7 +148,7 @@ namespace SuperEconomicoApp.ViewsModels
                         }
                     }
 
-                    if (user.typeuser.Equals("repartidor"))
+                    if (user.typeuser.ToLower().Equals("repartidor"))
                     {
                         bool response = await CheckExistUserFirebase(user);
                         if (response)

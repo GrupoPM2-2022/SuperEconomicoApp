@@ -63,7 +63,8 @@
                             CornerRadius="15"
                             TextColor="White"
                             WidthRequest="180"
-                            Command="{Binding GotoCartCommand}"/>
+                            Command="{Binding GotoCartCommand}"
+                            IsVisible="{Binding IsCartExists}"/>
 
             </StackLayout>
         </StackLayout>

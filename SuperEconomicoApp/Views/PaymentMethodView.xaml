@@ -15,21 +15,12 @@
             <Setter Property="Opacity"
                     Value="0.1" />
         </Style>
-        <Style TargetType="BoxView"
-               x:Key="SeparadorBoxview2">
-            <Setter Property="HeightRequest"
-                    Value="4" />
-            <Setter Property="BackgroundColor"
-                    Value="#5E0F8D" />
-            <Setter Property="Opacity"
-                    Value="0.1" />
-        </Style>
     </ContentPage.Resources>
 
     <StackLayout>
         <Grid VerticalOptions="Center">
             <BoxView BackgroundColor="#5E0F8D"
-                 CornerRadius="0,0,18,18"/>
+                 CornerRadius="0,0,13,13"/>
             <StackLayout >
                 <Label Text="Métodos de pago"
                        TextColor="White"
@@ -72,7 +63,8 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="White"
-                           CornerRadius="15">
+                           CornerRadius="15"
+                               HasShadow="False">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="{Binding Image}" 
                                HeightRequest="60"/>

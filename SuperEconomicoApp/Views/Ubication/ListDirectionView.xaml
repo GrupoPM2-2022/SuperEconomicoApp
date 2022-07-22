@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.Ubication.ListDirectionView"
-             x:Name="CurrentPage">
+             x:Name="CurrentPage"
+             BackgroundColor="#F2F3F6">
 
     <ContentPage.Resources>
         <Style TargetType="BoxView"
@@ -15,61 +16,93 @@
                     Value="0.1" />
         </Style>
     </ContentPage.Resources>
-    
-    <StackLayout Padding="15">
-        <StackLayout Orientation="Horizontal">
-            <Label Text="Mis Direcciones"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       VerticalTextAlignment="Center"
-                       HorizontalOptions="StartAndExpand" />
-            <Button Text="+"
+
+    <StackLayout>
+        <Grid VerticalOptions="Center">
+            <BoxView BackgroundColor="#5E0F8D"
+                 CornerRadius="0,0,13,13"/>
+            <StackLayout Orientation="Horizontal"
+                         Padding="0,10,0,0">
+                <Button Text="Direcciones"
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    TextColor="White"
+                    HorizontalOptions="Start"
+                    BackgroundColor="Transparent"
+                    TextTransform="None"
+                    Margin="15,0,0,0"/>
+                <Button Text="+"
                     FontSize="30"
                     FontAttributes="Bold"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
+                    TextColor="White"
+                    HorizontalOptions="EndAndExpand"
                     BackgroundColor="Transparent"
-                    Command="{Binding AddDirectionCommand}"/>
-        </StackLayout>
-        <BoxView Style="{StaticResource SeparadorBoxview}" />
-        <CollectionView ItemsSource="{Binding ListDirection}"
+                    Command="{Binding AddDirectionCommand}"
+                    Margin="0,-7,0,0"/>
+            </StackLayout>
+        </Grid>
+        
+        <StackLayout Padding="5,7,5,8">
+            <Label Text="Deslice hacia la derecha para eliminar o actualizar"
+                   TextColor="#5E0F8D"
+                   Margin="0,0,0,5"
+                   HorizontalTextAlignment="Center"/>
+            <CollectionView ItemsSource="{Binding ListDirection}"
+                            VerticalOptions="CenterAndExpand"
                             x:Name="ListDirectionsCollection">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="10"
-                                       Orientation="Vertical"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal" Padding="10">
-                            <Label Text="{Binding description}"
-                                       FontSize="16"
+
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                 Span="1"
+                                 VerticalItemSpacing="2"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <SwipeView>
+                            <SwipeView.RightItems>
+
+                                <SwipeItems>
+                                    <SwipeItem Text="Edit"
+                                           IconImageSource="editar.png"
+                                           BackgroundColor="#8873b6"
+                                           Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.EditDirectionCommand}"
+                                           CommandParameter="{Binding .}"/>
+
+                                    <SwipeItem Text="Delete"
+                                           IconImageSource="eliminar_general.png"
+                                           BackgroundColor="#CF9D9D"
+                                           Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteDirectionCommand}"
+                                           CommandParameter="{Binding .}"/>
+
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+
+                            <Frame BackgroundColor="White"
+                               CornerRadius="4"
+                               HasShadow="False">
+                                <StackLayout Padding="3,5,0,5"
+                                             Orientation="Horizontal">
+                                    <Image Source="current_ubication" 
+                                           HeightRequest="24"
+                                           WidthRequest="24"/>
+                                    <Label Text="{Binding description}"
+                                       FontSize="15"
+                                       Margin="5,0,0,0"
                                        HorizontalOptions="StartAndExpand" 
                                        VerticalOptions="Center"/>
-                            <Image Source="editar.png"
-                                       HeightRequest="35"
-                                       WidthRequest="35"
-                                       VerticalOptions="Center">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.EditDirectionCommand}"
-                                                          CommandParameter="{Binding .}"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="eliminar_producto_carrito.png"
-                                       HeightRequest="35"
-                                       WidthRequest="35"
-                                       VerticalOptions="Center">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference CurrentPage}, Path=BindingContext.DeleteDirectionCommand}"
-                                                          CommandParameter="{Binding .}"/>
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource SeparadorBoxview}" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                                </StackLayout>
+                            </Frame>
+
+                        </SwipeView>
+                        
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+
     </StackLayout>
 
 </ContentPage>

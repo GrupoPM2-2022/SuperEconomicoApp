@@ -22,10 +22,21 @@
         </Style>
     </ContentPage.Resources>
 
-    <ContentPage.Content>
 
         <StackLayout>
-            <StackLayout Padding="15">
+        <Grid VerticalOptions="Center">
+            <BoxView BackgroundColor="#5E0F8D"
+                 CornerRadius="0,0,13,13"/>
+            <StackLayout >
+                <Label Text="Perfil"
+                       FontSize="18"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       Margin="0,15,0,18"/>
+            </StackLayout>
+        </Grid>
+        <StackLayout Padding="15" HorizontalOptions="Center">
                 <StackLayout Orientation="Horizontal">
                     <pancake:PancakeView CornerRadius="12"
                                          Margin="0,0,0,0">
@@ -40,36 +51,30 @@
                         </StackLayout>
 
                     </pancake:PancakeView>
-                    <StackLayout VerticalOptions="Center">
-                        <Label FontSize="16"
-                                TextColor="#8873b6"
-                                FontAttributes="Italic">
-                            <Label.Text>
-                                <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Name" />
-                                    <Binding Path="Lastname" />
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
+                    <StackLayout VerticalOptions="Center"
+                                 Margin="10,0,0,0">
+                        <Label FontSize="28"
+                                TextColor="#39205E"
+                                Text="{Binding Name, StringFormat='¡Hola! {0:F0}'}"/>
                         <Label
-                            Margin="0,-5,0,0"
+                            Margin="0,-3,0,0"
                             Text="{Binding Email}" 
-                            FontSize="16"
-                            TextColor="#8873b6"
-                            FontAttributes="Italic"/>
-                        <Label Margin="0,-5,0,0"
+                            FontSize="12"
+                            TextColor="#8971BB"
+                            FontAttributes="Bold"/>
+                        <Label Margin="0,-3,0,0"
                                 Text="{Binding Phone}" 
-                                FontSize="16"
-                                TextColor="#8873b6"
-                                FontAttributes="Italic"/>
+                                FontSize="14"
+                                TextColor="#422E5D"
+                                FontAttributes="Bold"/>
                     </StackLayout>
                 </StackLayout>
 
                 <Button Text="ACTUALIZAR PERFIL" 
                     BackgroundColor="#5E0F8D" 
                     TextColor="White" 
-                    Margin="10"
-                    x:Name="btnEdit"
+                    Margin="10,25,10,0"
+                    VerticalOptions="EndAndExpand"
                     Command="{Binding EditUserCommand}"
                     CornerRadius="10"
                     WidthRequest="200" 
@@ -77,7 +82,7 @@
             </StackLayout>
 
 
-            <StackLayout Padding="20">
+            <StackLayout Padding="20,0,20,20">
                 <BoxView Style="{StaticResource SeparadorBoxview}" />
                 <Label Text="SELECCIONA EL DEPARTAMENTO"
                        Margin="0,5"
@@ -162,43 +167,46 @@
                     Command="{Binding UpdateDepartmentCommand}"
                     CornerRadius="10"
                     HorizontalOptions="Center"
-                    WidthRequest="285"
+                     WidthRequest="285" 
                     HeightRequest="40"
                     IsEnabled="{Binding IsEnabledUpdate}"/>
             </StackLayout>
 
 
-            <StackLayout VerticalOptions="EndAndExpand">
-                <Frame CornerRadius="20"  Padding="3" BorderColor="Transparent" Margin="30,10,30,10">
-                    <StackLayout Orientation="Horizontal" >
-                        <Image Source="salida1" 
+            <StackLayout Orientation="Horizontal" 
+                         VerticalOptions="EndAndExpand"
+                         Padding="15">
+                <Image Source="salida1" 
                                HorizontalOptions="Start" 
                                VerticalOptions="Center"
                                Aspect="AspectFit"
-                               HeightRequest="20" />
-
-                        <Button 
-                            Text="Cerrar Sesion" 
-                            BackgroundColor="Transparent"
-                            FontSize="Small"
-                            x:Name="btnExit"
-                            CornerRadius="20"
-                            Padding="0"
-                            HorizontalOptions="Center"/>
-                        <Image Source="flecha" 
+                               HeightRequest="20" >
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <Button Text="Cerrar Sesion" 
+                        BackgroundColor="Transparent"
+                        FontSize="Small"
+                        x:Name="btnExit"
+                        CornerRadius="20"
+                        Padding="10,0,0,0"
+                        HorizontalOptions="Center"
+                         Command="{Binding LogoutCommand}"/>
+                <Image Source="flecha" 
                                HorizontalOptions="EndAndExpand" 
                                VerticalOptions="Center"
                                Aspect="AspectFit"
-                               HeightRequest="20"/>
-                        <StackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
-                        </StackLayout.GestureRecognizers>
-
-                    </StackLayout>
-                </Frame>
+                               HeightRequest="20">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                </StackLayout.GestureRecognizers>
 
             </StackLayout>
         </StackLayout>
 
-    </ContentPage.Content>
 </ContentPage>
