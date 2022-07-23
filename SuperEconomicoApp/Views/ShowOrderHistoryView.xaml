@@ -193,7 +193,7 @@
                                             <Label Text="{Binding name_product}"
                                                FontSize="17"
                                                FontAttributes="Bold"/>
-                                            <Label Text="{Binding price, StringFormat='L. {0:F0}'}"
+                                            <Label Text="{Binding price, StringFormat='L. {0:N2}'}"
                                                FontSize="16"
                                                FontAttributes="Italic"/>
                                         </StackLayout>

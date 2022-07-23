@@ -59,7 +59,7 @@
                                                FontAttributes="Bold"
                                                Margin="0,-7,0,0"/>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label Text="{Binding Total, StringFormat='L. {0:F0}'}"
+                                            <Label Text="{Binding Total, StringFormat='L {0:N2}'}"
                                                FontSize="16"
                                                FontAttributes="Italic"/>
                                             <Label Text="{Binding PaymentType, StringFormat='- {0:F0}'}"

@@ -181,7 +181,7 @@ namespace SuperEconomicoApp.ViewsModels
                     delivery_user_id = 0,
                     score = "0",
                     comment = "",
-                    total = Convert.ToDouble(TotalCost),
+                    total = TotalCost,
                     full_discount = 0.0,
                     client_location = "",
                     payment_type = "",
@@ -238,7 +238,7 @@ namespace SuperEconomicoApp.ViewsModels
                     });
                     TotalCost += (item.Price * item.Quantity);
                 }
-                TotalCost = Math.Round(TotalCost, 2);
+                TotalCost = TotalCost;
 
                 IsEmptyShoppingCar = true;
                 ExistDataShoppingCar = false;

@@ -84,7 +84,7 @@
                         </Label>
 
                     </Grid>
-                    <Label Text="{Binding SelectedProductoItem.Price, StringFormat='L. {0:F0}'}"
+                    <Label Text="{Binding SelectedProductoItem.Price, StringFormat='L. {0:N2}'}"
                        FontAttributes="Bold"
                        FontSize="36"
                        TextColor="Black"/>

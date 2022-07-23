@@ -33,7 +33,7 @@
                        TextColor="White"
                        FontAttributes="Bold"
                        HorizontalTextAlignment="Center"
-                       Margin="0,15,0,18"/>
+                       Margin="0,15,0,15"/>
             </StackLayout>
         </Grid>
         <StackLayout Padding="15" HorizontalOptions="Center">

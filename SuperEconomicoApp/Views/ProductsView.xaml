@@ -89,10 +89,9 @@
                                     <TapGestureRecognizer Command="{Binding ViewCartCommand}"/>
                                 </StackLayout.GestureRecognizers>
                             </StackLayout>
-                            
+
                         </StackLayout>
                     </Grid>
-                    <!---->
                 </StackLayout>
 
 
@@ -199,7 +198,7 @@
                                                           Dark={StaticResource DarkContentTextColor}}"
                                                VerticalTextAlignment="Center" />
 
-                                        <Label Grid.Row="2" Text="{Binding Price, StringFormat='L. {0:F0}'}" 
+                                        <Label Grid.Row="2" Text="{Binding Price, StringFormat='L. {0:N2}'}" 
                                                FontSize="13"
                                                TextColor="{AppThemeBinding Light={StaticResource LightPrimaryTextColor},
                                                           Dark={StaticResource DarkContentTextColor}}"

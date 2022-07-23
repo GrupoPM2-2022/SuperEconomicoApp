@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.AddUser"
              xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp"
-             xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin">
+             xmlns:control="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+             xmlns:local="clr-namespace:SuperEconomicoApp.Helpers">
     <ScrollView>
     <Grid Padding="20,10,20,10" 
           RowSpacing="10">
@@ -130,9 +131,25 @@
             Placeholder="Ingresa tu password"  
             x:Name="txtpassword"
             Keyboard="Text"
-            IsPassword="True"
+            IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}" 
             />
-        <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="15"/>
+
+            <ImageButton VerticalOptions="Center"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Source="ic_eye_hide"
+                        Grid.Row="14"
+                        Margin="0,0,8,0">
+                <ImageButton.Triggers>
+                    <EventTrigger Event="Clicked">
+                        <local:ShowPasswordTriggerAction ShowIcon="ic_eye"
+                                                                     HideIcon="ic_eye_hide"
+                                                                     x:Name="ShowPasswordActualTrigger"/>
+                    </EventTrigger>
+                </ImageButton.Triggers>
+            </ImageButton>
+
+            <Label Text="REPETIR PASSWORD" Margin="0,0,0,-7" TextColor="#8873b6" Grid.Row="15"/>
         <controls:StandardEntry
             Grid.Row="16"
             Padding="13"
@@ -144,9 +161,23 @@
             Placeholder="Repite tu password" 
             x:Name="txtpassword2"
             Keyboard="Text"
-            IsPassword="True"
-            Margin="0,0,0,10"
-            />
+            IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger2}, Path=HidePassword}" 
+            Margin="0,0,0,10"/>
+
+            <ImageButton VerticalOptions="Center"
+                        HeightRequest="20"
+                        HorizontalOptions="End"
+                        Source="ic_eye_hide"
+                        Grid.Row="16"
+                        Margin="0,0,8,0">
+                <ImageButton.Triggers>
+                    <EventTrigger Event="Clicked">
+                        <local:ShowPasswordTriggerAction ShowIcon="ic_eye"
+                                                                     HideIcon="ic_eye_hide"
+                                                                     x:Name="ShowPasswordActualTrigger2"/>
+                    </EventTrigger>
+                </ImageButton.Triggers>
+            </ImageButton>
 
             <Button 
             Grid.Row="17"

@@ -2,67 +2,96 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SuperEconomicoApp.Views.RecoveryPass"
+             xmlns:local="clr-namespace:SuperEconomicoApp.Helpers"
               xmlns:controls="clr-namespace:SuperEconomicoApp.Controls;assembly=SuperEconomicoApp">
     <ContentPage.Content>
-        <StackLayout VerticalOptions="Center" Margin="15,0,15,0">
+        <Grid VerticalOptions="Center" 
+              Margin="20,0,20,0"
+              RowDefinitions="*,*,*,*,*,*">
 
+            <Label Grid.Row="0" Text="Restablecer la contraseña" 
+                   FontSize="Title" 
+                   HorizontalTextAlignment="Center" 
+                   FontFamily="{StaticResource CabinSketch-Bold}"
+                   TextColor="#5E0F8D"/>
+            <Label Grid.Row="1" Text="Se acaba de enviar un codigo de verificación a " 
+                   FontSize="14" 
+                   HorizontalTextAlignment="Center" 
+                   x:Name="lblsendcodeMs"/>
 
-
-            <Label Text="Restablecer la contraseña" FontSize="Title" HorizontalTextAlignment="Center" FontFamily="{StaticResource CabinSketch-Bold}"/>
-            <Label Text="Se acaba de enviar un codigo de verificación a " FontSize="14" HorizontalTextAlignment="Center" x:Name="lblsendcodeMs"/>
-
-            <controls:StandardEntry
+           <controls:StandardEntry
             Grid.Row="2"
             Padding="13"
-             BackgroundColor="White"
+            BackgroundColor="White"
             BorderThickness="1"
             TextColor="Black"
             CornerRadius="20"
             Placeholder="Codigo de verificación"
             x:Name="codeVeri"
             Keyboard="Text"
-            FontSize="Default"
-            Margin="20,10,20,0"
-            />
-
+            FontSize="Default"/>
 
             <controls:StandardEntry
-            Grid.Row="2"
-            Padding="13"
-             BackgroundColor="White"
-            BorderThickness="1"
-            TextColor="Black"
-            CornerRadius="20"
-            Placeholder="Nueva contraseña"
-             x:Name="newPass"
-            Keyboard="Text"
-            FontSize="Default"
-                PlaceholderColor="Black" 
-            Margin="20,10,20,0"
-            />
+                Grid.Row="3"
+                Padding="13"
+                BackgroundColor="White"
+                BorderThickness="1"
+                TextColor="Black"
+                CornerRadius="20"
+                Placeholder="Nueva contraseña"
+                x:Name="newPass"
+                IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger}, Path=HidePassword}"
+                FontSize="Default"/>
+            <ImageButton VerticalOptions="Center"
+                        HeightRequest="20"
+                        Margin="0,0,8,0"
+                        HorizontalOptions="End"
+                        Source="ic_eye_hide"
+                        Grid.Row="3">
+                <ImageButton.Triggers>
+                    <EventTrigger Event="Clicked">
+                        <local:ShowPasswordTriggerAction ShowIcon="ic_eye"
+                                                                     HideIcon="ic_eye_hide"
+                                                                     x:Name="ShowPasswordActualTrigger"/>
+                    </EventTrigger>
+                </ImageButton.Triggers>
+            </ImageButton>
 
             <controls:StandardEntry
-            Grid.Row="2"
-            Padding="13"
-             BackgroundColor="White"
-            BorderThickness="1"
-            TextColor="Black"
-            CornerRadius="20"
-            Placeholder="Vuelva a escribir la contraseña" 
-             x:Name="repeatPass"
-            Keyboard="Text"
-            FontSize="Default"
-                PlaceholderColor="Black" 
-            Margin="20,10,20,0"
-            />
+                    Grid.Row="4"
+                    Padding="13"
+                    BackgroundColor="White"
+                    BorderThickness="1"
+                    TextColor="Black"
+                    CornerRadius="20"
+                    Placeholder="Vuelva a escribir la contraseña" 
+                    x:Name="repeatPass"
+                    FontSize="Default"
+                    IsPassword="{Binding Source={x:Reference ShowPasswordActualTrigger2}, Path=HidePassword}"/>
 
-            <Button Margin="20,10,20,0" CornerRadius="8" Text="Cambiar contraseña" BackgroundColor="#5E0F8D" TextColor="White" x:Name="changePass" Clicked="changePass_Clicked"/>
+            <ImageButton VerticalOptions="Center"
+                        HeightRequest="20"
+                        Margin="0,0,8,0"
+                        HorizontalOptions="End"
+                        Source="ic_eye_hide"
+                        Grid.Row="4">
+                <ImageButton.Triggers>
+                    <EventTrigger Event="Clicked">
+                        <local:ShowPasswordTriggerAction ShowIcon="ic_eye"
+                                                                     HideIcon="ic_eye_hide"
+                                                                     x:Name="ShowPasswordActualTrigger2"/>
+                    </EventTrigger>
+                </ImageButton.Triggers>
+            </ImageButton>
 
+            <Button Grid.Row="5" CornerRadius="8" 
+                    Text="Cambiar contraseña" 
+                    BackgroundColor="#5E0F8D" 
+                    TextColor="White" 
+                    x:Name="changePass" 
+                    Clicked="changePass_Clicked"/>
 
-
-        </StackLayout>
-
-
+        </Grid>
 
     </ContentPage.Content>
 </ContentPage>
