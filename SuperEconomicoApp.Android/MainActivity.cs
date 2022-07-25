@@ -8,6 +8,7 @@ using Android.Gms.Common;
 using Xamarin.Essentials;
 using Android.Content;
 using Xamarin.Forms;
+using Acr.UserDialogs;
 
 namespace SuperEconomicoApp.Droid
 {
@@ -26,6 +27,8 @@ namespace SuperEconomicoApp.Droid
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this);
+
+            UserDialogs.Init(this);
 
             serviceIntent = new Intent(this, typeof(AndroidLocationService));
             SetServiceMethods(); // INVOCAMOS NUESTRO SERVICIO PARA QUE LOS MESSAGES SE SUSCRIBAN A SU CENTRAL DE MESSAGES
