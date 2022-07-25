@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Model;
+﻿using Acr.UserDialogs;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views.Ubication;
 using System;
@@ -15,7 +16,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
     {
 
         #region VARIABLES
-        private string _Texto;
         private ObservableCollection<Direction> _ListDirection;
         #endregion
 
@@ -28,11 +28,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         #endregion
 
         #region OBJETOS
-        public string Texto
-        {
-            get { return _Texto; }
-            set { _Texto = value; }
-        }
 
         public ObservableCollection<Direction> ListDirection
         {
@@ -50,7 +45,9 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         #region PROCESOS
         public async void GetAllDirections()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             ListDirection = await DirectionServiceObject.GetDirectionByUser();
+            UserDialogs.Instance.HideLoading();
         }
 
         public async Task AddDirectionView()
@@ -63,22 +60,25 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
             bool confirmation = await Application.Current.MainPage.DisplayAlert("Advertencia", "¿Está seguro de eliminar " + direction.description + "?", "Si", "No");
             if (confirmation)
             {
+                UserDialogs.Instance.ShowLoading("Cargando");
                 try
                 {
                     bool response = await DirectionServiceObject.DeleteDirection(direction.id.ToString()); ;
                     if (response)
                     {
-                        await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección Eliminada Correctamente", "Ok");
                         ListDirection.Remove(direction);
+                        UserDialogs.Instance.HideLoading();
+                        await Application.Current.MainPage.DisplayAlert("Confirmación", "Dirección Eliminada Correctamente", "Ok");
                     }
                     else
                     {
+                        UserDialogs.Instance.HideLoading();
                         await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al eliminar la dirección", "Ok");
                     }
                 }
                 catch (Exception)
                 {
-
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Advertencia::catch", "Se produjo un error al eliminar la dirección", "Ok");
                 }
             }
@@ -88,11 +88,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new AddDirectionView("Editar", direction));
         }
-
-        public void ProcesoSimple()
-        {
-
-        }
         #endregion
 
         #region COMANDOS
@@ -100,7 +95,6 @@ namespace SuperEconomicoApp.ViewsModels.Ubication
         public ICommand AddDirectionCommand => new Command(async () => await AddDirectionView());
         public ICommand EditDirectionCommand => new Command<Direction>(async (Direction) => await EditDirection(Direction));
         public ICommand DeleteDirectionCommand => new Command<Direction>(async (Direction) => await DeleteDirection(Direction));
-        public ICommand ProcesoSimpleCommand => new Command(ProcesoSimple);
         #endregion
     }
 }

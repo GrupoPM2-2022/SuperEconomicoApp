@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Services;
+﻿using Acr.UserDialogs;
+using Rg.Plugins.Popup.Services;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
@@ -183,12 +184,15 @@ namespace SuperEconomicoApp.ViewsModels
         public async void CreateDirection()
         {
             //string[] coordinates = SelectedOrder.client_location.Split(',');
+            UserDialogs.Instance.ShowLoading("Cargando");
             bool isValid = await IsValidCoverageRange();
             if (!isValid)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual, trabajaremos en eso pronto", "Ok");
                 return;
             }
+            UserDialogs.Instance.HideLoading();
 
             //Direction direction = new Direction
             //{
@@ -239,6 +243,7 @@ namespace SuperEconomicoApp.ViewsModels
         {
             try
             {
+                
                 if (ListProductsOrdered.Count == 0)
                 {
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "No hay productos para procesar su orden.", "Ok");
@@ -256,21 +261,25 @@ namespace SuperEconomicoApp.ViewsModels
                     return;
                 }
 
+                UserDialogs.Instance.ShowLoading("Cargando");
                 FillOrderList();
                 var response = await new OrderService().CreateOrder(SelectedOrder);
                 if (response)
                 {
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Confirmacion", "Pedido realizado exitosamente.", "Ok");
                     //await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
                     Application.Current.MainPage = new ProductsView();
                 }
                 else
                 {
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al insertar su pedido.", "Ok");
                 }
             }
             catch (Exception ex)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "Ok");
             }
         }

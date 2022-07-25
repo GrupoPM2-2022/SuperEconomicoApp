@@ -1,4 +1,5 @@
-﻿using Plugin.CloudFirestore;
+﻿using Acr.UserDialogs;
+using Plugin.CloudFirestore;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
@@ -19,7 +20,6 @@ namespace SuperEconomicoApp.ViewsModels
         const string ER_EMAIL = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
         private string _Email;
         private string _Password;
-        private bool _IsBusy;
         private bool _Result;
         User user;
         UserService userService;
@@ -49,19 +49,6 @@ namespace SuperEconomicoApp.ViewsModels
             get
             {
                 return this._Password;
-            }
-        }
-
-        public bool IsBusy
-        {
-            set
-            {
-                this._IsBusy = value;
-                OnPropertyChanged();
-            }
-            get
-            {
-                return this._IsBusy;
             }
         }
 
@@ -102,11 +89,8 @@ namespace SuperEconomicoApp.ViewsModels
         private async Task LoginCommandAsync()
         {
 
-            if (IsBusy)
-                return;
             try
             {
-                IsBusy = true;
                 if (!Util.CheckConnectionInternet())
                 {
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "No tienes conexion a internet.", "OK");
@@ -127,10 +111,11 @@ namespace SuperEconomicoApp.ViewsModels
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "El correo electrónico no es valido.", "OK");
                     return;
                 }
-
+                UserDialogs.Instance.ShowLoading("Cargando");
                 user = await userService.GetUserByEmail(Email);
                 if (user == null)
                 {
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "Email y/o Password incorrectos.", "OK");
                     return;
                 }
@@ -143,6 +128,7 @@ namespace SuperEconomicoApp.ViewsModels
                         bool resp = await UpdateTokenFirebase(user, value);
                         if (!resp)
                         {
+                            UserDialogs.Instance.HideLoading();
                             await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error inesperado (Token)", "OK");
                             return;
                         }
@@ -152,33 +138,32 @@ namespace SuperEconomicoApp.ViewsModels
                     {
                         bool response = await CheckExistUserFirebase(user);
                         if (response)
+                        {
+                            UserDialogs.Instance.HideLoading();
                             Application.Current.MainPage = new TabbedDeliveryView();
-                            //await Application.Current.MainPage.Navigation.PushModalAsync(new TabbedDeliveryView());
+                        }
                     }
                     else
                     {
                         Settings.UserName = user.name + " " + user.lastname;
                         Settings.IdUser = user.id.ToString();
                         Settings.TypeUser = user.typeuser;
-                        Application.Current.MainPage = new ProductsView();
-                        //await Application.Current.MainPage.Navigation.PushModalAsync(new ProductsView());
 
+                        UserDialogs.Instance.HideLoading();
+                        Application.Current.MainPage = new ProductsView();
                     }
 
                 }
                 else
                 {
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Advertencia", "Email y/o Password incorrectos.", "OK");
                 }
-
             }
             catch (Exception ex)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
-            }
-            finally
-            {
-                IsBusy = false;
             }
         }
 

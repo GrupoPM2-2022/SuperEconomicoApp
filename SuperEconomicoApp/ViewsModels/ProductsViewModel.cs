@@ -16,6 +16,7 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using System.Linq;
 using System.Windows.Input;
+using Acr.UserDialogs;
 
 namespace SuperEconomicoApp.ViewsModels
 {
@@ -238,9 +239,22 @@ namespace SuperEconomicoApp.ViewsModels
             googleServiceApi = new GoogleServiceApi();
             collectionView = collectionViewReceived;
 
-            GetCategories();
-            GetAllProducts();
-            ConfigurationDepartment();
+            LoadConfiguration();
+        }
+
+        private async void LoadConfiguration()
+        {
+            try
+            {
+                GetCategories();
+                GetAllProducts();
+                ConfigurationDepartment();
+            }
+            catch (Exception)
+            {
+                //IsBusy = false;
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error", "Ok");
+            }
         }
 
         #region Procesos
@@ -330,6 +344,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void IsValidDistance()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             var location = await Geolocation.GetLocationAsync();
             if (location != null)
             {
@@ -341,17 +356,20 @@ namespace SuperEconomicoApp.ViewsModels
                 double kilometers = meters / 1000;
                 if (kilometers > Constants.VALID_KILOMETERS)
                 {
+                    UserDialogs.Instance.HideLoading();
                     await Application.Current.MainPage.DisplayAlert("Aviso", "Nuestra cobertura no alcanza hasta tu ubicación actual", "Ok");
                 }
                 else
                 {
                     Settings.Department = DepartamentPreview;
                     Settings.Coordinates = Coordinates;
+                    UserDialogs.Instance.HideLoading();
                     await PopupNavigation.Instance.PopAsync();
                 }
             }
             else
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "No podemos obtener tu localizacion actual.", "Ok");
             }
         }
@@ -413,6 +431,7 @@ namespace SuperEconomicoApp.ViewsModels
 
         private async void GetCategories()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             var categories = await CategoryService.GetAllCategories();
             if (categories != null)
             {
@@ -424,7 +443,6 @@ namespace SuperEconomicoApp.ViewsModels
         {
             try
             {
-                IsBusy = true;
                 //productos.Clear();
                 var listProducts = await ProductoService.GetAllProducts();
                 if (listProducts != null)
@@ -438,12 +456,9 @@ namespace SuperEconomicoApp.ViewsModels
             {
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
-            finally
-            {
-                IsBusy = false;
+            finally {
+                UserDialogs.Instance.HideLoading();
             }
-
-
         }
 
         private async Task ClosePage()

@@ -1,4 +1,5 @@
-﻿using Plugin.CloudFirestore;
+﻿using Acr.UserDialogs;
+using Plugin.CloudFirestore;
 using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
@@ -122,10 +123,12 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         #region PROCESOS
         public async void LoadConfiguration()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             ordersDelivery = await orderService.GetOrdersDeliveryByMethod("getDeliveryOrderActive");
 
             if (ordersDelivery == null)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener el historico de ordenes", "Ok");
                 return;
             }
@@ -142,6 +145,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
                 ListOrders = GetOrdersActiveByUser((List<ContentOrderDelivery>)ordersDelivery.orders);
             }
+            UserDialogs.Instance.HideLoading();
 
         }
 
@@ -206,17 +210,21 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
         private async void UpdateStatusOrder(ContentOrderDelivery order)
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             order = ExcludeUnnecessaryFields(order);
             bool response = await orderService.UpdateOrderDelivery(order);
             if (response)
             {
                 string messageSuccess = order.Status.Equals("CERRADO") ? "Orden Cerrada Correctamente." : "Orden cambio a entregando de forma correcta";
+
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Confirmacion", messageSuccess, "Ok");
                 LoadConfiguration();
             }
             else
             {
                 string messageError = order.Status.Equals("CERRADO") ? "Se produjo un error al cerrar la orden" : "Se produjo un error al proceder a entregar la orden";
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", messageError, "Ok");
             }
 

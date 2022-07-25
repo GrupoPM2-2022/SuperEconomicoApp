@@ -28,7 +28,8 @@
             </StackLayout>
         </Grid>
 
-        <StackLayout Padding="15">
+        <StackLayout Padding="15"
+                     VerticalOptions="CenterAndExpand">
 
             <StackLayout Orientation="Horizontal"
                      HorizontalOptions="Center">

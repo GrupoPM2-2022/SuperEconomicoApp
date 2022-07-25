@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Model;
+﻿using Acr.UserDialogs;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.ViewsModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SuperEconomicoApp.Views
     public partial class ProductsView : ContentPage
     {
         ProductsViewModel productsViewModel;
+        
+
         public ProductsView()
         {
             InitializeComponent();

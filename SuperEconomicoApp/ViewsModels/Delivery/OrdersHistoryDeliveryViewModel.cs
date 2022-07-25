@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Helpers;
+﻿using Acr.UserDialogs;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views.Delivery;
@@ -99,9 +100,11 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
         #region PROCESOS
         public async void LoadConfiguration()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             ordersDelivery = await orderService.GetOrdersDeliveryByMethod("getDeliveryOrderForId");
             if (ordersDelivery == null)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener el historico de ordenes", "Ok");
                 return;
             }
@@ -118,6 +121,7 @@ namespace SuperEconomicoApp.ViewsModels.Delivery
 
                 ListOrders = (List<ContentOrderDelivery>)ordersDelivery.orders;
             }
+            UserDialogs.Instance.HideLoading();
 
         }
 

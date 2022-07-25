@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Model;
+﻿using Acr.UserDialogs;
+using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using SuperEconomicoApp.Views;
 using System;
@@ -31,10 +32,12 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
 
         private async void LoadConfiguration()
         {
+            UserDialogs.Instance.ShowLoading("Cargando");
             ordersByUser = await orderService.GetOrdersUserByMethod("getUserOrderActive");
 
             if (ordersByUser == null)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al obtener las ordenes activas", "Ok");
                 return;
             }
@@ -52,6 +55,7 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 ListOrders = GetOrdersActiveByUser((List<Order>)ordersByUser.orders);
                 //ListOrders.Sort((x, y) => DateTime.Compare(DateTime.Now, y.order_date));
             }
+            UserDialogs.Instance.HideLoading();
 
         }
 
@@ -68,6 +72,10 @@ namespace SuperEconomicoApp.ViewsModels.TabbedOrder
                 {
                     item.ColorStatus = "#6C3483";
                     item.status = "ENTREGANDO";
+                }
+                if (!item.payment_type.Equals("Efectivo"))
+                {
+                    item.payment_type = "Pago Online";
                 }
             }
             return orders;

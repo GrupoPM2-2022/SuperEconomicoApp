@@ -1,4 +1,5 @@
-﻿using SuperEconomicoApp.Helpers;
+﻿using Acr.UserDialogs;
+using SuperEconomicoApp.Helpers;
 using SuperEconomicoApp.Model;
 using SuperEconomicoApp.Services;
 using System;
@@ -139,8 +140,26 @@ namespace SuperEconomicoApp.ViewsModels
             googleDistanceMatrix = new GoogleDistanceMatrix();
             googleServiceApi = new GoogleServiceApi();
 
-            GetUserById();
-            GetAllDepartments();
+            LoadConfiguration();
+            
+        }
+
+        private async void LoadConfiguration()
+        {
+            try
+            {
+                UserDialogs.Instance.ShowLoading("Cargando");
+                GetUserById();
+                GetAllDepartments();
+            }
+            catch (Exception)
+            {
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error", "Ok");
+            }
+            finally {
+                UserDialogs.Instance.HideLoading();
+            }       
+            
         }
 
 

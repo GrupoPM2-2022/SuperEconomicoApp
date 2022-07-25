@@ -150,7 +150,8 @@
 
                     </StackLayout>
                     <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                       WidthRequest="50" HeightRequest="50"
+                                       WidthRequest="50" 
+                                       HeightRequest="50"
                                        Color="#5E0F8D"
                                        IsVisible="{Binding IsBusy}"
                                        HorizontalOptions="CenterAndExpand"

@@ -1,4 +1,5 @@
-﻿using ImageCircle.Forms.Plugin.Abstractions;
+﻿using Acr.UserDialogs;
+using ImageCircle.Forms.Plugin.Abstractions;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using SuperEconomicoApp.Services;
@@ -223,6 +224,7 @@ namespace SuperEconomicoApp.ViewsModels
                 }
             }
 
+            UserDialogs.Instance.ShowLoading("Cargando");
             userSelected.name = Name;
             userSelected.lastname = Lastname;
             userSelected.phone = Telephone;
@@ -235,14 +237,15 @@ namespace SuperEconomicoApp.ViewsModels
 
             if (confirmationUpdate)
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Confirmacion", "Usuario actualizado correctamente.", "Ok");
                 await Application.Current.MainPage.Navigation.PushModalAsync(new AccountUserView());
             }
             else
             {
+                UserDialogs.Instance.HideLoading();
                 await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error al actualizar el usuario.", "Ok");
             }
-
         }
 
 
@@ -284,26 +287,39 @@ namespace SuperEconomicoApp.ViewsModels
             return "Ok";
         }
 
-        private void LoadConfiguration()
+        private async void LoadConfiguration()
         {
-            Name = userSelected.name;
-            Lastname = userSelected.lastname;
-            BirthDate = userSelected.birthdate;
-            EmailCurrent = userSelected.email;
-            EmailNew = userSelected.email;
-            Telephone = userSelected.phone;
-            Dni = userSelected.dni;
+            try
+            {
+                UserDialogs.Instance.ShowLoading("Cargando");
+                Name = userSelected.name;
+                Lastname = userSelected.lastname;
+                BirthDate = userSelected.birthdate;
+                EmailCurrent = userSelected.email;
+                EmailNew = userSelected.email;
+                Telephone = userSelected.phone;
+                Dni = userSelected.dni;
 
-            if (userSelected.image == null || userSelected.image.Length == 0)
-            {
-                circleImage.Source = "person2.png";
-                ShowTypeImage("default");
+                if (userSelected.image == null || userSelected.image.Length == 0)
+                {
+                    circleImage.Source = "person2.png";
+                    ShowTypeImage("default");
+                }
+                else
+                {
+                    ShowTypeImage("principal");
+                    Image = userSelected.image;
+                }
             }
-            else
+            catch (Exception)
             {
-                ShowTypeImage("principal");
-                Image = userSelected.image;
+                await Application.Current.MainPage.DisplayAlert("Advertencia", "Se produjo un error", "Ok");
             }
+            finally
+            {
+                UserDialogs.Instance.HideLoading();
+            }
+
 
         }
 

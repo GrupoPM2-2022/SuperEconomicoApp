@@ -244,8 +244,6 @@ namespace SuperEconomicoApp.ViewsModels
                 ExistDataShoppingCar = false;
 
             }
-
-
             
         }
 
